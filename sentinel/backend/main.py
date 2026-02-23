@@ -12,7 +12,7 @@ embed_model = SentenceTransformer("all-MiniLM-L6-v2")
 # Load persistent Chroma DB (ONLY THIS VERSION)
 chroma_client = chromadb.PersistentClient(path="chroma_db")
 
-collection = chroma_client.get_collection(name="cyber_assets")
+collection = chroma_client.get_or_create_collection(name="cyber_assets")
 @app.get("/")
 def root():
     return {"message": "Backend is working"}
