@@ -16,14 +16,19 @@ if st.button("Send") and question:
         )
 
         if response.status_code == 200:
-            data = response.json()
-            st.session_state.response = data.get("response")
+            try:
+                data = response.json()
+                st.session_state.response = data.get("response")
+            except:
+                st.error("Backend returned non-JSON response.")
+                st.write(response.text)
+
         else:
             st.error(f"Backend returned status code {response.status_code}")
             st.write(response.text)
 
     except requests.exceptions.ConnectionError:
-        st.error("Backend is not running.")
+        st.error("Backend not running.")
 
 
 if st.session_state.response:
