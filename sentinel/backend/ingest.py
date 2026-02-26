@@ -1,58 +1,59 @@
 import json
 import chromadb
 from sentence_transformers import SentenceTransformer
-from chromadb.config import Settings
 
-
-# Load embedding model (free, small, fast)
-model = SentenceTransformer("all-MiniLM-L6-v2")
-
-# Create persistent Chroma database
-#client = chromadb.Client()
-client = chromadb.Client(
-    Settings(
-        persist_directory="chroma_db"
-    )
-)
+embed_model = SentenceTransformer("all-MiniLM-L6-v2")
+client = chromadb.PersistentClient(path="chroma_db")
 collection = client.get_or_create_collection(name="cyber_assets")
 
-# Load your single JSON file
-with open("data/mock_data.json", "r") as f:
-    data = json.load(f)
+with open("data/assets_v2.json") as f:
+    assets = json.load(f)
 
-documents = []
-ids = []
+for asset in assets:
 
-for i, asset in enumerate(data):
-    # Convert vulnerabilities into readable text
-    vuln_text = ""
-    for vuln in asset["vulnerabilities"]:
-        vuln_text += f"""
-        CVE: {vuln['cve']}
-        Severity: {vuln['severity']}
-        Description: {vuln['description']}
-        """
-
-    text_representation = f"""
+    # Chunk 1 — General Info
+    general_chunk = f"""
     Asset ID: {asset['asset_id']}
-    Asset Type: {asset['asset_type']}
-    Owner: {asset['owner']}
-    IP Address: {asset['ip_address']}
-    Open Ports: {asset['open_ports']}
-    Vulnerabilities:
-    {vuln_text}
+    Type: {asset['asset_type']}
+    Environment: {asset['environment']}
+    Criticality: {asset['criticality']}
+    Owner Team: {asset['owner']['team']}
+    Operating System: {asset['os']}
+    Risk Score: {asset['risk_score']}
     """
 
-    documents.append(text_representation)
-    ids.append(asset["asset_id"])
+    # Chunk 2 — Network Exposure
+    network_chunk = f"""
+    Asset {asset['asset_id']} has open ports {asset['open_ports']}
+    Services running: {asset['services']}
+    """
 
-# Generate embeddings
-embeddings = model.encode(documents).tolist()
+    # Chunk 3 — Vulnerabilities
+    vuln = asset["vulnerabilities"][0]
+    vuln_chunk = f"""
+    Asset {asset['asset_id']} vulnerability details:
+    CVE: {vuln['cve']}
+    Severity: {vuln['severity']}
+    CVSS Score: {vuln['cvss_score']}
+    Exploit Available: {vuln['exploit_available']}
+    Patch Available: {vuln['patch_available']}
+    Description: {vuln['description']}
+    """
 
-# Store in Chroma
-collection.add(
-    documents=documents,
-    embeddings=embeddings,
-    ids=ids
-)
-print("✅ Mock data successfully ingested into Chroma!")
+    chunks = [general_chunk, network_chunk, vuln_chunk]
+
+    for idx, chunk in enumerate(chunks):
+        embedding = embed_model.encode(chunk).tolist()
+
+        collection.add(
+            documents=[chunk],
+            embeddings=[embedding],
+            ids=[f"{asset['asset_id']}_chunk_{idx}"],
+            metadatas=[{
+                "asset_id": asset["asset_id"],
+                "severity": vuln["severity"],
+                "environment": asset["environment"]
+            }]
+        )
+
+print("Ingestion complete.")
