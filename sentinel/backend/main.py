@@ -26,7 +26,7 @@ def ask(question: str):
     # Step 2: Retrieve top 3 similar assets
     results = collection.query(
         query_embeddings=[query_embedding],
-        n_results=3
+        n_results=6
     )
 
     retrieved_docs = "\n".join(results["documents"][0])
@@ -36,9 +36,15 @@ def ask(question: str):
         model="llama3",
         messages=[
             {
-                "role": "system",
-                "content": "You are a cybersecurity assistant. Answer ONLY using the provided context."
-            },
+  "role": "system",
+  "content": """
+  You are a cybersecurity risk analysis assistant.
+  Use ONLY the provided context.
+  If information is missing, say "Not found in asset records."
+  Always reference asset IDs explicitly.
+  Be precise and structured.
+  """
+},
             {
                 "role": "user",
                 "content": f"""
