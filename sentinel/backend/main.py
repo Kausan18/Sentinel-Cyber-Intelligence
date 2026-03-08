@@ -26,19 +26,19 @@ def ask(question: str):
     # Step 2: Retrieve top 3 similar assets
     results = collection.query(
         query_embeddings=[query_embedding],
-        n_results=3
+        n_results=5
     )
 
     retrieved_docs = "\n".join(results["documents"][0])
 
     # Step 3: Send retrieved context to Ollama
     response = ollama.chat(
-        model="llama3",
+        model="phi3",
         messages=[
-            {
-                "role": "system",
-                "content": "You are a cybersecurity assistant. Answer ONLY using the provided context."
-            },
+{
+    "role": "system",
+    "content": "You are a cybersecurity asset intelligence assistant. Answer strictly using the provided context. If the answer is not in the context, say: 'No relevant asset found.'"
+},
             {
                 "role": "user",
                 "content": f"""

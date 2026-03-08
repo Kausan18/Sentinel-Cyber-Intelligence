@@ -1,0 +1,3102 @@
+[
+  {
+    "asset_id": "ASSET-1000",
+    "asset_type": "Firewall",
+    "environment": "Production",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8080,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 83,
+    "last_scan_date": "2026-01-04",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-4623",
+        "severity": "High",
+        "cvss_score": 4.1,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1001",
+    "asset_type": "Cloud VM",
+    "environment": "Production",
+    "criticality": "Low",
+    "owner": {
+      "team": "DevOps",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8080,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 66,
+    "last_scan_date": "2025-12-17",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-8600",
+        "severity": "Medium",
+        "cvss_score": 5.2,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1002",
+    "asset_type": "Database Server",
+    "environment": "Staging",
+    "criticality": "High",
+    "owner": {
+      "team": "DevOps",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8080,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 29,
+    "last_scan_date": "2026-02-16",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-6848",
+        "severity": "Low",
+        "cvss_score": 4.9,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1003",
+    "asset_type": "Database Server",
+    "environment": "Production",
+    "criticality": "Low",
+    "owner": {
+      "team": "DevOps",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      22,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 81,
+    "last_scan_date": "2025-12-10",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-5688",
+        "severity": "Critical",
+        "cvss_score": 8.5,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Critical severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1004",
+    "asset_type": "Firewall",
+    "environment": "Development",
+    "criticality": "High",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      80,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 77,
+    "last_scan_date": "2026-01-01",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-6560",
+        "severity": "Medium",
+        "cvss_score": 8.2,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1005",
+    "asset_type": "Firewall",
+    "environment": "Staging",
+    "criticality": "High",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8080,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 36,
+    "last_scan_date": "2026-01-14",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-9448",
+        "severity": "Low",
+        "cvss_score": 9.1,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1006",
+    "asset_type": "Cloud VM",
+    "environment": "Development",
+    "criticality": "High",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8080,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 25,
+    "last_scan_date": "2026-02-19",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-6742",
+        "severity": "Low",
+        "cvss_score": 6.9,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1007",
+    "asset_type": "Cloud VM",
+    "environment": "Development",
+    "criticality": "Low",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      3306,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 46,
+    "last_scan_date": "2025-12-28",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-3112",
+        "severity": "Medium",
+        "cvss_score": 7.3,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1008",
+    "asset_type": "Web Server",
+    "environment": "Production",
+    "criticality": "Low",
+    "owner": {
+      "team": "DevOps",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      22,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 22,
+    "last_scan_date": "2025-11-30",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-3399",
+        "severity": "Low",
+        "cvss_score": 8.4,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1009",
+    "asset_type": "Cloud VM",
+    "environment": "Production",
+    "criticality": "High",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      80,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 67,
+    "last_scan_date": "2025-12-29",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-1418",
+        "severity": "Medium",
+        "cvss_score": 9.4,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1010",
+    "asset_type": "Firewall",
+    "environment": "Production",
+    "criticality": "Low",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8443,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 65,
+    "last_scan_date": "2026-02-08",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-1384",
+        "severity": "Low",
+        "cvss_score": 4.9,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1011",
+    "asset_type": "Database Server",
+    "environment": "Production",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      80,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 31,
+    "last_scan_date": "2026-01-31",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-8760",
+        "severity": "Medium",
+        "cvss_score": 6.3,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1012",
+    "asset_type": "API Gateway",
+    "environment": "Staging",
+    "criticality": "Low",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8080,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 94,
+    "last_scan_date": "2025-12-28",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2603",
+        "severity": "Medium",
+        "cvss_score": 6.7,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1013",
+    "asset_type": "Database Server",
+    "environment": "Production",
+    "criticality": "High",
+    "owner": {
+      "team": "DevOps",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      3306,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 18,
+    "last_scan_date": "2026-01-31",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-1326",
+        "severity": "High",
+        "cvss_score": 7.3,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1014",
+    "asset_type": "Database Server",
+    "environment": "Production",
+    "criticality": "Low",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      443,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 34,
+    "last_scan_date": "2025-12-25",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-7901",
+        "severity": "High",
+        "cvss_score": 9.7,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1015",
+    "asset_type": "Web Server",
+    "environment": "Staging",
+    "criticality": "Low",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8080,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 13,
+    "last_scan_date": "2025-12-03",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-1196",
+        "severity": "Critical",
+        "cvss_score": 7.0,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Critical severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1016",
+    "asset_type": "Firewall",
+    "environment": "Development",
+    "criticality": "Medium",
+    "owner": {
+      "team": "DevOps",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8443,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 53,
+    "last_scan_date": "2026-01-31",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-8441",
+        "severity": "High",
+        "cvss_score": 7.8,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1017",
+    "asset_type": "Web Server",
+    "environment": "Production",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      443,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 44,
+    "last_scan_date": "2026-01-31",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2683",
+        "severity": "High",
+        "cvss_score": 9.0,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1018",
+    "asset_type": "Web Server",
+    "environment": "Development",
+    "criticality": "High",
+    "owner": {
+      "team": "DevOps",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      3306,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 59,
+    "last_scan_date": "2025-12-27",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-7106",
+        "severity": "Low",
+        "cvss_score": 4.4,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1019",
+    "asset_type": "API Gateway",
+    "environment": "Production",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      3306,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 39,
+    "last_scan_date": "2026-02-09",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-7417",
+        "severity": "Critical",
+        "cvss_score": 4.9,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Critical severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1020",
+    "asset_type": "Cloud VM",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      3306,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 25,
+    "last_scan_date": "2025-12-19",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-3942",
+        "severity": "Critical",
+        "cvss_score": 8.7,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Critical severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1021",
+    "asset_type": "Web Server",
+    "environment": "Production",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      80,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 63,
+    "last_scan_date": "2025-12-12",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-8659",
+        "severity": "Low",
+        "cvss_score": 6.7,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1022",
+    "asset_type": "Web Server",
+    "environment": "Development",
+    "criticality": "High",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8443,
+      80
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 93,
+    "last_scan_date": "2025-12-02",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-3831",
+        "severity": "Low",
+        "cvss_score": 4.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1023",
+    "asset_type": "Database Server",
+    "environment": "Production",
+    "criticality": "Low",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      80,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 24,
+    "last_scan_date": "2026-02-08",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2486",
+        "severity": "Low",
+        "cvss_score": 5.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1024",
+    "asset_type": "Cloud VM",
+    "environment": "Development",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      80,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 37,
+    "last_scan_date": "2026-01-17",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-9377",
+        "severity": "Low",
+        "cvss_score": 5.3,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1025",
+    "asset_type": "Cloud VM",
+    "environment": "Production",
+    "criticality": "High",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      22,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 75,
+    "last_scan_date": "2025-12-03",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-1240",
+        "severity": "Low",
+        "cvss_score": 7.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1026",
+    "asset_type": "Cloud VM",
+    "environment": "Development",
+    "criticality": "Low",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8443,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 35,
+    "last_scan_date": "2025-12-07",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-5406",
+        "severity": "Medium",
+        "cvss_score": 9.4,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1027",
+    "asset_type": "Cloud VM",
+    "environment": "Development",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      80,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 65,
+    "last_scan_date": "2026-01-26",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-5796",
+        "severity": "High",
+        "cvss_score": 5.0,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1028",
+    "asset_type": "Web Server",
+    "environment": "Production",
+    "criticality": "Low",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      3306,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 18,
+    "last_scan_date": "2026-02-03",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2100",
+        "severity": "Medium",
+        "cvss_score": 4.1,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1029",
+    "asset_type": "API Gateway",
+    "environment": "Development",
+    "criticality": "Medium",
+    "owner": {
+      "team": "DevOps",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8443,
+      80
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 65,
+    "last_scan_date": "2026-02-25",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-5186",
+        "severity": "Medium",
+        "cvss_score": 6.9,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1030",
+    "asset_type": "Database Server",
+    "environment": "Production",
+    "criticality": "Low",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      80,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 80,
+    "last_scan_date": "2025-12-17",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-4080",
+        "severity": "Medium",
+        "cvss_score": 6.9,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1031",
+    "asset_type": "Cloud VM",
+    "environment": "Production",
+    "criticality": "High",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8443,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 35,
+    "last_scan_date": "2026-01-28",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-7420",
+        "severity": "Low",
+        "cvss_score": 7.4,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1032",
+    "asset_type": "Web Server",
+    "environment": "Staging",
+    "criticality": "High",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8443,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 80,
+    "last_scan_date": "2026-02-23",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-4104",
+        "severity": "Medium",
+        "cvss_score": 8.2,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1033",
+    "asset_type": "Web Server",
+    "environment": "Staging",
+    "criticality": "High",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      3306,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 81,
+    "last_scan_date": "2026-02-15",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-6481",
+        "severity": "High",
+        "cvss_score": 7.4,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1034",
+    "asset_type": "API Gateway",
+    "environment": "Development",
+    "criticality": "High",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8080,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 100,
+    "last_scan_date": "2026-02-19",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2536",
+        "severity": "Medium",
+        "cvss_score": 6.4,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1035",
+    "asset_type": "API Gateway",
+    "environment": "Staging",
+    "criticality": "Low",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      443,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 28,
+    "last_scan_date": "2026-02-04",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-1821",
+        "severity": "High",
+        "cvss_score": 6.0,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1036",
+    "asset_type": "Firewall",
+    "environment": "Development",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      22,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 63,
+    "last_scan_date": "2025-12-29",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2109",
+        "severity": "High",
+        "cvss_score": 7.6,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1037",
+    "asset_type": "Web Server",
+    "environment": "Production",
+    "criticality": "Low",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8080,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 84,
+    "last_scan_date": "2026-01-16",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-6786",
+        "severity": "Critical",
+        "cvss_score": 5.3,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Critical severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1038",
+    "asset_type": "API Gateway",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8080,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 11,
+    "last_scan_date": "2025-12-24",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-6183",
+        "severity": "Medium",
+        "cvss_score": 4.6,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1039",
+    "asset_type": "Firewall",
+    "environment": "Development",
+    "criticality": "High",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      443,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 100,
+    "last_scan_date": "2026-01-04",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2344",
+        "severity": "High",
+        "cvss_score": 4.0,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1040",
+    "asset_type": "Cloud VM",
+    "environment": "Production",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      22,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 12,
+    "last_scan_date": "2026-01-21",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2823",
+        "severity": "Low",
+        "cvss_score": 6.4,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1041",
+    "asset_type": "Firewall",
+    "environment": "Staging",
+    "criticality": "High",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8080,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 22,
+    "last_scan_date": "2026-01-01",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2890",
+        "severity": "Critical",
+        "cvss_score": 4.5,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Critical severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1042",
+    "asset_type": "API Gateway",
+    "environment": "Development",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8443,
+      80
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 90,
+    "last_scan_date": "2026-02-22",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-5048",
+        "severity": "Medium",
+        "cvss_score": 9.1,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1043",
+    "asset_type": "API Gateway",
+    "environment": "Staging",
+    "criticality": "High",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      80,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 53,
+    "last_scan_date": "2026-01-07",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-9880",
+        "severity": "Low",
+        "cvss_score": 9.3,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1044",
+    "asset_type": "Web Server",
+    "environment": "Development",
+    "criticality": "High",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      80,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 45,
+    "last_scan_date": "2026-02-01",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-1834",
+        "severity": "High",
+        "cvss_score": 4.3,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1045",
+    "asset_type": "Database Server",
+    "environment": "Staging",
+    "criticality": "High",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      443,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 83,
+    "last_scan_date": "2025-12-24",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-4327",
+        "severity": "High",
+        "cvss_score": 8.5,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1046",
+    "asset_type": "Database Server",
+    "environment": "Development",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      3306,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 83,
+    "last_scan_date": "2025-12-07",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2845",
+        "severity": "Medium",
+        "cvss_score": 9.3,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1047",
+    "asset_type": "Cloud VM",
+    "environment": "Staging",
+    "criticality": "High",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      80,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 30,
+    "last_scan_date": "2025-12-22",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-9477",
+        "severity": "Low",
+        "cvss_score": 9.0,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1048",
+    "asset_type": "Web Server",
+    "environment": "Staging",
+    "criticality": "Low",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      22,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 34,
+    "last_scan_date": "2026-02-19",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-8575",
+        "severity": "Low",
+        "cvss_score": 9.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1049",
+    "asset_type": "Cloud VM",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      22,
+      80
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 17,
+    "last_scan_date": "2026-02-12",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-7850",
+        "severity": "High",
+        "cvss_score": 6.8,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1050",
+    "asset_type": "Firewall",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      3306,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 23,
+    "last_scan_date": "2026-01-09",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-1784",
+        "severity": "High",
+        "cvss_score": 6.8,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1051",
+    "asset_type": "Cloud VM",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      443,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 58,
+    "last_scan_date": "2026-01-20",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-7288",
+        "severity": "Low",
+        "cvss_score": 7.6,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1052",
+    "asset_type": "Web Server",
+    "environment": "Development",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8080,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 36,
+    "last_scan_date": "2026-01-31",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2252",
+        "severity": "Medium",
+        "cvss_score": 8.1,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1053",
+    "asset_type": "Cloud VM",
+    "environment": "Staging",
+    "criticality": "Low",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      443,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 22,
+    "last_scan_date": "2026-02-20",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-8979",
+        "severity": "Low",
+        "cvss_score": 5.2,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1054",
+    "asset_type": "Database Server",
+    "environment": "Production",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8080,
+      80
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 13,
+    "last_scan_date": "2026-02-21",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-6531",
+        "severity": "Low",
+        "cvss_score": 7.7,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1055",
+    "asset_type": "Web Server",
+    "environment": "Development",
+    "criticality": "High",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      443,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 53,
+    "last_scan_date": "2026-02-11",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-3321",
+        "severity": "Medium",
+        "cvss_score": 9.5,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1056",
+    "asset_type": "Cloud VM",
+    "environment": "Development",
+    "criticality": "High",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      443,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 84,
+    "last_scan_date": "2026-01-30",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-8761",
+        "severity": "High",
+        "cvss_score": 6.1,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1057",
+    "asset_type": "API Gateway",
+    "environment": "Production",
+    "criticality": "High",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      3306,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 84,
+    "last_scan_date": "2026-02-07",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-3569",
+        "severity": "Medium",
+        "cvss_score": 8.6,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1058",
+    "asset_type": "API Gateway",
+    "environment": "Development",
+    "criticality": "Low",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      80,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 12,
+    "last_scan_date": "2026-01-25",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-8631",
+        "severity": "Medium",
+        "cvss_score": 9.8,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1059",
+    "asset_type": "Firewall",
+    "environment": "Staging",
+    "criticality": "High",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      3306,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 46,
+    "last_scan_date": "2026-02-04",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-7505",
+        "severity": "Medium",
+        "cvss_score": 4.6,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1060",
+    "asset_type": "API Gateway",
+    "environment": "Development",
+    "criticality": "High",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8080,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 27,
+    "last_scan_date": "2026-01-16",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-3355",
+        "severity": "High",
+        "cvss_score": 7.6,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1061",
+    "asset_type": "Firewall",
+    "environment": "Staging",
+    "criticality": "Low",
+    "owner": {
+      "team": "DevOps",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      3306,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 25,
+    "last_scan_date": "2026-01-29",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-5924",
+        "severity": "Medium",
+        "cvss_score": 6.2,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1062",
+    "asset_type": "Firewall",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      443,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 69,
+    "last_scan_date": "2026-02-03",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-1126",
+        "severity": "Critical",
+        "cvss_score": 9.7,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Critical severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1063",
+    "asset_type": "Cloud VM",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8443,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 27,
+    "last_scan_date": "2026-02-27",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-7494",
+        "severity": "High",
+        "cvss_score": 6.7,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1064",
+    "asset_type": "API Gateway",
+    "environment": "Production",
+    "criticality": "Low",
+    "owner": {
+      "team": "DevOps",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      443,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 68,
+    "last_scan_date": "2025-12-22",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-5568",
+        "severity": "High",
+        "cvss_score": 4.3,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1065",
+    "asset_type": "Database Server",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      80,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 30,
+    "last_scan_date": "2026-02-20",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-5138",
+        "severity": "Critical",
+        "cvss_score": 5.8,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Critical severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1066",
+    "asset_type": "Database Server",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      80,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 72,
+    "last_scan_date": "2025-12-01",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2715",
+        "severity": "Medium",
+        "cvss_score": 8.1,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1067",
+    "asset_type": "Database Server",
+    "environment": "Development",
+    "criticality": "Low",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8080,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 40,
+    "last_scan_date": "2025-12-24",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-8156",
+        "severity": "Low",
+        "cvss_score": 7.6,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1068",
+    "asset_type": "Database Server",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "DevOps",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      443,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 87,
+    "last_scan_date": "2026-01-25",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-8894",
+        "severity": "Medium",
+        "cvss_score": 7.0,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1069",
+    "asset_type": "Web Server",
+    "environment": "Production",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      80,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 70,
+    "last_scan_date": "2026-02-11",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-1850",
+        "severity": "Medium",
+        "cvss_score": 6.5,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1070",
+    "asset_type": "Firewall",
+    "environment": "Staging",
+    "criticality": "High",
+    "owner": {
+      "team": "DevOps",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      22,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 97,
+    "last_scan_date": "2025-12-09",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-4832",
+        "severity": "Critical",
+        "cvss_score": 5.6,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Critical severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1071",
+    "asset_type": "Database Server",
+    "environment": "Development",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      3306,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 91,
+    "last_scan_date": "2025-12-08",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-6499",
+        "severity": "Medium",
+        "cvss_score": 9.3,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1072",
+    "asset_type": "Web Server",
+    "environment": "Development",
+    "criticality": "High",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      443,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 73,
+    "last_scan_date": "2025-12-07",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2852",
+        "severity": "Critical",
+        "cvss_score": 6.2,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Critical severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1073",
+    "asset_type": "Cloud VM",
+    "environment": "Production",
+    "criticality": "High",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      443,
+      80
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 82,
+    "last_scan_date": "2026-01-14",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-5206",
+        "severity": "Low",
+        "cvss_score": 7.1,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1074",
+    "asset_type": "Firewall",
+    "environment": "Development",
+    "criticality": "Low",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      443,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 37,
+    "last_scan_date": "2026-02-22",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-7598",
+        "severity": "Low",
+        "cvss_score": 4.8,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1075",
+    "asset_type": "Cloud VM",
+    "environment": "Development",
+    "criticality": "Low",
+    "owner": {
+      "team": "DevOps",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8080,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 12,
+    "last_scan_date": "2025-12-26",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-5059",
+        "severity": "Medium",
+        "cvss_score": 9.1,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1076",
+    "asset_type": "Firewall",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      3306,
+      80
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 90,
+    "last_scan_date": "2026-01-30",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2151",
+        "severity": "Critical",
+        "cvss_score": 5.4,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Critical severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1077",
+    "asset_type": "Firewall",
+    "environment": "Staging",
+    "criticality": "High",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      443,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 22,
+    "last_scan_date": "2025-12-26",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-9049",
+        "severity": "Low",
+        "cvss_score": 5.7,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1078",
+    "asset_type": "Database Server",
+    "environment": "Development",
+    "criticality": "Low",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8080,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 16,
+    "last_scan_date": "2025-12-28",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-1404",
+        "severity": "High",
+        "cvss_score": 4.3,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1079",
+    "asset_type": "Firewall",
+    "environment": "Production",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      22,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 74,
+    "last_scan_date": "2026-01-29",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-7849",
+        "severity": "Medium",
+        "cvss_score": 7.6,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1080",
+    "asset_type": "Database Server",
+    "environment": "Production",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      22,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 82,
+    "last_scan_date": "2026-01-28",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-3361",
+        "severity": "High",
+        "cvss_score": 6.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1081",
+    "asset_type": "Web Server",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      443,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 81,
+    "last_scan_date": "2026-01-19",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-5052",
+        "severity": "Medium",
+        "cvss_score": 7.8,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1082",
+    "asset_type": "Web Server",
+    "environment": "Staging",
+    "criticality": "High",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8443,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 68,
+    "last_scan_date": "2026-01-06",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-1759",
+        "severity": "Medium",
+        "cvss_score": 4.6,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1083",
+    "asset_type": "Web Server",
+    "environment": "Development",
+    "criticality": "High",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8443,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 99,
+    "last_scan_date": "2025-12-23",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-8522",
+        "severity": "Low",
+        "cvss_score": 6.5,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1084",
+    "asset_type": "Web Server",
+    "environment": "Staging",
+    "criticality": "Low",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      80,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 71,
+    "last_scan_date": "2026-01-01",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-1287",
+        "severity": "High",
+        "cvss_score": 9.7,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1085",
+    "asset_type": "Web Server",
+    "environment": "Staging",
+    "criticality": "High",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      22,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 84,
+    "last_scan_date": "2026-02-22",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-5925",
+        "severity": "Low",
+        "cvss_score": 4.3,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1086",
+    "asset_type": "Cloud VM",
+    "environment": "Staging",
+    "criticality": "Low",
+    "owner": {
+      "team": "DevOps",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8443,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 26,
+    "last_scan_date": "2025-12-22",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-3503",
+        "severity": "Critical",
+        "cvss_score": 7.2,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Critical severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1087",
+    "asset_type": "API Gateway",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8443,
+      80
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 80,
+    "last_scan_date": "2026-02-04",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-4759",
+        "severity": "High",
+        "cvss_score": 9.1,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1088",
+    "asset_type": "Database Server",
+    "environment": "Development",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      443,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 92,
+    "last_scan_date": "2026-02-24",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-4373",
+        "severity": "Low",
+        "cvss_score": 8.4,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1089",
+    "asset_type": "API Gateway",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      22,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 40,
+    "last_scan_date": "2026-01-01",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-9216",
+        "severity": "Medium",
+        "cvss_score": 7.1,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1090",
+    "asset_type": "Firewall",
+    "environment": "Development",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      22,
+      443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 23,
+    "last_scan_date": "2026-01-15",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-3150",
+        "severity": "High",
+        "cvss_score": 7.4,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1091",
+    "asset_type": "Firewall",
+    "environment": "Staging",
+    "criticality": "High",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      22,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 33,
+    "last_scan_date": "2025-12-12",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-9573",
+        "severity": "Low",
+        "cvss_score": 8.9,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1092",
+    "asset_type": "Web Server",
+    "environment": "Production",
+    "criticality": "High",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      80,
+      8080
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 31,
+    "last_scan_date": "2026-02-16",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-7219",
+        "severity": "Low",
+        "cvss_score": 4.0,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1093",
+    "asset_type": "Web Server",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      8443,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 43,
+    "last_scan_date": "2026-01-22",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-8935",
+        "severity": "Low",
+        "cvss_score": 7.6,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Low severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1094",
+    "asset_type": "Database Server",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      80,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 45,
+    "last_scan_date": "2026-01-17",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-6723",
+        "severity": "Medium",
+        "cvss_score": 5.7,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1095",
+    "asset_type": "Database Server",
+    "environment": "Development",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8443,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 93,
+    "last_scan_date": "2025-12-20",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-7668",
+        "severity": "Critical",
+        "cvss_score": 7.9,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Critical severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1096",
+    "asset_type": "Firewall",
+    "environment": "Production",
+    "criticality": "High",
+    "owner": {
+      "team": "Platform Team",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      80,
+      8443
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 36,
+    "last_scan_date": "2026-01-29",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2479",
+        "severity": "High",
+        "cvss_score": 5.6,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1097",
+    "asset_type": "Web Server",
+    "environment": "Development",
+    "criticality": "Low",
+    "owner": {
+      "team": "Backend Team",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8080,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 76,
+    "last_scan_date": "2026-02-14",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-9078",
+        "severity": "High",
+        "cvss_score": 9.0,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "High severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1098",
+    "asset_type": "API Gateway",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "team@company.com"
+    },
+    "os": "Ubuntu 22.04",
+    "open_ports": [
+      22,
+      3306
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 31,
+    "last_scan_date": "2026-02-25",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-4850",
+        "severity": "Critical",
+        "cvss_score": 7.3,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Critical severity vulnerability detected"
+      }
+    ]
+  },
+  {
+    "asset_id": "ASSET-1099",
+    "asset_type": "Web Server",
+    "environment": "Development",
+    "criticality": "Medium",
+    "owner": {
+      "team": "Security Ops",
+      "email": "team@company.com"
+    },
+    "os": "Windows Server 2022",
+    "open_ports": [
+      8080,
+      22
+    ],
+    "services": [
+      "Service-A",
+      "Service-B"
+    ],
+    "risk_score": 86,
+    "last_scan_date": "2026-02-13",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-8793",
+        "severity": "Medium",
+        "cvss_score": 7.2,
+        "exploit_available": true,
+        "patch_available": false,
+        "description": "Medium severity vulnerability detected"
+      }
+    ]
+  }
+]
