@@ -1,3102 +1,4074 @@
 [
   {
     "asset_id": "ASSET-1000",
-    "asset_type": "Firewall",
+    "asset_type": "Web Server",
     "environment": "Production",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "criticality": "High",
+    "ip_address": "164.73.197.176",
+    "domain": "asset-1000.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "CentOS",
+      "version": "7"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "apache2",
+      "version": "2.4.57"
+    },
     "open_ports": [
       8080,
-      22
+      443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 83,
-    "last_scan_date": "2026-01-04",
+    "owner": {
+      "team": null,
+      "email": null,
+      "status": "orphan"
+    },
+    "last_scan_date": "2025-12-14",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-4623",
+        "cve": "CVE-2022-31813",
         "severity": "High",
-        "cvss_score": 4.1,
+        "cvss_score": 9.8,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Apache HTTP Server may not send the X-Forwarded-* headers to the origin server, allowing authentication bypass."
+      },
+      {
+        "cve": "CVE-2021-41773",
+        "severity": "Critical",
+        "cvss_score": 9.8,
         "exploit_available": true,
         "patch_available": true,
-        "description": "High severity vulnerability detected"
+        "description": "Path traversal and remote code execution in Apache HTTP Server 2.4.49."
       }
-    ]
+    ],
+    "risk_score": 99.2
   },
   {
     "asset_id": "ASSET-1001",
     "asset_type": "Cloud VM",
-    "environment": "Production",
+    "environment": "Development",
     "criticality": "Low",
+    "ip_address": "95.234.97.17",
+    "domain": "asset-1001.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
+    },
+    "software": {
+      "name": "containerd",
+      "version": "1.6.4"
+    },
+    "open_ports": [
+      9090
+    ],
     "owner": {
       "team": "DevOps",
-      "email": "team@company.com"
+      "email": "devops@company.com",
+      "status": "assigned"
     },
-    "os": "Ubuntu 22.04",
-    "open_ports": [
-      8080,
-      22
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 66,
-    "last_scan_date": "2025-12-17",
+    "last_scan_date": "2025-12-12",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-8600",
-        "severity": "Medium",
-        "cvss_score": 5.2,
-        "exploit_available": false,
+        "cve": "CVE-2022-23648",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": true,
         "patch_available": true,
-        "description": "Medium severity vulnerability detected"
+        "description": "containerd allows attackers to gain read access to arbitrary host files via specially crafted image configurations."
       }
-    ]
+    ],
+    "risk_score": 58.5
   },
   {
     "asset_id": "ASSET-1002",
-    "asset_type": "Database Server",
-    "environment": "Staging",
-    "criticality": "High",
-    "owner": {
-      "team": "DevOps",
-      "email": "team@company.com"
+    "asset_type": "API Gateway",
+    "environment": "Development",
+    "criticality": "Medium",
+    "ip_address": "23.134.44.68",
+    "domain": "asset-1002.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "nginx",
+      "version": "1.18.0"
+    },
     "open_ports": [
-      8080,
-      443
+      8000
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 29,
-    "last_scan_date": "2026-02-16",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-30",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-6848",
-        "severity": "Low",
-        "cvss_score": 4.9,
-        "exploit_available": false,
-        "patch_available": false,
-        "description": "Low severity vulnerability detected"
+        "cve": "CVE-2022-41741",
+        "severity": "High",
+        "cvss_score": 7.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Memory corruption in ngx_http_mp4_module when processing specially crafted MP4 files."
       }
-    ]
+    ],
+    "risk_score": 65.7
   },
   {
     "asset_id": "ASSET-1003",
-    "asset_type": "Database Server",
+    "asset_type": "Web Server",
     "environment": "Production",
-    "criticality": "Low",
-    "owner": {
-      "team": "DevOps",
-      "email": "team@company.com"
+    "criticality": "High",
+    "ip_address": "154.35.162.63",
+    "domain": "asset-1003.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "apache2",
+      "version": "2.4.57"
+    },
     "open_ports": [
-      22,
-      3306
+      80,
+      443,
+      8443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 81,
-    "last_scan_date": "2025-12-10",
+    "owner": {
+      "team": "Security Ops",
+      "email": "secops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-03",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-5688",
-        "severity": "Critical",
-        "cvss_score": 8.5,
+        "cve": "CVE-2022-31813",
+        "severity": "High",
+        "cvss_score": 9.8,
         "exploit_available": false,
         "patch_available": true,
-        "description": "Critical severity vulnerability detected"
+        "description": "Apache HTTP Server may not send the X-Forwarded-* headers to the origin server, allowing authentication bypass."
+      },
+      {
+        "cve": "CVE-2021-41773",
+        "severity": "Critical",
+        "cvss_score": 9.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Path traversal and remote code execution in Apache HTTP Server 2.4.49."
       }
-    ]
+    ],
+    "risk_score": 99.2
   },
   {
     "asset_id": "ASSET-1004",
-    "asset_type": "Firewall",
-    "environment": "Development",
-    "criticality": "High",
-    "owner": {
-      "team": "Cloud Engineering",
-      "email": "team@company.com"
+    "asset_type": "Database Server",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "ip_address": "33.222.145.229",
+    "domain": "asset-1004.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "mysql",
+      "version": "8.0.32"
+    },
     "open_ports": [
-      80,
-      22
+      27017,
+      5432,
+      3306
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 77,
-    "last_scan_date": "2026-01-01",
+    "owner": {
+      "team": null,
+      "email": null,
+      "status": "orphan"
+    },
+    "last_scan_date": "2026-01-08",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-6560",
+        "cve": "CVE-2022-21595",
         "severity": "Medium",
-        "cvss_score": 8.2,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "cvss_score": 4.4,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "MySQL Server C API vulnerability allowing denial of service by a privileged attacker."
+      },
+      {
+        "cve": "CVE-2023-21980",
+        "severity": "High",
+        "cvss_score": 7.1,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Vulnerability in MySQL Server optimizer allowing unauthorized data access."
       }
-    ]
+    ],
+    "risk_score": 50.9
   },
   {
     "asset_id": "ASSET-1005",
-    "asset_type": "Firewall",
+    "asset_type": "Cloud VM",
     "environment": "Staging",
-    "criticality": "High",
+    "criticality": "Low",
+    "ip_address": "60.76.56.56",
+    "domain": "asset-1005.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
+    },
+    "software": {
+      "name": "docker",
+      "version": "20.10.7"
+    },
+    "open_ports": [
+      2222,
+      8080
+    ],
     "owner": {
       "team": "Cloud Engineering",
-      "email": "team@company.com"
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
     },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      8080,
-      22
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 36,
-    "last_scan_date": "2026-01-14",
+    "last_scan_date": "2026-02-18",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-9448",
-        "severity": "Low",
-        "cvss_score": 9.1,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "Low severity vulnerability detected"
+        "cve": "CVE-2023-28840",
+        "severity": "High",
+        "cvss_score": 8.7,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Insufficient encryption of overlay network traffic in Docker Swarm mode."
       }
-    ]
+    ],
+    "risk_score": 51.3
   },
   {
     "asset_id": "ASSET-1006",
     "asset_type": "Cloud VM",
-    "environment": "Development",
-    "criticality": "High",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "environment": "Staging",
+    "criticality": "Medium",
+    "ip_address": "158.210.6.174",
+    "domain": "asset-1006.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "docker",
+      "version": "20.10.7"
+    },
     "open_ports": [
-      8080,
-      3306
+      2222,
+      9090,
+      22
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 25,
-    "last_scan_date": "2026-02-19",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-14",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-6742",
-        "severity": "Low",
-        "cvss_score": 6.9,
-        "exploit_available": true,
+        "cve": "CVE-2023-28840",
+        "severity": "High",
+        "cvss_score": 8.7,
+        "exploit_available": false,
         "patch_available": true,
-        "description": "Low severity vulnerability detected"
+        "description": "Insufficient encryption of overlay network traffic in Docker Swarm mode."
       }
-    ]
+    ],
+    "risk_score": 57.3
   },
   {
     "asset_id": "ASSET-1007",
-    "asset_type": "Cloud VM",
+    "asset_type": "Database Server",
     "environment": "Development",
     "criticality": "Low",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "ip_address": "100.215.117.180",
+    "domain": "asset-1007.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "mysql",
+      "version": "8.0.28"
+    },
     "open_ports": [
       3306,
-      22
+      1433,
+      5432
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 46,
-    "last_scan_date": "2025-12-28",
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-02",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-3112",
+        "cve": "CVE-2022-21595",
         "severity": "Medium",
-        "cvss_score": 7.3,
+        "cvss_score": 4.4,
         "exploit_available": false,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "patch_available": true,
+        "description": "MySQL Server C API vulnerability allowing denial of service by a privileged attacker."
+      },
+      {
+        "cve": "CVE-2023-21980",
+        "severity": "High",
+        "cvss_score": 7.1,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Vulnerability in MySQL Server optimizer allowing unauthorized data access."
       }
-    ]
+    ],
+    "risk_score": 44.9
   },
   {
     "asset_id": "ASSET-1008",
-    "asset_type": "Web Server",
-    "environment": "Production",
-    "criticality": "Low",
-    "owner": {
-      "team": "DevOps",
-      "email": "team@company.com"
+    "asset_type": "Cloud VM",
+    "environment": "Development",
+    "criticality": "Medium",
+    "ip_address": "48.32.202.112",
+    "domain": "asset-1008.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "containerd",
+      "version": "1.6.4"
+    },
     "open_ports": [
       22,
-      3306
+      2222
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 22,
-    "last_scan_date": "2025-11-30",
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-23",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-3399",
-        "severity": "Low",
-        "cvss_score": 8.4,
-        "exploit_available": false,
+        "cve": "CVE-2022-23648",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": true,
         "patch_available": true,
-        "description": "Low severity vulnerability detected"
+        "description": "containerd allows attackers to gain read access to arbitrary host files via specially crafted image configurations."
       }
-    ]
+    ],
+    "risk_score": 64.5
   },
   {
     "asset_id": "ASSET-1009",
-    "asset_type": "Cloud VM",
+    "asset_type": "API Gateway",
     "environment": "Production",
-    "criticality": "High",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "criticality": "Medium",
+    "ip_address": "86.205.208.36",
+    "domain": "asset-1009.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "envoy",
+      "version": "1.25.0"
+    },
     "open_ports": [
-      80,
-      22
+      8080
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 67,
-    "last_scan_date": "2025-12-29",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-11",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-1418",
-        "severity": "Medium",
-        "cvss_score": 9.4,
+        "cve": "CVE-2023-35943",
+        "severity": "High",
+        "cvss_score": 8.3,
         "exploit_available": false,
         "patch_available": true,
-        "description": "Medium severity vulnerability detected"
+        "description": "CORS filter segfault on wildcard origins with empty request origins, enabling denial of service."
       }
-    ]
+    ],
+    "risk_score": 73.2
   },
   {
     "asset_id": "ASSET-1010",
-    "asset_type": "Firewall",
-    "environment": "Production",
-    "criticality": "Low",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "asset_type": "Database Server",
+    "environment": "Staging",
+    "criticality": "High",
+    "ip_address": "132.212.65.75",
+    "domain": "asset-1010.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "postgresql",
+      "version": "15.2"
+    },
     "open_ports": [
-      8443,
-      8080
+      3306
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 65,
-    "last_scan_date": "2026-02-08",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-20",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-1384",
-        "severity": "Low",
-        "cvss_score": 4.9,
-        "exploit_available": false,
+        "cve": "CVE-2022-1552",
+        "severity": "High",
+        "cvss_score": 8.8,
+        "exploit_available": true,
         "patch_available": true,
-        "description": "Low severity vulnerability detected"
+        "description": "Autovacuum, REINDEX, and other processes omit security restricted operations, enabling privilege escalation."
       }
-    ]
+    ],
+    "risk_score": 77.7
   },
   {
     "asset_id": "ASSET-1011",
-    "asset_type": "Database Server",
-    "environment": "Production",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "asset_type": "Cloud VM",
+    "environment": "Development",
+    "criticality": "Low",
+    "ip_address": "181.171.222.72",
+    "domain": "asset-1011.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "containerd",
+      "version": "1.6.4"
+    },
     "open_ports": [
-      80,
-      3306
+      8080
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 31,
-    "last_scan_date": "2026-01-31",
+    "owner": {
+      "team": "Security Ops",
+      "email": "secops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-17",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-8760",
-        "severity": "Medium",
-        "cvss_score": 6.3,
+        "cve": "CVE-2022-23648",
+        "severity": "High",
+        "cvss_score": 7.5,
         "exploit_available": true,
         "patch_available": true,
-        "description": "Medium severity vulnerability detected"
+        "description": "containerd allows attackers to gain read access to arbitrary host files via specially crafted image configurations."
       }
-    ]
+    ],
+    "risk_score": 58.5
   },
   {
     "asset_id": "ASSET-1012",
-    "asset_type": "API Gateway",
-    "environment": "Staging",
-    "criticality": "Low",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "asset_type": "Cloud VM",
+    "environment": "Production",
+    "criticality": "High",
+    "ip_address": "53.29.69.231",
+    "domain": "asset-1012.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "CentOS",
+      "version": "7"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "containerd",
+      "version": "1.6.4"
+    },
     "open_ports": [
-      8080,
-      8443
+      9090,
+      22,
+      8080
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 94,
-    "last_scan_date": "2025-12-28",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-01",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-2603",
-        "severity": "Medium",
-        "cvss_score": 6.7,
+        "cve": "CVE-2022-23648",
+        "severity": "High",
+        "cvss_score": 7.5,
         "exploit_available": true,
         "patch_available": true,
-        "description": "Medium severity vulnerability detected"
+        "description": "containerd allows attackers to gain read access to arbitrary host files via specially crafted image configurations."
       }
-    ]
+    ],
+    "risk_score": 72.5
   },
   {
     "asset_id": "ASSET-1013",
     "asset_type": "Database Server",
-    "environment": "Production",
-    "criticality": "High",
-    "owner": {
-      "team": "DevOps",
-      "email": "team@company.com"
+    "environment": "Staging",
+    "criticality": "Medium",
+    "ip_address": "47.250.32.169",
+    "domain": "asset-1013.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "mysql",
+      "version": "8.0.32"
+    },
     "open_ports": [
+      1433,
       3306,
-      8443
+      5432
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 18,
-    "last_scan_date": "2026-01-31",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-03-04",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-1326",
-        "severity": "High",
-        "cvss_score": 7.3,
+        "cve": "CVE-2022-21595",
+        "severity": "Medium",
+        "cvss_score": 4.4,
         "exploit_available": false,
-        "patch_available": false,
-        "description": "High severity vulnerability detected"
+        "patch_available": true,
+        "description": "MySQL Server C API vulnerability allowing denial of service by a privileged attacker."
+      },
+      {
+        "cve": "CVE-2023-21980",
+        "severity": "High",
+        "cvss_score": 7.1,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Vulnerability in MySQL Server optimizer allowing unauthorized data access."
       }
-    ]
+    ],
+    "risk_score": 50.9
   },
   {
     "asset_id": "ASSET-1014",
-    "asset_type": "Database Server",
+    "asset_type": "API Gateway",
     "environment": "Production",
-    "criticality": "Low",
+    "criticality": "High",
+    "ip_address": "41.86.242.233",
+    "domain": "asset-1014.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
+    },
+    "software": {
+      "name": "nginx",
+      "version": "1.18.0"
+    },
+    "open_ports": [
+      80,
+      443
+    ],
     "owner": {
       "team": "Security Ops",
-      "email": "team@company.com"
+      "email": "secops@company.com",
+      "status": "assigned"
     },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      443,
-      8080
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 34,
-    "last_scan_date": "2025-12-25",
+    "last_scan_date": "2026-02-05",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-7901",
+        "cve": "CVE-2022-41741",
         "severity": "High",
-        "cvss_score": 9.7,
+        "cvss_score": 7.8,
         "exploit_available": true,
         "patch_available": true,
-        "description": "High severity vulnerability detected"
+        "description": "Memory corruption in ngx_http_mp4_module when processing specially crafted MP4 files."
+      },
+      {
+        "cve": "CVE-2023-44487",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "HTTP/2 Rapid Reset Attack enabling denial of service at scale."
       }
-    ]
+    ],
+    "risk_score": 91.2
   },
   {
     "asset_id": "ASSET-1015",
     "asset_type": "Web Server",
-    "environment": "Staging",
-    "criticality": "Low",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "environment": "Production",
+    "criticality": "Medium",
+    "ip_address": "92.38.27.221",
+    "domain": "asset-1015.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "nginx",
+      "version": "1.18.0"
+    },
     "open_ports": [
-      8080,
+      443,
+      80,
       8443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 13,
-    "last_scan_date": "2025-12-03",
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-14",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-1196",
-        "severity": "Critical",
-        "cvss_score": 7.0,
-        "exploit_available": false,
-        "patch_available": false,
-        "description": "Critical severity vulnerability detected"
+        "cve": "CVE-2022-41741",
+        "severity": "High",
+        "cvss_score": 7.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Memory corruption in ngx_http_mp4_module when processing specially crafted MP4 files."
+      },
+      {
+        "cve": "CVE-2023-44487",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "HTTP/2 Rapid Reset Attack enabling denial of service at scale."
       }
-    ]
+    ],
+    "risk_score": 83.2
   },
   {
     "asset_id": "ASSET-1016",
-    "asset_type": "Firewall",
+    "asset_type": "Database Server",
     "environment": "Development",
-    "criticality": "Medium",
-    "owner": {
-      "team": "DevOps",
-      "email": "team@company.com"
+    "criticality": "High",
+    "ip_address": "186.229.156.205",
+    "domain": "asset-1016.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "postgresql",
+      "version": "14.5"
+    },
     "open_ports": [
-      8443,
-      8080
+      3306
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 53,
-    "last_scan_date": "2026-01-31",
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-06",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-8441",
+        "cve": "CVE-2023-2454",
         "severity": "High",
-        "cvss_score": 7.8,
+        "cvss_score": 7.2,
         "exploit_available": false,
-        "patch_available": false,
-        "description": "High severity vulnerability detected"
+        "patch_available": true,
+        "description": "CREATE SCHEMA allows superusers to bypass security policies in pg_catalog."
+      },
+      {
+        "cve": "CVE-2022-1552",
+        "severity": "High",
+        "cvss_score": 8.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Autovacuum, REINDEX, and other processes omit security restricted operations, enabling privilege escalation."
       }
-    ]
+    ],
+    "risk_score": 77.7
   },
   {
     "asset_id": "ASSET-1017",
-    "asset_type": "Web Server",
-    "environment": "Production",
-    "criticality": "Medium",
+    "asset_type": "Database Server",
+    "environment": "Staging",
+    "criticality": "High",
+    "ip_address": "18.194.190.103",
+    "domain": "asset-1017.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Debian",
+      "version": "11"
+    },
+    "software": {
+      "name": "postgresql",
+      "version": "14.5"
+    },
+    "open_ports": [
+      1433,
+      3306,
+      27017
+    ],
     "owner": {
       "team": "Security Ops",
-      "email": "team@company.com"
+      "email": "secops@company.com",
+      "status": "assigned"
     },
-    "os": "Ubuntu 22.04",
-    "open_ports": [
-      443,
-      8080
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 44,
-    "last_scan_date": "2026-01-31",
+    "last_scan_date": "2025-12-19",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-2683",
+        "cve": "CVE-2022-1552",
         "severity": "High",
-        "cvss_score": 9.0,
-        "exploit_available": false,
+        "cvss_score": 8.8,
+        "exploit_available": true,
         "patch_available": true,
-        "description": "High severity vulnerability detected"
+        "description": "Autovacuum, REINDEX, and other processes omit security restricted operations, enabling privilege escalation."
       }
-    ]
+    ],
+    "risk_score": 77.7
   },
   {
     "asset_id": "ASSET-1018",
-    "asset_type": "Web Server",
+    "asset_type": "Database Server",
     "environment": "Development",
     "criticality": "High",
-    "owner": {
-      "team": "DevOps",
-      "email": "team@company.com"
+    "ip_address": "117.119.3.94",
+    "domain": "asset-1018.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "mysql",
+      "version": "8.0.32"
+    },
     "open_ports": [
+      1433,
       3306,
-      443
+      5432
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 59,
-    "last_scan_date": "2025-12-27",
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-12",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-7106",
-        "severity": "Low",
+        "cve": "CVE-2022-21595",
+        "severity": "Medium",
         "cvss_score": 4.4,
         "exploit_available": false,
         "patch_available": true,
-        "description": "Low severity vulnerability detected"
+        "description": "MySQL Server C API vulnerability allowing denial of service by a privileged attacker."
       }
-    ]
+    ],
+    "risk_score": 48.1
   },
   {
     "asset_id": "ASSET-1019",
-    "asset_type": "API Gateway",
+    "asset_type": "Firewall",
     "environment": "Production",
     "criticality": "Medium",
-    "owner": {
-      "team": "Cloud Engineering",
-      "email": "team@company.com"
+    "ip_address": "141.175.157.223",
+    "domain": "asset-1019.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "pf",
+      "version": "6.7"
+    },
     "open_ports": [
-      3306,
-      22
+      443,
+      22,
+      8443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 39,
-    "last_scan_date": "2026-02-09",
+    "owner": {
+      "team": "Security Ops",
+      "email": "secops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-24",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-7417",
-        "severity": "Critical",
-        "cvss_score": 4.9,
+        "cve": "CVE-2021-29629",
+        "severity": "High",
+        "cvss_score": 7.5,
         "exploit_available": false,
         "patch_available": false,
-        "description": "Critical severity vulnerability detected"
+        "description": "pf in FreeBSD allows denial of service via malformed ICMP or ICMPv6 packets."
       }
-    ]
+    ],
+    "risk_score": 70.0
   },
   {
     "asset_id": "ASSET-1020",
     "asset_type": "Cloud VM",
     "environment": "Staging",
     "criticality": "Medium",
-    "owner": {
-      "team": "Cloud Engineering",
-      "email": "team@company.com"
+    "ip_address": "127.105.155.217",
+    "domain": "asset-1020.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "containerd",
+      "version": "1.6.4"
+    },
     "open_ports": [
-      3306,
-      443
+      9090,
+      2222,
+      22
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 25,
-    "last_scan_date": "2025-12-19",
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-22",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-3942",
-        "severity": "Critical",
-        "cvss_score": 8.7,
-        "exploit_available": false,
-        "patch_available": false,
-        "description": "Critical severity vulnerability detected"
+        "cve": "CVE-2022-23648",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "containerd allows attackers to gain read access to arbitrary host files via specially crafted image configurations."
       }
-    ]
+    ],
+    "risk_score": 64.5
   },
   {
     "asset_id": "ASSET-1021",
-    "asset_type": "Web Server",
+    "asset_type": "Database Server",
     "environment": "Production",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "criticality": "High",
+    "ip_address": "33.49.86.185",
+    "domain": "asset-1021.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "mysql",
+      "version": "8.0.32"
+    },
     "open_ports": [
-      80,
-      22
+      27017,
+      5432,
+      3306
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 63,
-    "last_scan_date": "2025-12-12",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-04",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-8659",
-        "severity": "Low",
-        "cvss_score": 6.7,
+        "cve": "CVE-2022-21595",
+        "severity": "Medium",
+        "cvss_score": 4.4,
         "exploit_available": false,
         "patch_available": true,
-        "description": "Low severity vulnerability detected"
+        "description": "MySQL Server C API vulnerability allowing denial of service by a privileged attacker."
       }
-    ]
+    ],
+    "risk_score": 48.1
   },
   {
     "asset_id": "ASSET-1022",
-    "asset_type": "Web Server",
-    "environment": "Development",
+    "asset_type": "Firewall",
+    "environment": "Staging",
     "criticality": "High",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "ip_address": "151.24.185.54",
+    "domain": "asset-1022.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "iptables",
+      "version": "1.8.7"
+    },
     "open_ports": [
-      8443,
-      80
+      443,
+      22
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 93,
-    "last_scan_date": "2025-12-02",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-27",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-3831",
-        "severity": "Low",
-        "cvss_score": 4.8,
-        "exploit_available": true,
+        "cve": "CVE-2012-2663",
+        "severity": "Medium",
+        "cvss_score": 5.0,
+        "exploit_available": false,
         "patch_available": true,
-        "description": "Low severity vulnerability detected"
+        "description": "Incomplete blacklist allows traffic to bypass iptables rules via crafted packets."
       }
-    ]
+    ],
+    "risk_score": 68.0
   },
   {
     "asset_id": "ASSET-1023",
-    "asset_type": "Database Server",
-    "environment": "Production",
-    "criticality": "Low",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "asset_type": "API Gateway",
+    "environment": "Development",
+    "criticality": "Medium",
+    "ip_address": "172.182.101.84",
+    "domain": "asset-1023.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "kong",
+      "version": "3.2.0"
+    },
     "open_ports": [
       80,
-      22
+      8080,
+      8000
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 24,
-    "last_scan_date": "2026-02-08",
+    "owner": {
+      "team": "Security Ops",
+      "email": "secops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-29",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-2486",
-        "severity": "Low",
-        "cvss_score": 5.8,
+        "cve": "CVE-2022-35796",
+        "severity": "Critical",
+        "cvss_score": 9.0,
         "exploit_available": true,
         "patch_available": true,
-        "description": "Low severity vulnerability detected"
+        "description": "Elevation of privilege in Kong Gateway due to improper request handling."
       }
-    ]
+    ],
+    "risk_score": 88.0
   },
   {
     "asset_id": "ASSET-1024",
     "asset_type": "Cloud VM",
-    "environment": "Development",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "environment": "Staging",
+    "criticality": "High",
+    "ip_address": "24.163.8.49",
+    "domain": "asset-1024.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "docker",
+      "version": "24.0.5"
+    },
     "open_ports": [
-      80,
-      8080
+      2222,
+      8080,
+      22
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 37,
-    "last_scan_date": "2026-01-17",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-20",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-9377",
-        "severity": "Low",
-        "cvss_score": 5.3,
+        "cve": "CVE-2023-28840",
+        "severity": "High",
+        "cvss_score": 8.7,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Insufficient encryption of overlay network traffic in Docker Swarm mode."
+      },
+      {
+        "cve": "CVE-2022-0847",
+        "severity": "High",
+        "cvss_score": 7.8,
         "exploit_available": true,
-        "patch_available": false,
-        "description": "Low severity vulnerability detected"
+        "patch_available": true,
+        "description": "Dirty Pipe \u2014 Linux kernel flaw allowing overwrite of read-only files in container environments."
       }
-    ]
+    ],
+    "risk_score": 77.3
   },
   {
     "asset_id": "ASSET-1025",
     "asset_type": "Cloud VM",
-    "environment": "Production",
+    "environment": "Staging",
     "criticality": "High",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "ip_address": "71.97.246.68",
+    "domain": "asset-1025.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "containerd",
+      "version": "1.6.4"
+    },
     "open_ports": [
       22,
-      3306
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 75,
-    "last_scan_date": "2025-12-03",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-1240",
-        "severity": "Low",
-        "cvss_score": 7.5,
-        "exploit_available": true,
-        "patch_available": true,
-        "description": "Low severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1026",
-    "asset_type": "Cloud VM",
-    "environment": "Development",
-    "criticality": "Low",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
-    },
-    "os": "Ubuntu 22.04",
-    "open_ports": [
-      8443,
       8080
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 35,
-    "last_scan_date": "2025-12-07",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-5406",
-        "severity": "Medium",
-        "cvss_score": 9.4,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1027",
-    "asset_type": "Cloud VM",
-    "environment": "Development",
-    "criticality": "Medium",
     "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
     },
-    "os": "Ubuntu 22.04",
-    "open_ports": [
-      80,
-      3306
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 65,
-    "last_scan_date": "2026-01-26",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-5796",
-        "severity": "High",
-        "cvss_score": 5.0,
-        "exploit_available": false,
-        "patch_available": true,
-        "description": "High severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1028",
-    "asset_type": "Web Server",
-    "environment": "Production",
-    "criticality": "Low",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
-    },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      3306,
-      8443
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 18,
-    "last_scan_date": "2026-02-03",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-2100",
-        "severity": "Medium",
-        "cvss_score": 4.1,
-        "exploit_available": false,
-        "patch_available": true,
-        "description": "Medium severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1029",
-    "asset_type": "API Gateway",
-    "environment": "Development",
-    "criticality": "Medium",
-    "owner": {
-      "team": "DevOps",
-      "email": "team@company.com"
-    },
-    "os": "Ubuntu 22.04",
-    "open_ports": [
-      8443,
-      80
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 65,
     "last_scan_date": "2026-02-25",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-5186",
-        "severity": "Medium",
-        "cvss_score": 6.9,
+        "cve": "CVE-2022-23648",
+        "severity": "High",
+        "cvss_score": 7.5,
         "exploit_available": true,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "patch_available": true,
+        "description": "containerd allows attackers to gain read access to arbitrary host files via specially crafted image configurations."
       }
-    ]
+    ],
+    "risk_score": 72.5
   },
   {
-    "asset_id": "ASSET-1030",
-    "asset_type": "Database Server",
+    "asset_id": "ASSET-1026",
+    "asset_type": "Firewall",
     "environment": "Production",
     "criticality": "Low",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "ip_address": "145.13.179.63",
+    "domain": "asset-1026.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "pf",
+      "version": "6.7"
+    },
     "open_ports": [
-      80,
-      3306
+      22,
+      443,
+      8443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
+    "owner": {
+      "team": null,
+      "email": null,
+      "status": "orphan"
+    },
+    "last_scan_date": "2026-01-11",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2021-29629",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "pf in FreeBSD allows denial of service via malformed ICMP or ICMPv6 packets."
+      }
     ],
-    "risk_score": 80,
+    "risk_score": 64.0
+  },
+  {
+    "asset_id": "ASSET-1027",
+    "asset_type": "Database Server",
+    "environment": "Production",
+    "criticality": "High",
+    "ip_address": "132.34.222.77",
+    "domain": "asset-1027.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
+    },
+    "software": {
+      "name": "postgresql",
+      "version": "15.2"
+    },
+    "open_ports": [
+      1433
+    ],
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
     "last_scan_date": "2025-12-17",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-4080",
-        "severity": "Medium",
-        "cvss_score": 6.9,
-        "exploit_available": true,
-        "patch_available": true,
-        "description": "Medium severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1031",
-    "asset_type": "Cloud VM",
-    "environment": "Production",
-    "criticality": "High",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
-    },
-    "os": "Ubuntu 22.04",
-    "open_ports": [
-      8443,
-      8080
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 35,
-    "last_scan_date": "2026-01-28",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-7420",
-        "severity": "Low",
-        "cvss_score": 7.4,
-        "exploit_available": false,
-        "patch_available": false,
-        "description": "Low severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1032",
-    "asset_type": "Web Server",
-    "environment": "Staging",
-    "criticality": "High",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
-    },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      8443,
-      443
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 80,
-    "last_scan_date": "2026-02-23",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-4104",
-        "severity": "Medium",
-        "cvss_score": 8.2,
+        "cve": "CVE-2023-2454",
+        "severity": "High",
+        "cvss_score": 7.2,
         "exploit_available": false,
         "patch_available": true,
-        "description": "Medium severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1033",
-    "asset_type": "Web Server",
-    "environment": "Staging",
-    "criticality": "High",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
-    },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      3306,
-      443
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 81,
-    "last_scan_date": "2026-02-15",
-    "vulnerabilities": [
+        "description": "CREATE SCHEMA allows superusers to bypass security policies in pg_catalog."
+      },
       {
-        "cve": "CVE-2023-6481",
+        "cve": "CVE-2022-1552",
         "severity": "High",
-        "cvss_score": 7.4,
+        "cvss_score": 8.8,
         "exploit_available": true,
         "patch_available": true,
-        "description": "High severity vulnerability detected"
+        "description": "Autovacuum, REINDEX, and other processes omit security restricted operations, enabling privilege escalation."
       }
-    ]
+    ],
+    "risk_score": 77.7
   },
   {
-    "asset_id": "ASSET-1034",
-    "asset_type": "API Gateway",
-    "environment": "Development",
-    "criticality": "High",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
-    },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      8080,
-      8443
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 100,
-    "last_scan_date": "2026-02-19",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-2536",
-        "severity": "Medium",
-        "cvss_score": 6.4,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1035",
-    "asset_type": "API Gateway",
-    "environment": "Staging",
-    "criticality": "Low",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
-    },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      443,
-      8080
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 28,
-    "last_scan_date": "2026-02-04",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-1821",
-        "severity": "High",
-        "cvss_score": 6.0,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "High severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1036",
+    "asset_id": "ASSET-1028",
     "asset_type": "Firewall",
     "environment": "Development",
     "criticality": "Medium",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "ip_address": "118.141.246.75",
+    "domain": "asset-1028.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "iptables",
+      "version": "1.8.7"
+    },
     "open_ports": [
-      22,
-      443
+      443,
+      22
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 63,
-    "last_scan_date": "2025-12-29",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-03-02",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-2109",
-        "severity": "High",
-        "cvss_score": 7.6,
+        "cve": "CVE-2012-2663",
+        "severity": "Medium",
+        "cvss_score": 5.0,
         "exploit_available": false,
-        "patch_available": false,
-        "description": "High severity vulnerability detected"
+        "patch_available": true,
+        "description": "Incomplete blacklist allows traffic to bypass iptables rules via crafted packets."
       }
-    ]
+    ],
+    "risk_score": 60.0
   },
   {
-    "asset_id": "ASSET-1037",
+    "asset_id": "ASSET-1029",
     "asset_type": "Web Server",
     "environment": "Production",
     "criticality": "Low",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "ip_address": "135.75.246.83",
+    "domain": "asset-1029.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "CentOS",
+      "version": "7"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "apache2",
+      "version": "2.4.52"
+    },
     "open_ports": [
-      8080,
-      8443
+      8080
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 84,
-    "last_scan_date": "2026-01-16",
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-09",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-6786",
+        "cve": "CVE-2021-41773",
         "severity": "Critical",
-        "cvss_score": 5.3,
+        "cvss_score": 9.8,
         "exploit_available": true,
-        "patch_available": false,
-        "description": "Critical severity vulnerability detected"
+        "patch_available": true,
+        "description": "Path traversal and remote code execution in Apache HTTP Server 2.4.49."
+      },
+      {
+        "cve": "CVE-2022-31813",
+        "severity": "High",
+        "cvss_score": 9.8,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Apache HTTP Server may not send the X-Forwarded-* headers to the origin server, allowing authentication bypass."
       }
-    ]
+    ],
+    "risk_score": 85.2
+  },
+  {
+    "asset_id": "ASSET-1030",
+    "asset_type": "Firewall",
+    "environment": "Production",
+    "criticality": "Medium",
+    "ip_address": "109.235.57.138",
+    "domain": "asset-1030.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
+    },
+    "software": {
+      "name": "ufw",
+      "version": "0.36"
+    },
+    "open_ports": [
+      8443,
+      443,
+      22
+    ],
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-25",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2019-7113",
+        "severity": "Low",
+        "cvss_score": 3.1,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "UFW before 0.36 allows local users to bypass firewall rules due to IPv6 misconfiguration."
+      }
+    ],
+    "risk_score": 52.4
+  },
+  {
+    "asset_id": "ASSET-1031",
+    "asset_type": "Web Server",
+    "environment": "Production",
+    "criticality": "Medium",
+    "ip_address": "70.83.79.54",
+    "domain": "asset-1031.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
+    },
+    "software": {
+      "name": "nginx",
+      "version": "1.18.0"
+    },
+    "open_ports": [
+      8443,
+      443
+    ],
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-19",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2021-23017",
+        "severity": "Critical",
+        "cvss_score": 9.4,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Off-by-one error in ngx_resolver allowing remote code execution via crafted DNS response."
+      },
+      {
+        "cve": "CVE-2023-44487",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "HTTP/2 Rapid Reset Attack enabling denial of service at scale."
+      }
+    ],
+    "risk_score": 89.6
+  },
+  {
+    "asset_id": "ASSET-1032",
+    "asset_type": "API Gateway",
+    "environment": "Production",
+    "criticality": "Low",
+    "ip_address": "128.181.237.226",
+    "domain": "asset-1032.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
+    },
+    "software": {
+      "name": "kong",
+      "version": "3.2.0"
+    },
+    "open_ports": [
+      443,
+      8000,
+      80
+    ],
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-03-01",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2022-35796",
+        "severity": "Critical",
+        "cvss_score": 9.0,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Elevation of privilege in Kong Gateway due to improper request handling."
+      }
+    ],
+    "risk_score": 82.0
+  },
+  {
+    "asset_id": "ASSET-1033",
+    "asset_type": "Database Server",
+    "environment": "Production",
+    "criticality": "High",
+    "ip_address": "112.236.228.244",
+    "domain": "asset-1033.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
+    },
+    "software": {
+      "name": "mysql",
+      "version": "8.0.32"
+    },
+    "open_ports": [
+      5432,
+      1433,
+      3306
+    ],
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-19",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-21980",
+        "severity": "High",
+        "cvss_score": 7.1,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Vulnerability in MySQL Server optimizer allowing unauthorized data access."
+      }
+    ],
+    "risk_score": 58.9
+  },
+  {
+    "asset_id": "ASSET-1034",
+    "asset_type": "Firewall",
+    "environment": "Development",
+    "criticality": "Medium",
+    "ip_address": "126.254.194.38",
+    "domain": "asset-1034.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Debian",
+      "version": "11"
+    },
+    "software": {
+      "name": "ufw",
+      "version": "0.36"
+    },
+    "open_ports": [
+      22,
+      443,
+      8443
+    ],
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-30",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2019-7113",
+        "severity": "Low",
+        "cvss_score": 3.1,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "UFW before 0.36 allows local users to bypass firewall rules due to IPv6 misconfiguration."
+      }
+    ],
+    "risk_score": 34.9
+  },
+  {
+    "asset_id": "ASSET-1035",
+    "asset_type": "Cloud VM",
+    "environment": "Staging",
+    "criticality": "Low",
+    "ip_address": "93.79.144.103",
+    "domain": "asset-1035.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
+    },
+    "software": {
+      "name": "containerd",
+      "version": "1.6.4"
+    },
+    "open_ports": [
+      22,
+      9090,
+      8080
+    ],
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-01",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2022-23648",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "containerd allows attackers to gain read access to arbitrary host files via specially crafted image configurations."
+      }
+    ],
+    "risk_score": 58.5
+  },
+  {
+    "asset_id": "ASSET-1036",
+    "asset_type": "Database Server",
+    "environment": "Production",
+    "criticality": "Medium",
+    "ip_address": "103.136.54.180",
+    "domain": "asset-1036.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
+    },
+    "software": {
+      "name": "postgresql",
+      "version": "14.5"
+    },
+    "open_ports": [
+      27017
+    ],
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-17",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-2454",
+        "severity": "High",
+        "cvss_score": 7.2,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "CREATE SCHEMA allows superusers to bypass security policies in pg_catalog."
+      }
+    ],
+    "risk_score": 51.3
+  },
+  {
+    "asset_id": "ASSET-1037",
+    "asset_type": "API Gateway",
+    "environment": "Development",
+    "criticality": "High",
+    "ip_address": "189.190.22.154",
+    "domain": "asset-1037.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "CentOS",
+      "version": "7"
+    },
+    "software": {
+      "name": "nginx",
+      "version": "1.18.0"
+    },
+    "open_ports": [
+      80,
+      443
+    ],
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-10",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2021-23017",
+        "severity": "Critical",
+        "cvss_score": 9.4,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Off-by-one error in ngx_resolver allowing remote code execution via crafted DNS response."
+      },
+      {
+        "cve": "CVE-2022-41741",
+        "severity": "High",
+        "cvss_score": 7.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Memory corruption in ngx_http_mp4_module when processing specially crafted MP4 files."
+      }
+    ],
+    "risk_score": 97.6
   },
   {
     "asset_id": "ASSET-1038",
-    "asset_type": "API Gateway",
-    "environment": "Staging",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "asset_type": "Database Server",
+    "environment": "Development",
+    "criticality": "Low",
+    "ip_address": "63.181.172.234",
+    "domain": "asset-1038.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "mysql",
+      "version": "8.0.32"
+    },
     "open_ports": [
-      8080,
-      3306
+      5432,
+      27017,
+      1433
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 11,
-    "last_scan_date": "2025-12-24",
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-26",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-6183",
-        "severity": "Medium",
-        "cvss_score": 4.6,
-        "exploit_available": true,
+        "cve": "CVE-2023-21980",
+        "severity": "High",
+        "cvss_score": 7.1,
+        "exploit_available": false,
         "patch_available": true,
-        "description": "Medium severity vulnerability detected"
+        "description": "Vulnerability in MySQL Server optimizer allowing unauthorized data access."
+      },
+      {
+        "cve": "CVE-2022-21595",
+        "severity": "Medium",
+        "cvss_score": 4.4,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "MySQL Server C API vulnerability allowing denial of service by a privileged attacker."
       }
-    ]
+    ],
+    "risk_score": 44.9
   },
   {
     "asset_id": "ASSET-1039",
     "asset_type": "Firewall",
     "environment": "Development",
     "criticality": "High",
+    "ip_address": "110.230.90.133",
+    "domain": "asset-1039.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Debian",
+      "version": "11"
+    },
+    "software": {
+      "name": "iptables",
+      "version": "1.8.7"
+    },
+    "open_ports": [
+      443
+    ],
     "owner": {
       "team": "Security Ops",
-      "email": "team@company.com"
+      "email": "secops@company.com",
+      "status": "assigned"
     },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      443,
-      3306
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 100,
-    "last_scan_date": "2026-01-04",
+    "last_scan_date": "2026-02-03",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-2344",
-        "severity": "High",
-        "cvss_score": 4.0,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "High severity vulnerability detected"
+        "cve": "CVE-2012-2663",
+        "severity": "Medium",
+        "cvss_score": 5.0,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Incomplete blacklist allows traffic to bypass iptables rules via crafted packets."
       }
-    ]
+    ],
+    "risk_score": 50.5
   },
   {
     "asset_id": "ASSET-1040",
-    "asset_type": "Cloud VM",
-    "environment": "Production",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Cloud Engineering",
-      "email": "team@company.com"
+    "asset_type": "Web Server",
+    "environment": "Development",
+    "criticality": "Low",
+    "ip_address": "37.82.135.111",
+    "domain": "asset-1040.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "apache2",
+      "version": "2.4.57"
+    },
     "open_ports": [
-      22,
-      443
+      8080
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 12,
-    "last_scan_date": "2026-01-21",
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-04",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-2823",
-        "severity": "Low",
-        "cvss_score": 6.4,
+        "cve": "CVE-2021-41773",
+        "severity": "Critical",
+        "cvss_score": 9.8,
         "exploit_available": true,
-        "patch_available": false,
-        "description": "Low severity vulnerability detected"
+        "patch_available": true,
+        "description": "Path traversal and remote code execution in Apache HTTP Server 2.4.49."
+      },
+      {
+        "cve": "CVE-2022-31813",
+        "severity": "High",
+        "cvss_score": 9.8,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Apache HTTP Server may not send the X-Forwarded-* headers to the origin server, allowing authentication bypass."
       }
-    ]
+    ],
+    "risk_score": 67.7
   },
   {
     "asset_id": "ASSET-1041",
-    "asset_type": "Firewall",
-    "environment": "Staging",
-    "criticality": "High",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "asset_type": "Database Server",
+    "environment": "Production",
+    "criticality": "Medium",
+    "ip_address": "185.37.228.189",
+    "domain": "asset-1041.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "CentOS",
+      "version": "7"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "mysql",
+      "version": "8.0.28"
+    },
     "open_ports": [
-      8080,
-      22
+      27017,
+      3306,
+      5432
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 22,
-    "last_scan_date": "2026-01-01",
+    "owner": {
+      "team": "Security Ops",
+      "email": "secops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-12",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-2890",
-        "severity": "Critical",
-        "cvss_score": 4.5,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "Critical severity vulnerability detected"
+        "cve": "CVE-2023-21980",
+        "severity": "High",
+        "cvss_score": 7.1,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Vulnerability in MySQL Server optimizer allowing unauthorized data access."
+      },
+      {
+        "cve": "CVE-2022-21595",
+        "severity": "Medium",
+        "cvss_score": 4.4,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "MySQL Server C API vulnerability allowing denial of service by a privileged attacker."
       }
-    ]
+    ],
+    "risk_score": 50.9
   },
   {
     "asset_id": "ASSET-1042",
-    "asset_type": "API Gateway",
-    "environment": "Development",
+    "asset_type": "Web Server",
+    "environment": "Staging",
     "criticality": "Medium",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "ip_address": "75.148.7.216",
+    "domain": "asset-1042.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "apache2",
+      "version": "2.4.57"
+    },
     "open_ports": [
       8443,
-      80
+      8080
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 90,
-    "last_scan_date": "2026-02-22",
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-03",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-5048",
-        "severity": "Medium",
-        "cvss_score": 9.1,
+        "cve": "CVE-2022-31813",
+        "severity": "High",
+        "cvss_score": 9.8,
         "exploit_available": false,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "patch_available": true,
+        "description": "Apache HTTP Server may not send the X-Forwarded-* headers to the origin server, allowing authentication bypass."
       }
-    ]
+    ],
+    "risk_score": 61.7
   },
   {
     "asset_id": "ASSET-1043",
-    "asset_type": "API Gateway",
-    "environment": "Staging",
-    "criticality": "High",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "asset_type": "Firewall",
+    "environment": "Production",
+    "criticality": "Medium",
+    "ip_address": "104.125.93.171",
+    "domain": "asset-1043.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "iptables",
+      "version": "1.8.7"
+    },
     "open_ports": [
-      80,
-      8080
+      443,
+      8443,
+      22
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 53,
-    "last_scan_date": "2026-01-07",
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-12",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-9880",
-        "severity": "Low",
-        "cvss_score": 9.3,
+        "cve": "CVE-2012-2663",
+        "severity": "Medium",
+        "cvss_score": 5.0,
         "exploit_available": false,
-        "patch_available": false,
-        "description": "Low severity vulnerability detected"
+        "patch_available": true,
+        "description": "Incomplete blacklist allows traffic to bypass iptables rules via crafted packets."
       }
-    ]
+    ],
+    "risk_score": 60.0
   },
   {
     "asset_id": "ASSET-1044",
-    "asset_type": "Web Server",
+    "asset_type": "API Gateway",
     "environment": "Development",
-    "criticality": "High",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "criticality": "Medium",
+    "ip_address": "141.207.101.131",
+    "domain": "asset-1044.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "CentOS",
+      "version": "7"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "kong",
+      "version": "3.2.0"
+    },
     "open_ports": [
       80,
-      8080
+      8000,
+      443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 45,
-    "last_scan_date": "2026-02-01",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-18",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-1834",
-        "severity": "High",
-        "cvss_score": 4.3,
-        "exploit_available": false,
-        "patch_available": false,
-        "description": "High severity vulnerability detected"
+        "cve": "CVE-2022-35796",
+        "severity": "Critical",
+        "cvss_score": 9.0,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Elevation of privilege in Kong Gateway due to improper request handling."
       }
-    ]
+    ],
+    "risk_score": 70.5
   },
   {
     "asset_id": "ASSET-1045",
     "asset_type": "Database Server",
     "environment": "Staging",
-    "criticality": "High",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "criticality": "Medium",
+    "ip_address": "145.248.108.60",
+    "domain": "asset-1045.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "postgresql",
+      "version": "15.2"
+    },
     "open_ports": [
-      443,
-      22
+      5432,
+      27017,
+      3306
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 83,
-    "last_scan_date": "2025-12-24",
+    "owner": {
+      "team": "Security Ops",
+      "email": "secops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-15",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-4327",
+        "cve": "CVE-2023-2454",
         "severity": "High",
-        "cvss_score": 8.5,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "High severity vulnerability detected"
+        "cvss_score": 7.2,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "CREATE SCHEMA allows superusers to bypass security policies in pg_catalog."
       }
-    ]
+    ],
+    "risk_score": 51.3
   },
   {
     "asset_id": "ASSET-1046",
-    "asset_type": "Database Server",
-    "environment": "Development",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Cloud Engineering",
-      "email": "team@company.com"
+    "asset_type": "Web Server",
+    "environment": "Production",
+    "criticality": "Low",
+    "ip_address": "156.218.227.52",
+    "domain": "asset-1046.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "nginx",
+      "version": "1.24.0"
+    },
     "open_ports": [
-      3306,
       8080
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 83,
-    "last_scan_date": "2025-12-07",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-21",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-2845",
-        "severity": "Medium",
-        "cvss_score": 9.3,
-        "exploit_available": false,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "cve": "CVE-2022-41741",
+        "severity": "High",
+        "cvss_score": 7.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Memory corruption in ngx_http_mp4_module when processing specially crafted MP4 files."
+      },
+      {
+        "cve": "CVE-2023-44487",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "HTTP/2 Rapid Reset Attack enabling denial of service at scale."
       }
-    ]
+    ],
+    "risk_score": 77.2
   },
   {
     "asset_id": "ASSET-1047",
-    "asset_type": "Cloud VM",
-    "environment": "Staging",
+    "asset_type": "API Gateway",
+    "environment": "Development",
     "criticality": "High",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "ip_address": "111.33.3.151",
+    "domain": "asset-1047.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "envoy",
+      "version": "1.25.0"
+    },
     "open_ports": [
       80,
+      8000,
       8080
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 30,
-    "last_scan_date": "2025-12-22",
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-24",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-9477",
-        "severity": "Low",
-        "cvss_score": 9.0,
+        "cve": "CVE-2023-35943",
+        "severity": "High",
+        "cvss_score": 8.3,
         "exploit_available": false,
-        "patch_available": false,
-        "description": "Low severity vulnerability detected"
+        "patch_available": true,
+        "description": "CORS filter segfault on wildcard origins with empty request origins, enabling denial of service."
       }
-    ]
+    ],
+    "risk_score": 63.7
   },
   {
     "asset_id": "ASSET-1048",
-    "asset_type": "Web Server",
+    "asset_type": "Cloud VM",
     "environment": "Staging",
-    "criticality": "Low",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "criticality": "High",
+    "ip_address": "38.58.130.94",
+    "domain": "asset-1048.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "docker",
+      "version": "24.0.5"
+    },
     "open_ports": [
-      22,
-      8443
+      8080,
+      2222,
+      22
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 34,
-    "last_scan_date": "2026-02-19",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-22",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-8575",
-        "severity": "Low",
-        "cvss_score": 9.5,
-        "exploit_available": true,
+        "cve": "CVE-2023-28840",
+        "severity": "High",
+        "cvss_score": 8.7,
+        "exploit_available": false,
         "patch_available": true,
-        "description": "Low severity vulnerability detected"
+        "description": "Insufficient encryption of overlay network traffic in Docker Swarm mode."
       }
-    ]
+    ],
+    "risk_score": 65.3
   },
   {
     "asset_id": "ASSET-1049",
-    "asset_type": "Cloud VM",
+    "asset_type": "API Gateway",
     "environment": "Staging",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "criticality": "Low",
+    "ip_address": "25.68.218.145",
+    "domain": "asset-1049.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "kong",
+      "version": "3.2.0"
+    },
     "open_ports": [
-      22,
-      80
+      8080
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 17,
-    "last_scan_date": "2026-02-12",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-28",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-7850",
-        "severity": "High",
-        "cvss_score": 6.8,
-        "exploit_available": false,
+        "cve": "CVE-2022-35796",
+        "severity": "Critical",
+        "cvss_score": 9.0,
+        "exploit_available": true,
         "patch_available": true,
-        "description": "High severity vulnerability detected"
+        "description": "Elevation of privilege in Kong Gateway due to improper request handling."
       }
-    ]
+    ],
+    "risk_score": 64.5
   },
   {
     "asset_id": "ASSET-1050",
-    "asset_type": "Firewall",
+    "asset_type": "Cloud VM",
     "environment": "Staging",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Cloud Engineering",
-      "email": "team@company.com"
+    "criticality": "Low",
+    "ip_address": "136.152.13.241",
+    "domain": "asset-1050.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "containerd",
+      "version": "1.6.4"
+    },
     "open_ports": [
-      3306,
-      22
+      22,
+      8080
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 23,
-    "last_scan_date": "2026-01-09",
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-21",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-1784",
+        "cve": "CVE-2022-23648",
         "severity": "High",
-        "cvss_score": 6.8,
-        "exploit_available": false,
-        "patch_available": false,
-        "description": "High severity vulnerability detected"
+        "cvss_score": 7.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "containerd allows attackers to gain read access to arbitrary host files via specially crafted image configurations."
       }
-    ]
+    ],
+    "risk_score": 58.5
   },
   {
     "asset_id": "ASSET-1051",
     "asset_type": "Cloud VM",
-    "environment": "Staging",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "environment": "Production",
+    "criticality": "High",
+    "ip_address": "34.237.181.95",
+    "domain": "asset-1051.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "containerd",
+      "version": "1.6.4"
+    },
     "open_ports": [
-      443,
-      22
+      8080,
+      9090,
+      2222
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 58,
-    "last_scan_date": "2026-01-20",
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-06",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-7288",
-        "severity": "Low",
-        "cvss_score": 7.6,
+        "cve": "CVE-2022-23648",
+        "severity": "High",
+        "cvss_score": 7.5,
         "exploit_available": true,
-        "patch_available": false,
-        "description": "Low severity vulnerability detected"
+        "patch_available": true,
+        "description": "containerd allows attackers to gain read access to arbitrary host files via specially crafted image configurations."
       }
-    ]
+    ],
+    "risk_score": 72.5
   },
   {
     "asset_id": "ASSET-1052",
-    "asset_type": "Web Server",
-    "environment": "Development",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "asset_type": "Database Server",
+    "environment": "Production",
+    "criticality": "Low",
+    "ip_address": "63.180.115.23",
+    "domain": "asset-1052.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "postgresql",
+      "version": "14.5"
+    },
     "open_ports": [
-      8080,
-      443
+      1433
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 36,
-    "last_scan_date": "2026-01-31",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-22",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-2252",
-        "severity": "Medium",
-        "cvss_score": 8.1,
+        "cve": "CVE-2023-2454",
+        "severity": "High",
+        "cvss_score": 7.2,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "CREATE SCHEMA allows superusers to bypass security policies in pg_catalog."
+      },
+      {
+        "cve": "CVE-2022-1552",
+        "severity": "High",
+        "cvss_score": 8.8,
         "exploit_available": true,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "patch_available": true,
+        "description": "Autovacuum, REINDEX, and other processes omit security restricted operations, enabling privilege escalation."
       }
-    ]
+    ],
+    "risk_score": 63.7
   },
   {
     "asset_id": "ASSET-1053",
-    "asset_type": "Cloud VM",
-    "environment": "Staging",
+    "asset_type": "API Gateway",
+    "environment": "Production",
     "criticality": "Low",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "ip_address": "145.113.181.180",
+    "domain": "asset-1053.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "envoy",
+      "version": "1.25.0"
+    },
     "open_ports": [
       443,
-      8080
+      8080,
+      8000
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 22,
-    "last_scan_date": "2026-02-20",
+    "owner": {
+      "team": "Security Ops",
+      "email": "secops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-29",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-8979",
-        "severity": "Low",
-        "cvss_score": 5.2,
+        "cve": "CVE-2023-35943",
+        "severity": "High",
+        "cvss_score": 8.3,
         "exploit_available": false,
         "patch_available": true,
-        "description": "Low severity vulnerability detected"
+        "description": "CORS filter segfault on wildcard origins with empty request origins, enabling denial of service."
       }
-    ]
+    ],
+    "risk_score": 67.2
   },
   {
     "asset_id": "ASSET-1054",
-    "asset_type": "Database Server",
-    "environment": "Production",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "asset_type": "API Gateway",
+    "environment": "Development",
+    "criticality": "Low",
+    "ip_address": "73.88.112.31",
+    "domain": "asset-1054.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "CentOS",
+      "version": "7"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "nginx",
+      "version": "1.18.0"
+    },
     "open_ports": [
-      8080,
-      80
+      8000,
+      443,
+      8080
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 13,
-    "last_scan_date": "2026-02-21",
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-11",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-6531",
-        "severity": "Low",
-        "cvss_score": 7.7,
-        "exploit_available": false,
-        "patch_available": false,
-        "description": "Low severity vulnerability detected"
+        "cve": "CVE-2023-44487",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "HTTP/2 Rapid Reset Attack enabling denial of service at scale."
+      },
+      {
+        "cve": "CVE-2022-41741",
+        "severity": "High",
+        "cvss_score": 7.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Memory corruption in ngx_http_mp4_module when processing specially crafted MP4 files."
       }
-    ]
+    ],
+    "risk_score": 59.7
   },
   {
     "asset_id": "ASSET-1055",
-    "asset_type": "Web Server",
-    "environment": "Development",
+    "asset_type": "Firewall",
+    "environment": "Production",
     "criticality": "High",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "ip_address": "150.188.214.97",
+    "domain": "asset-1055.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "ufw",
+      "version": "0.36"
+    },
     "open_ports": [
-      443,
-      8443
+      443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 53,
-    "last_scan_date": "2026-02-11",
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-30",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-3321",
-        "severity": "Medium",
-        "cvss_score": 9.5,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "cve": "CVE-2019-7113",
+        "severity": "Low",
+        "cvss_score": 3.1,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "UFW before 0.36 allows local users to bypass firewall rules due to IPv6 misconfiguration."
       }
-    ]
+    ],
+    "risk_score": 60.4
   },
   {
     "asset_id": "ASSET-1056",
-    "asset_type": "Cloud VM",
-    "environment": "Development",
-    "criticality": "High",
+    "asset_type": "Web Server",
+    "environment": "Staging",
+    "criticality": "Low",
+    "ip_address": "145.6.141.171",
+    "domain": "asset-1056.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
+    },
+    "software": {
+      "name": "apache2",
+      "version": "2.4.57"
+    },
+    "open_ports": [
+      8080
+    ],
     "owner": {
       "team": "Platform Team",
-      "email": "team@company.com"
+      "email": "platform@company.com",
+      "status": "assigned"
     },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      443,
-      8443
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 84,
-    "last_scan_date": "2026-01-30",
+    "last_scan_date": "2026-03-10",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-8761",
+        "cve": "CVE-2022-31813",
         "severity": "High",
-        "cvss_score": 6.1,
+        "cvss_score": 9.8,
         "exploit_available": false,
-        "patch_available": false,
-        "description": "High severity vulnerability detected"
+        "patch_available": true,
+        "description": "Apache HTTP Server may not send the X-Forwarded-* headers to the origin server, allowing authentication bypass."
       }
-    ]
+    ],
+    "risk_score": 73.2
   },
   {
     "asset_id": "ASSET-1057",
     "asset_type": "API Gateway",
     "environment": "Production",
     "criticality": "High",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "ip_address": "53.102.95.211",
+    "domain": "asset-1057.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "nginx",
+      "version": "1.18.0"
+    },
     "open_ports": [
-      3306,
-      8443
+      443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 84,
-    "last_scan_date": "2026-02-07",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-03-08",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-3569",
-        "severity": "Medium",
-        "cvss_score": 8.6,
+        "cve": "CVE-2023-44487",
+        "severity": "High",
+        "cvss_score": 7.5,
         "exploit_available": true,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "patch_available": true,
+        "description": "HTTP/2 Rapid Reset Attack enabling denial of service at scale."
+      },
+      {
+        "cve": "CVE-2022-41741",
+        "severity": "High",
+        "cvss_score": 7.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Memory corruption in ngx_http_mp4_module when processing specially crafted MP4 files."
       }
-    ]
+    ],
+    "risk_score": 91.2
   },
   {
     "asset_id": "ASSET-1058",
-    "asset_type": "API Gateway",
+    "asset_type": "Web Server",
     "environment": "Development",
-    "criticality": "Low",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "criticality": "Medium",
+    "ip_address": "79.254.154.205",
+    "domain": "asset-1058.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "apache2",
+      "version": "2.4.52"
+    },
     "open_ports": [
-      80,
-      443
+      8080,
+      8443,
+      80
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 12,
-    "last_scan_date": "2026-01-25",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-16",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-8631",
-        "severity": "Medium",
+        "cve": "CVE-2022-31813",
+        "severity": "High",
         "cvss_score": 9.8,
         "exploit_available": false,
         "patch_available": true,
-        "description": "Medium severity vulnerability detected"
+        "description": "Apache HTTP Server may not send the X-Forwarded-* headers to the origin server, allowing authentication bypass."
       }
-    ]
+    ],
+    "risk_score": 79.2
   },
   {
     "asset_id": "ASSET-1059",
-    "asset_type": "Firewall",
+    "asset_type": "Web Server",
     "environment": "Staging",
-    "criticality": "High",
+    "criticality": "Low",
+    "ip_address": "187.159.80.220",
+    "domain": "asset-1059.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
+    },
+    "software": {
+      "name": "apache2",
+      "version": "2.4.52"
+    },
+    "open_ports": [
+      8080,
+      8443,
+      80
+    ],
     "owner": {
       "team": "Cloud Engineering",
-      "email": "team@company.com"
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
     },
-    "os": "Ubuntu 22.04",
-    "open_ports": [
-      3306,
-      443
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 46,
-    "last_scan_date": "2026-02-04",
+    "last_scan_date": "2026-01-28",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-7505",
-        "severity": "Medium",
-        "cvss_score": 4.6,
+        "cve": "CVE-2022-31813",
+        "severity": "High",
+        "cvss_score": 9.8,
         "exploit_available": false,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "patch_available": true,
+        "description": "Apache HTTP Server may not send the X-Forwarded-* headers to the origin server, allowing authentication bypass."
       }
-    ]
+    ],
+    "risk_score": 55.7
   },
   {
     "asset_id": "ASSET-1060",
-    "asset_type": "API Gateway",
+    "asset_type": "Web Server",
     "environment": "Development",
-    "criticality": "High",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "criticality": "Low",
+    "ip_address": "59.139.31.31",
+    "domain": "asset-1060.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "nginx",
+      "version": "1.24.0"
+    },
     "open_ports": [
-      8080,
-      22
+      8443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 27,
-    "last_scan_date": "2026-01-16",
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-21",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-3355",
+        "cve": "CVE-2021-23017",
+        "severity": "Critical",
+        "cvss_score": 9.4,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Off-by-one error in ngx_resolver allowing remote code execution via crafted DNS response."
+      },
+      {
+        "cve": "CVE-2022-41741",
         "severity": "High",
-        "cvss_score": 7.6,
-        "exploit_available": false,
-        "patch_available": false,
-        "description": "High severity vulnerability detected"
+        "cvss_score": 7.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Memory corruption in ngx_http_mp4_module when processing specially crafted MP4 files."
       }
-    ]
+    ],
+    "risk_score": 83.6
   },
   {
     "asset_id": "ASSET-1061",
-    "asset_type": "Firewall",
-    "environment": "Staging",
-    "criticality": "Low",
+    "asset_type": "Cloud VM",
+    "environment": "Production",
+    "criticality": "Medium",
+    "ip_address": "90.4.35.194",
+    "domain": "asset-1061.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
+    },
+    "software": {
+      "name": "docker",
+      "version": "20.10.7"
+    },
+    "open_ports": [
+      8080,
+      9090
+    ],
     "owner": {
       "team": "DevOps",
-      "email": "team@company.com"
+      "email": "devops@company.com",
+      "status": "assigned"
     },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      3306,
-      443
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 25,
-    "last_scan_date": "2026-01-29",
+    "last_scan_date": "2026-01-21",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-5924",
-        "severity": "Medium",
-        "cvss_score": 6.2,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "cve": "CVE-2023-28840",
+        "severity": "High",
+        "cvss_score": 8.7,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Insufficient encryption of overlay network traffic in Docker Swarm mode."
       }
-    ]
+    ],
+    "risk_score": 57.3
   },
   {
     "asset_id": "ASSET-1062",
-    "asset_type": "Firewall",
-    "environment": "Staging",
+    "asset_type": "Database Server",
+    "environment": "Production",
     "criticality": "Medium",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "ip_address": "20.148.77.41",
+    "domain": "asset-1062.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "postgresql",
+      "version": "14.5"
+    },
     "open_ports": [
-      443,
-      8443
+      27017,
+      5432
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 69,
-    "last_scan_date": "2026-02-03",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-22",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-1126",
-        "severity": "Critical",
-        "cvss_score": 9.7,
+        "cve": "CVE-2022-1552",
+        "severity": "High",
+        "cvss_score": 8.8,
         "exploit_available": true,
-        "patch_available": false,
-        "description": "Critical severity vulnerability detected"
+        "patch_available": true,
+        "description": "Autovacuum, REINDEX, and other processes omit security restricted operations, enabling privilege escalation."
+      },
+      {
+        "cve": "CVE-2023-2454",
+        "severity": "High",
+        "cvss_score": 7.2,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "CREATE SCHEMA allows superusers to bypass security policies in pg_catalog."
       }
-    ]
+    ],
+    "risk_score": 69.7
   },
   {
     "asset_id": "ASSET-1063",
     "asset_type": "Cloud VM",
     "environment": "Staging",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "criticality": "High",
+    "ip_address": "142.181.120.95",
+    "domain": "asset-1063.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "CentOS",
+      "version": "7"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "containerd",
+      "version": "1.6.4"
+    },
+    "open_ports": [
+      8080,
+      22,
+      9090
+    ],
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-11",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2022-23648",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "containerd allows attackers to gain read access to arbitrary host files via specially crafted image configurations."
+      }
+    ],
+    "risk_score": 72.5
+  },
+  {
+    "asset_id": "ASSET-1064",
+    "asset_type": "Firewall",
+    "environment": "Production",
+    "criticality": "High",
+    "ip_address": "176.132.230.22",
+    "domain": "asset-1064.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
+    },
+    "software": {
+      "name": "iptables",
+      "version": "1.8.7"
+    },
     "open_ports": [
       8443,
       22
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 27,
-    "last_scan_date": "2026-02-27",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-7494",
-        "severity": "High",
-        "cvss_score": 6.7,
-        "exploit_available": false,
-        "patch_available": false,
-        "description": "High severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1064",
-    "asset_type": "API Gateway",
-    "environment": "Production",
-    "criticality": "Low",
     "owner": {
       "team": "DevOps",
-      "email": "team@company.com"
+      "email": "devops@company.com",
+      "status": "assigned"
     },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      443,
-      3306
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 68,
-    "last_scan_date": "2025-12-22",
+    "last_scan_date": "2026-01-25",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-5568",
-        "severity": "High",
-        "cvss_score": 4.3,
+        "cve": "CVE-2012-2663",
+        "severity": "Medium",
+        "cvss_score": 5.0,
         "exploit_available": false,
         "patch_available": true,
-        "description": "High severity vulnerability detected"
+        "description": "Incomplete blacklist allows traffic to bypass iptables rules via crafted packets."
       }
-    ]
+    ],
+    "risk_score": 68.0
   },
   {
     "asset_id": "ASSET-1065",
     "asset_type": "Database Server",
     "environment": "Staging",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "criticality": "High",
+    "ip_address": "49.30.3.18",
+    "domain": "asset-1065.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "mysql",
+      "version": "8.0.28"
+    },
     "open_ports": [
-      80,
-      22
+      5432,
+      1433
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 30,
-    "last_scan_date": "2026-02-20",
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-15",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-5138",
-        "severity": "Critical",
-        "cvss_score": 5.8,
+        "cve": "CVE-2023-21980",
+        "severity": "High",
+        "cvss_score": 7.1,
         "exploit_available": false,
         "patch_available": true,
-        "description": "Critical severity vulnerability detected"
+        "description": "Vulnerability in MySQL Server optimizer allowing unauthorized data access."
       }
-    ]
+    ],
+    "risk_score": 58.9
   },
   {
     "asset_id": "ASSET-1066",
-    "asset_type": "Database Server",
+    "asset_type": "API Gateway",
     "environment": "Staging",
     "criticality": "Medium",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "ip_address": "58.221.142.141",
+    "domain": "asset-1066.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "nginx",
+      "version": "1.18.0"
+    },
     "open_ports": [
-      80,
-      8443
+      8000,
+      443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 72,
-    "last_scan_date": "2025-12-01",
+    "owner": {
+      "team": "Security Ops",
+      "email": "secops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-04",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-2715",
-        "severity": "Medium",
-        "cvss_score": 8.1,
-        "exploit_available": false,
+        "cve": "CVE-2023-44487",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": true,
         "patch_available": true,
-        "description": "Medium severity vulnerability detected"
+        "description": "HTTP/2 Rapid Reset Attack enabling denial of service at scale."
       }
-    ]
+    ],
+    "risk_score": 82.0
   },
   {
     "asset_id": "ASSET-1067",
-    "asset_type": "Database Server",
-    "environment": "Development",
-    "criticality": "Low",
-    "owner": {
-      "team": "Cloud Engineering",
-      "email": "team@company.com"
+    "asset_type": "Web Server",
+    "environment": "Staging",
+    "criticality": "High",
+    "ip_address": "64.157.251.184",
+    "domain": "asset-1067.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "apache2",
+      "version": "2.4.57"
+    },
     "open_ports": [
-      8080,
-      8443
+      443,
+      80
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 40,
-    "last_scan_date": "2025-12-24",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-14",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-8156",
-        "severity": "Low",
-        "cvss_score": 7.6,
-        "exploit_available": true,
+        "cve": "CVE-2022-31813",
+        "severity": "High",
+        "cvss_score": 9.8,
+        "exploit_available": false,
         "patch_available": true,
-        "description": "Low severity vulnerability detected"
+        "description": "Apache HTTP Server may not send the X-Forwarded-* headers to the origin server, allowing authentication bypass."
       }
-    ]
+    ],
+    "risk_score": 87.2
   },
   {
     "asset_id": "ASSET-1068",
-    "asset_type": "Database Server",
-    "environment": "Staging",
+    "asset_type": "Cloud VM",
+    "environment": "Development",
     "criticality": "Medium",
-    "owner": {
-      "team": "DevOps",
-      "email": "team@company.com"
+    "ip_address": "46.97.203.17",
+    "domain": "asset-1068.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "docker",
+      "version": "24.0.5"
+    },
     "open_ports": [
-      443,
-      22
+      9090
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 87,
-    "last_scan_date": "2026-01-25",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-03-06",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-8894",
-        "severity": "Medium",
-        "cvss_score": 7.0,
+        "cve": "CVE-2022-0847",
+        "severity": "High",
+        "cvss_score": 7.8,
         "exploit_available": true,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "patch_available": true,
+        "description": "Dirty Pipe \u2014 Linux kernel flaw allowing overwrite of read-only files in container environments."
       }
-    ]
+    ],
+    "risk_score": 65.7
   },
   {
     "asset_id": "ASSET-1069",
     "asset_type": "Web Server",
-    "environment": "Production",
+    "environment": "Development",
     "criticality": "Medium",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "ip_address": "134.247.123.222",
+    "domain": "asset-1069.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "apache2",
+      "version": "2.4.57"
+    },
     "open_ports": [
       80,
-      443
+      8443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 70,
-    "last_scan_date": "2026-02-11",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-04",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-1850",
-        "severity": "Medium",
-        "cvss_score": 6.5,
+        "cve": "CVE-2021-41773",
+        "severity": "Critical",
+        "cvss_score": 9.8,
         "exploit_available": true,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "patch_available": true,
+        "description": "Path traversal and remote code execution in Apache HTTP Server 2.4.49."
       }
-    ]
+    ],
+    "risk_score": 73.7
   },
   {
     "asset_id": "ASSET-1070",
-    "asset_type": "Firewall",
-    "environment": "Staging",
+    "asset_type": "Cloud VM",
+    "environment": "Production",
     "criticality": "High",
+    "ip_address": "12.114.71.115",
+    "domain": "asset-1070.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
+    },
+    "software": {
+      "name": "docker",
+      "version": "24.0.5"
+    },
+    "open_ports": [
+      9090
+    ],
     "owner": {
       "team": "DevOps",
-      "email": "team@company.com"
+      "email": "devops@company.com",
+      "status": "assigned"
     },
-    "os": "Ubuntu 22.04",
-    "open_ports": [
-      22,
-      3306
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 97,
-    "last_scan_date": "2025-12-09",
+    "last_scan_date": "2025-12-14",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-4832",
-        "severity": "Critical",
-        "cvss_score": 5.6,
-        "exploit_available": false,
+        "cve": "CVE-2022-0847",
+        "severity": "High",
+        "cvss_score": 7.8,
+        "exploit_available": true,
         "patch_available": true,
-        "description": "Critical severity vulnerability detected"
+        "description": "Dirty Pipe \u2014 Linux kernel flaw allowing overwrite of read-only files in container environments."
       }
-    ]
+    ],
+    "risk_score": 73.7
   },
   {
     "asset_id": "ASSET-1071",
     "asset_type": "Database Server",
-    "environment": "Development",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "environment": "Staging",
+    "criticality": "Low",
+    "ip_address": "30.0.102.208",
+    "domain": "asset-1071.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "mysql",
+      "version": "8.0.32"
+    },
     "open_ports": [
-      3306,
-      8443
+      1433,
+      27017
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 91,
-    "last_scan_date": "2025-12-08",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-03-09",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-6499",
+        "cve": "CVE-2022-21595",
         "severity": "Medium",
-        "cvss_score": 9.3,
+        "cvss_score": 4.4,
         "exploit_available": false,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "patch_available": true,
+        "description": "MySQL Server C API vulnerability allowing denial of service by a privileged attacker."
       }
-    ]
+    ],
+    "risk_score": 34.1
   },
   {
     "asset_id": "ASSET-1072",
-    "asset_type": "Web Server",
-    "environment": "Development",
+    "asset_type": "Firewall",
+    "environment": "Production",
     "criticality": "High",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "ip_address": "61.229.10.214",
+    "domain": "asset-1072.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "pf",
+      "version": "6.7"
+    },
     "open_ports": [
-      443,
-      22
+      443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 73,
-    "last_scan_date": "2025-12-07",
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-27",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-2852",
-        "severity": "Critical",
-        "cvss_score": 6.2,
-        "exploit_available": true,
+        "cve": "CVE-2021-29629",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": false,
         "patch_available": false,
-        "description": "Critical severity vulnerability detected"
+        "description": "pf in FreeBSD allows denial of service via malformed ICMP or ICMPv6 packets."
       }
-    ]
+    ],
+    "risk_score": 78.0
   },
   {
     "asset_id": "ASSET-1073",
     "asset_type": "Cloud VM",
     "environment": "Production",
     "criticality": "High",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "ip_address": "125.119.90.222",
+    "domain": "asset-1073.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "docker",
+      "version": "20.10.7"
+    },
     "open_ports": [
-      443,
-      80
+      2222,
+      8080,
+      9090
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 82,
-    "last_scan_date": "2026-01-14",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-07",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-5206",
-        "severity": "Low",
-        "cvss_score": 7.1,
+        "cve": "CVE-2023-28840",
+        "severity": "High",
+        "cvss_score": 8.7,
         "exploit_available": false,
-        "patch_available": false,
-        "description": "Low severity vulnerability detected"
+        "patch_available": true,
+        "description": "Insufficient encryption of overlay network traffic in Docker Swarm mode."
+      },
+      {
+        "cve": "CVE-2022-0847",
+        "severity": "High",
+        "cvss_score": 7.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Dirty Pipe \u2014 Linux kernel flaw allowing overwrite of read-only files in container environments."
       }
-    ]
+    ],
+    "risk_score": 77.3
   },
   {
     "asset_id": "ASSET-1074",
-    "asset_type": "Firewall",
-    "environment": "Development",
-    "criticality": "Low",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "asset_type": "Web Server",
+    "environment": "Staging",
+    "criticality": "High",
+    "ip_address": "84.179.168.48",
+    "domain": "asset-1074.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "nginx",
+      "version": "1.24.0"
+    },
     "open_ports": [
-      443,
-      22
+      8443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 37,
-    "last_scan_date": "2026-02-22",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-03-06",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-7598",
-        "severity": "Low",
-        "cvss_score": 4.8,
-        "exploit_available": false,
-        "patch_available": false,
-        "description": "Low severity vulnerability detected"
+        "cve": "CVE-2021-23017",
+        "severity": "Critical",
+        "cvss_score": 9.4,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Off-by-one error in ngx_resolver allowing remote code execution via crafted DNS response."
+      },
+      {
+        "cve": "CVE-2023-44487",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "HTTP/2 Rapid Reset Attack enabling denial of service at scale."
       }
-    ]
+    ],
+    "risk_score": 80.1
   },
   {
     "asset_id": "ASSET-1075",
-    "asset_type": "Cloud VM",
+    "asset_type": "Web Server",
     "environment": "Development",
-    "criticality": "Low",
-    "owner": {
-      "team": "DevOps",
-      "email": "team@company.com"
+    "criticality": "Medium",
+    "ip_address": "27.200.85.95",
+    "domain": "asset-1075.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "apache2",
+      "version": "2.4.57"
+    },
     "open_ports": [
-      8080,
-      443
+      80,
+      8080
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 12,
-    "last_scan_date": "2025-12-26",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-24",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-5059",
-        "severity": "Medium",
-        "cvss_score": 9.1,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "cve": "CVE-2022-31813",
+        "severity": "High",
+        "cvss_score": 9.8,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Apache HTTP Server may not send the X-Forwarded-* headers to the origin server, allowing authentication bypass."
       }
-    ]
+    ],
+    "risk_score": 79.2
   },
   {
     "asset_id": "ASSET-1076",
-    "asset_type": "Firewall",
+    "asset_type": "Web Server",
     "environment": "Staging",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Cloud Engineering",
-      "email": "team@company.com"
+    "criticality": "High",
+    "ip_address": "63.76.93.71",
+    "domain": "asset-1076.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "nginx",
+      "version": "1.18.0"
+    },
     "open_ports": [
-      3306,
+      8080,
       80
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 90,
-    "last_scan_date": "2026-01-30",
+    "owner": {
+      "team": "Security Ops",
+      "email": "secops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-01",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-2151",
-        "severity": "Critical",
-        "cvss_score": 5.4,
+        "cve": "CVE-2022-41741",
+        "severity": "High",
+        "cvss_score": 7.8,
         "exploit_available": true,
-        "patch_available": false,
-        "description": "Critical severity vulnerability detected"
+        "patch_available": true,
+        "description": "Memory corruption in ngx_http_mp4_module when processing specially crafted MP4 files."
       }
-    ]
+    ],
+    "risk_score": 91.2
   },
   {
     "asset_id": "ASSET-1077",
-    "asset_type": "Firewall",
-    "environment": "Staging",
-    "criticality": "High",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "asset_type": "Database Server",
+    "environment": "Development",
+    "criticality": "Medium",
+    "ip_address": "187.249.121.139",
+    "domain": "asset-1077.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "postgresql",
+      "version": "14.5"
+    },
     "open_ports": [
-      443,
+      27017,
+      5432,
       3306
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 22,
-    "last_scan_date": "2025-12-26",
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-03-08",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-9049",
-        "severity": "Low",
-        "cvss_score": 5.7,
+        "cve": "CVE-2022-1552",
+        "severity": "High",
+        "cvss_score": 8.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Autovacuum, REINDEX, and other processes omit security restricted operations, enabling privilege escalation."
+      },
+      {
+        "cve": "CVE-2023-2454",
+        "severity": "High",
+        "cvss_score": 7.2,
         "exploit_available": false,
         "patch_available": true,
-        "description": "Low severity vulnerability detected"
+        "description": "CREATE SCHEMA allows superusers to bypass security policies in pg_catalog."
       }
-    ]
+    ],
+    "risk_score": 69.7
   },
   {
     "asset_id": "ASSET-1078",
-    "asset_type": "Database Server",
-    "environment": "Development",
-    "criticality": "Low",
-    "owner": {
-      "team": "Cloud Engineering",
-      "email": "team@company.com"
+    "asset_type": "Web Server",
+    "environment": "Staging",
+    "criticality": "High",
+    "ip_address": "50.207.251.143",
+    "domain": "asset-1078.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "apache2",
+      "version": "2.4.52"
+    },
     "open_ports": [
-      8080,
-      3306
+      8443,
+      443,
+      80
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 16,
-    "last_scan_date": "2025-12-28",
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-17",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-1404",
+        "cve": "CVE-2022-31813",
         "severity": "High",
-        "cvss_score": 4.3,
+        "cvss_score": 9.8,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Apache HTTP Server may not send the X-Forwarded-* headers to the origin server, allowing authentication bypass."
+      },
+      {
+        "cve": "CVE-2021-41773",
+        "severity": "Critical",
+        "cvss_score": 9.8,
         "exploit_available": true,
         "patch_available": true,
-        "description": "High severity vulnerability detected"
+        "description": "Path traversal and remote code execution in Apache HTTP Server 2.4.49."
       }
-    ]
+    ],
+    "risk_score": 81.7
   },
   {
     "asset_id": "ASSET-1079",
     "asset_type": "Firewall",
-    "environment": "Production",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Cloud Engineering",
-      "email": "team@company.com"
+    "environment": "Development",
+    "criticality": "Low",
+    "ip_address": "78.60.90.253",
+    "domain": "asset-1079.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "pf",
+      "version": "6.7"
+    },
     "open_ports": [
       22,
       443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 74,
-    "last_scan_date": "2026-01-29",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-09",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-7849",
-        "severity": "Medium",
-        "cvss_score": 7.6,
-        "exploit_available": true,
-        "patch_available": true,
-        "description": "Medium severity vulnerability detected"
+        "cve": "CVE-2021-29629",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": false,
+        "patch_available": false,
+        "description": "pf in FreeBSD allows denial of service via malformed ICMP or ICMPv6 packets."
       }
-    ]
+    ],
+    "risk_score": 46.5
   },
   {
     "asset_id": "ASSET-1080",
-    "asset_type": "Database Server",
-    "environment": "Production",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "asset_type": "Cloud VM",
+    "environment": "Development",
+    "criticality": "Low",
+    "ip_address": "26.174.42.18",
+    "domain": "asset-1080.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "containerd",
+      "version": "1.6.4"
+    },
     "open_ports": [
-      22,
-      8443
+      9090,
+      2222
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 82,
-    "last_scan_date": "2026-01-28",
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-07",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-3361",
+        "cve": "CVE-2022-23648",
         "severity": "High",
-        "cvss_score": 6.5,
+        "cvss_score": 7.5,
         "exploit_available": true,
         "patch_available": true,
-        "description": "High severity vulnerability detected"
+        "description": "containerd allows attackers to gain read access to arbitrary host files via specially crafted image configurations."
       }
-    ]
+    ],
+    "risk_score": 58.5
   },
   {
     "asset_id": "ASSET-1081",
-    "asset_type": "Web Server",
-    "environment": "Staging",
-    "criticality": "Medium",
+    "asset_type": "Cloud VM",
+    "environment": "Development",
+    "criticality": "Low",
+    "ip_address": "97.98.111.96",
+    "domain": "asset-1081.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
+    },
+    "software": {
+      "name": "docker",
+      "version": "20.10.7"
+    },
+    "open_ports": [
+      8080,
+      2222
+    ],
     "owner": {
       "team": "Backend Team",
-      "email": "team@company.com"
+      "email": "backend@company.com",
+      "status": "assigned"
     },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      443,
-      22
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 81,
-    "last_scan_date": "2026-01-19",
+    "last_scan_date": "2025-12-25",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-5052",
-        "severity": "Medium",
-        "cvss_score": 7.8,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "cve": "CVE-2023-28840",
+        "severity": "High",
+        "cvss_score": 8.7,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Insufficient encryption of overlay network traffic in Docker Swarm mode."
       }
-    ]
+    ],
+    "risk_score": 51.3
   },
   {
     "asset_id": "ASSET-1082",
-    "asset_type": "Web Server",
-    "environment": "Staging",
+    "asset_type": "API Gateway",
+    "environment": "Development",
     "criticality": "High",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "ip_address": "54.238.71.198",
+    "domain": "asset-1082.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "nginx",
+      "version": "1.18.0"
+    },
     "open_ports": [
-      8443,
-      22
+      8080,
+      80,
+      443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 68,
-    "last_scan_date": "2026-01-06",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-08",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-1759",
-        "severity": "Medium",
-        "cvss_score": 4.6,
-        "exploit_available": false,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "cve": "CVE-2021-23017",
+        "severity": "Critical",
+        "cvss_score": 9.4,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Off-by-one error in ngx_resolver allowing remote code execution via crafted DNS response."
       }
-    ]
+    ],
+    "risk_score": 80.1
   },
   {
     "asset_id": "ASSET-1083",
-    "asset_type": "Web Server",
-    "environment": "Development",
-    "criticality": "High",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "asset_type": "Cloud VM",
+    "environment": "Production",
+    "criticality": "Low",
+    "ip_address": "83.245.251.238",
+    "domain": "asset-1083.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "docker",
+      "version": "20.10.7"
+    },
     "open_ports": [
-      8443,
-      22
+      8080
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 99,
-    "last_scan_date": "2025-12-23",
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-21",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-8522",
-        "severity": "Low",
-        "cvss_score": 6.5,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "Low severity vulnerability detected"
+        "cve": "CVE-2023-28840",
+        "severity": "High",
+        "cvss_score": 8.7,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Insufficient encryption of overlay network traffic in Docker Swarm mode."
       }
-    ]
+    ],
+    "risk_score": 51.3
   },
   {
     "asset_id": "ASSET-1084",
     "asset_type": "Web Server",
-    "environment": "Staging",
+    "environment": "Production",
     "criticality": "Low",
-    "owner": {
-      "team": "Cloud Engineering",
-      "email": "team@company.com"
+    "ip_address": "17.66.197.104",
+    "domain": "asset-1084.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "nginx",
+      "version": "1.18.0"
+    },
     "open_ports": [
-      80,
+      8080,
+      8443,
       443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 71,
-    "last_scan_date": "2026-01-01",
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-20",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-1287",
+        "cve": "CVE-2022-41741",
         "severity": "High",
-        "cvss_score": 9.7,
+        "cvss_score": 7.8,
         "exploit_available": true,
-        "patch_available": false,
-        "description": "High severity vulnerability detected"
+        "patch_available": true,
+        "description": "Memory corruption in ngx_http_mp4_module when processing specially crafted MP4 files."
       }
-    ]
+    ],
+    "risk_score": 77.2
   },
   {
     "asset_id": "ASSET-1085",
     "asset_type": "Web Server",
     "environment": "Staging",
-    "criticality": "High",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
-    },
-    "os": "Ubuntu 22.04",
-    "open_ports": [
-      22,
-      3306
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 84,
-    "last_scan_date": "2026-02-22",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-5925",
-        "severity": "Low",
-        "cvss_score": 4.3,
-        "exploit_available": false,
-        "patch_available": true,
-        "description": "Low severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1086",
-    "asset_type": "Cloud VM",
-    "environment": "Staging",
-    "criticality": "Low",
-    "owner": {
-      "team": "DevOps",
-      "email": "team@company.com"
-    },
-    "os": "Ubuntu 22.04",
-    "open_ports": [
-      8443,
-      443
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 26,
-    "last_scan_date": "2025-12-22",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-3503",
-        "severity": "Critical",
-        "cvss_score": 7.2,
-        "exploit_available": false,
-        "patch_available": true,
-        "description": "Critical severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1087",
-    "asset_type": "API Gateway",
-    "environment": "Staging",
     "criticality": "Medium",
-    "owner": {
-      "team": "Cloud Engineering",
-      "email": "team@company.com"
+    "ip_address": "181.86.194.207",
+    "domain": "asset-1085.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "CentOS",
+      "version": "7"
     },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      8443,
-      80
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 80,
-    "last_scan_date": "2026-02-04",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-4759",
-        "severity": "High",
-        "cvss_score": 9.1,
-        "exploit_available": true,
-        "patch_available": true,
-        "description": "High severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1088",
-    "asset_type": "Database Server",
-    "environment": "Development",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "software": {
+      "name": "apache2",
+      "version": "2.4.52"
     },
-    "os": "Ubuntu 22.04",
     "open_ports": [
+      80,
       443,
-      8080
+      8443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 92,
-    "last_scan_date": "2026-02-24",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-4373",
-        "severity": "Low",
-        "cvss_score": 8.4,
-        "exploit_available": false,
-        "patch_available": false,
-        "description": "Low severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1089",
-    "asset_type": "API Gateway",
-    "environment": "Staging",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
-    },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      22,
-      3306
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 40,
-    "last_scan_date": "2026-01-01",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-9216",
-        "severity": "Medium",
-        "cvss_score": 7.1,
-        "exploit_available": false,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1090",
-    "asset_type": "Firewall",
-    "environment": "Development",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
-    },
-    "os": "Ubuntu 22.04",
-    "open_ports": [
-      22,
-      443
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 23,
-    "last_scan_date": "2026-01-15",
-    "vulnerabilities": [
-      {
-        "cve": "CVE-2023-3150",
-        "severity": "High",
-        "cvss_score": 7.4,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "High severity vulnerability detected"
-      }
-    ]
-  },
-  {
-    "asset_id": "ASSET-1091",
-    "asset_type": "Firewall",
-    "environment": "Staging",
-    "criticality": "High",
     "owner": {
       "team": "Cloud Engineering",
-      "email": "team@company.com"
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
     },
-    "os": "Windows Server 2022",
-    "open_ports": [
-      22,
-      8080
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 33,
     "last_scan_date": "2025-12-12",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-9573",
+        "cve": "CVE-2022-31813",
+        "severity": "High",
+        "cvss_score": 9.8,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Apache HTTP Server may not send the X-Forwarded-* headers to the origin server, allowing authentication bypass."
+      }
+    ],
+    "risk_score": 79.2
+  },
+  {
+    "asset_id": "ASSET-1086",
+    "asset_type": "Firewall",
+    "environment": "Development",
+    "criticality": "High",
+    "ip_address": "50.233.20.224",
+    "domain": "asset-1086.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Debian",
+      "version": "11"
+    },
+    "software": {
+      "name": "ufw",
+      "version": "0.36"
+    },
+    "open_ports": [
+      443,
+      22,
+      8443
+    ],
+    "owner": {
+      "team": null,
+      "email": null,
+      "status": "orphan"
+    },
+    "last_scan_date": "2026-03-05",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2019-7113",
         "severity": "Low",
-        "cvss_score": 8.9,
+        "cvss_score": 3.1,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "UFW before 0.36 allows local users to bypass firewall rules due to IPv6 misconfiguration."
+      }
+    ],
+    "risk_score": 42.9
+  },
+  {
+    "asset_id": "ASSET-1087",
+    "asset_type": "Web Server",
+    "environment": "Production",
+    "criticality": "Medium",
+    "ip_address": "81.7.238.18",
+    "domain": "asset-1087.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
+    },
+    "software": {
+      "name": "nginx",
+      "version": "1.18.0"
+    },
+    "open_ports": [
+      8443,
+      443,
+      80
+    ],
+    "owner": {
+      "team": "Cloud Engineering",
+      "email": "cloud-eng@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-22",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2021-23017",
+        "severity": "Critical",
+        "cvss_score": 9.4,
         "exploit_available": true,
         "patch_available": true,
-        "description": "Low severity vulnerability detected"
+        "description": "Off-by-one error in ngx_resolver allowing remote code execution via crafted DNS response."
+      },
+      {
+        "cve": "CVE-2023-44487",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "HTTP/2 Rapid Reset Attack enabling denial of service at scale."
       }
-    ]
+    ],
+    "risk_score": 89.6
+  },
+  {
+    "asset_id": "ASSET-1088",
+    "asset_type": "Firewall",
+    "environment": "Staging",
+    "criticality": "Low",
+    "ip_address": "111.204.187.162",
+    "domain": "asset-1088.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Windows Server",
+      "version": "2019"
+    },
+    "software": {
+      "name": "iptables",
+      "version": "1.8.7"
+    },
+    "open_ports": [
+      443,
+      22,
+      8443
+    ],
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-28",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2012-2663",
+        "severity": "Medium",
+        "cvss_score": 5.0,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Incomplete blacklist allows traffic to bypass iptables rules via crafted packets."
+      }
+    ],
+    "risk_score": 54.0
+  },
+  {
+    "asset_id": "ASSET-1089",
+    "asset_type": "Cloud VM",
+    "environment": "Staging",
+    "criticality": "Medium",
+    "ip_address": "142.193.39.237",
+    "domain": "asset-1089.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
+    },
+    "software": {
+      "name": "docker",
+      "version": "20.10.7"
+    },
+    "open_ports": [
+      9090
+    ],
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-20",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-28840",
+        "severity": "High",
+        "cvss_score": 8.7,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Insufficient encryption of overlay network traffic in Docker Swarm mode."
+      },
+      {
+        "cve": "CVE-2022-0847",
+        "severity": "High",
+        "cvss_score": 7.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Dirty Pipe \u2014 Linux kernel flaw allowing overwrite of read-only files in container environments."
+      }
+    ],
+    "risk_score": 69.3
+  },
+  {
+    "asset_id": "ASSET-1090",
+    "asset_type": "Cloud VM",
+    "environment": "Production",
+    "criticality": "Medium",
+    "ip_address": "39.233.96.45",
+    "domain": "asset-1090.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
+    },
+    "software": {
+      "name": "containerd",
+      "version": "1.6.4"
+    },
+    "open_ports": [
+      2222
+    ],
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-11",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2022-23648",
+        "severity": "High",
+        "cvss_score": 7.5,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "containerd allows attackers to gain read access to arbitrary host files via specially crafted image configurations."
+      }
+    ],
+    "risk_score": 64.5
+  },
+  {
+    "asset_id": "ASSET-1091",
+    "asset_type": "Cloud VM",
+    "environment": "Development",
+    "criticality": "Low",
+    "ip_address": "149.198.100.77",
+    "domain": "asset-1091.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
+    },
+    "software": {
+      "name": "docker",
+      "version": "24.0.5"
+    },
+    "open_ports": [
+      2222
+    ],
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-24",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-28840",
+        "severity": "High",
+        "cvss_score": 8.7,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Insufficient encryption of overlay network traffic in Docker Swarm mode."
+      },
+      {
+        "cve": "CVE-2022-0847",
+        "severity": "High",
+        "cvss_score": 7.8,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Dirty Pipe \u2014 Linux kernel flaw allowing overwrite of read-only files in container environments."
+      }
+    ],
+    "risk_score": 63.3
   },
   {
     "asset_id": "ASSET-1092",
-    "asset_type": "Web Server",
-    "environment": "Production",
+    "asset_type": "Cloud VM",
+    "environment": "Development",
     "criticality": "High",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "ip_address": "98.220.237.171",
+    "domain": "asset-1092.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Debian",
+      "version": "11"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "containerd",
+      "version": "1.6.4"
+    },
     "open_ports": [
-      80,
-      8080
+      9090,
+      2222
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 31,
-    "last_scan_date": "2026-02-16",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-27",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-7219",
-        "severity": "Low",
-        "cvss_score": 4.0,
+        "cve": "CVE-2022-23648",
+        "severity": "High",
+        "cvss_score": 7.5,
         "exploit_available": true,
         "patch_available": true,
-        "description": "Low severity vulnerability detected"
+        "description": "containerd allows attackers to gain read access to arbitrary host files via specially crafted image configurations."
       }
-    ]
+    ],
+    "risk_score": 72.5
   },
   {
     "asset_id": "ASSET-1093",
-    "asset_type": "Web Server",
+    "asset_type": "API Gateway",
     "environment": "Staging",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "criticality": "Low",
+    "ip_address": "123.111.211.41",
+    "domain": "asset-1093.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "envoy",
+      "version": "1.25.0"
+    },
     "open_ports": [
-      8443,
-      3306
+      8080,
+      8000,
+      80
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 43,
-    "last_scan_date": "2026-01-22",
+    "owner": {
+      "team": "DevOps",
+      "email": "devops@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-01-12",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-8935",
-        "severity": "Low",
-        "cvss_score": 7.6,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "Low severity vulnerability detected"
+        "cve": "CVE-2023-35943",
+        "severity": "High",
+        "cvss_score": 8.3,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "CORS filter segfault on wildcard origins with empty request origins, enabling denial of service."
       }
-    ]
+    ],
+    "risk_score": 67.2
   },
   {
     "asset_id": "ASSET-1094",
     "asset_type": "Database Server",
-    "environment": "Staging",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "environment": "Production",
+    "criticality": "High",
+    "ip_address": "90.160.82.72",
+    "domain": "asset-1094.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Windows Server",
+      "version": "2022"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "mysql",
+      "version": "8.0.32"
+    },
     "open_ports": [
-      80,
-      22
+      3306,
+      1433
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 45,
-    "last_scan_date": "2026-01-17",
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-28",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-6723",
-        "severity": "Medium",
-        "cvss_score": 5.7,
+        "cve": "CVE-2023-21980",
+        "severity": "High",
+        "cvss_score": 7.1,
         "exploit_available": false,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "patch_available": true,
+        "description": "Vulnerability in MySQL Server optimizer allowing unauthorized data access."
+      },
+      {
+        "cve": "CVE-2022-21595",
+        "severity": "Medium",
+        "cvss_score": 4.4,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "MySQL Server C API vulnerability allowing denial of service by a privileged attacker."
       }
-    ]
+    ],
+    "risk_score": 58.9
   },
   {
     "asset_id": "ASSET-1095",
     "asset_type": "Database Server",
     "environment": "Development",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Platform Team",
-      "email": "team@company.com"
+    "criticality": "Low",
+    "ip_address": "106.199.209.12",
+    "domain": "asset-1095.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "mysql",
+      "version": "8.0.32"
+    },
     "open_ports": [
-      8443,
-      3306
+      27017
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 93,
-    "last_scan_date": "2025-12-20",
+    "owner": {
+      "team": "Backend Team",
+      "email": "backend@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2025-12-26",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-7668",
-        "severity": "Critical",
-        "cvss_score": 7.9,
-        "exploit_available": true,
+        "cve": "CVE-2023-21980",
+        "severity": "High",
+        "cvss_score": 7.1,
+        "exploit_available": false,
         "patch_available": true,
-        "description": "Critical severity vulnerability detected"
+        "description": "Vulnerability in MySQL Server optimizer allowing unauthorized data access."
+      },
+      {
+        "cve": "CVE-2022-21595",
+        "severity": "Medium",
+        "cvss_score": 4.4,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "MySQL Server C API vulnerability allowing denial of service by a privileged attacker."
       }
-    ]
+    ],
+    "risk_score": 44.9
   },
   {
     "asset_id": "ASSET-1096",
-    "asset_type": "Firewall",
-    "environment": "Production",
+    "asset_type": "API Gateway",
+    "environment": "Staging",
     "criticality": "High",
+    "ip_address": "171.11.68.161",
+    "domain": "asset-1096.internal.company.com",
+    "internet_exposed": false,
+    "os": {
+      "name": "CentOS",
+      "version": "7"
+    },
+    "software": {
+      "name": "nginx",
+      "version": "1.18.0"
+    },
+    "open_ports": [
+      443,
+      8000,
+      8080
+    ],
     "owner": {
       "team": "Platform Team",
-      "email": "team@company.com"
+      "email": "platform@company.com",
+      "status": "assigned"
     },
-    "os": "Ubuntu 22.04",
-    "open_ports": [
-      80,
-      8443
-    ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 36,
-    "last_scan_date": "2026-01-29",
+    "last_scan_date": "2026-02-27",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-2479",
-        "severity": "High",
-        "cvss_score": 5.6,
-        "exploit_available": false,
+        "cve": "CVE-2021-23017",
+        "severity": "Critical",
+        "cvss_score": 9.4,
+        "exploit_available": true,
         "patch_available": true,
-        "description": "High severity vulnerability detected"
+        "description": "Off-by-one error in ngx_resolver allowing remote code execution via crafted DNS response."
       }
-    ]
+    ],
+    "risk_score": 80.1
   },
   {
     "asset_id": "ASSET-1097",
-    "asset_type": "Web Server",
-    "environment": "Development",
+    "asset_type": "API Gateway",
+    "environment": "Staging",
     "criticality": "Low",
-    "owner": {
-      "team": "Backend Team",
-      "email": "team@company.com"
+    "ip_address": "69.98.184.124",
+    "domain": "asset-1097.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "kong",
+      "version": "3.2.0"
+    },
     "open_ports": [
-      8080,
-      3306
+      8000
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 76,
-    "last_scan_date": "2026-02-14",
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-26",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-9078",
-        "severity": "High",
+        "cve": "CVE-2022-35796",
+        "severity": "Critical",
         "cvss_score": 9.0,
         "exploit_available": true,
-        "patch_available": false,
-        "description": "High severity vulnerability detected"
+        "patch_available": true,
+        "description": "Elevation of privilege in Kong Gateway due to improper request handling."
       }
-    ]
+    ],
+    "risk_score": 82.0
   },
   {
     "asset_id": "ASSET-1098",
     "asset_type": "API Gateway",
-    "environment": "Staging",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Cloud Engineering",
-      "email": "team@company.com"
+    "environment": "Development",
+    "criticality": "Low",
+    "ip_address": "19.146.1.233",
+    "domain": "asset-1098.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "20.04"
     },
-    "os": "Ubuntu 22.04",
+    "software": {
+      "name": "nginx",
+      "version": "1.18.0"
+    },
     "open_ports": [
-      22,
-      3306
+      8000,
+      8080,
+      443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 31,
-    "last_scan_date": "2026-02-25",
+    "owner": {
+      "team": "Platform Team",
+      "email": "platform@company.com",
+      "status": "assigned"
+    },
+    "last_scan_date": "2026-02-05",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-4850",
-        "severity": "Critical",
-        "cvss_score": 7.3,
+        "cve": "CVE-2022-41741",
+        "severity": "High",
+        "cvss_score": 7.8,
         "exploit_available": true,
         "patch_available": true,
-        "description": "Critical severity vulnerability detected"
+        "description": "Memory corruption in ngx_http_mp4_module when processing specially crafted MP4 files."
+      },
+      {
+        "cve": "CVE-2021-23017",
+        "severity": "Critical",
+        "cvss_score": 9.4,
+        "exploit_available": true,
+        "patch_available": true,
+        "description": "Off-by-one error in ngx_resolver allowing remote code execution via crafted DNS response."
       }
-    ]
+    ],
+    "risk_score": 83.6
   },
   {
     "asset_id": "ASSET-1099",
-    "asset_type": "Web Server",
-    "environment": "Development",
-    "criticality": "Medium",
-    "owner": {
-      "team": "Security Ops",
-      "email": "team@company.com"
+    "asset_type": "Firewall",
+    "environment": "Production",
+    "criticality": "High",
+    "ip_address": "12.139.227.158",
+    "domain": "asset-1099.company.com",
+    "internet_exposed": true,
+    "os": {
+      "name": "Ubuntu",
+      "version": "22.04"
     },
-    "os": "Windows Server 2022",
+    "software": {
+      "name": "iptables",
+      "version": "1.8.7"
+    },
     "open_ports": [
-      8080,
-      22
+      8443
     ],
-    "services": [
-      "Service-A",
-      "Service-B"
-    ],
-    "risk_score": 86,
-    "last_scan_date": "2026-02-13",
+    "owner": {
+      "team": null,
+      "email": null,
+      "status": "orphan"
+    },
+    "last_scan_date": "2026-02-12",
     "vulnerabilities": [
       {
-        "cve": "CVE-2023-8793",
+        "cve": "CVE-2012-2663",
         "severity": "Medium",
-        "cvss_score": 7.2,
-        "exploit_available": true,
-        "patch_available": false,
-        "description": "Medium severity vulnerability detected"
+        "cvss_score": 5.0,
+        "exploit_available": false,
+        "patch_available": true,
+        "description": "Incomplete blacklist allows traffic to bypass iptables rules via crafted packets."
       }
-    ]
+    ],
+    "risk_score": 68.0
   }
 ]
