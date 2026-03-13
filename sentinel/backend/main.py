@@ -1,25 +1,29 @@
+
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 import ollama
 import chromadb
 from sentence_transformers import SentenceTransformer
 from db import get_db, Asset, Vulnerability, Owner
- 
+
 app = FastAPI(
     title="Sentinel API",
     description="AI-Driven Cyber Asset & Attack Surface Management",
     version="2.0"
 )
- 
+
 embed_model = SentenceTransformer("all-MiniLM-L6-v2")
- 
+
+# Connect to ChromaDB — same as before
 chroma_client = chromadb.PersistentClient(path="chroma_db")
 collection = chroma_client.get_or_create_collection(name="cyber_assets")
- 
+
+
 @app.get("/")
 def root():
     return {"message": "Sentinel backend is running", "version": "2.0"}
- 
+
+
 @app.get("/assets")
 def get_assets(
     db: Session = Depends(get_db),
@@ -27,48 +31,85 @@ def get_assets(
     criticality:      str  = None,
     internet_exposed: bool = None,
     owner_status:     str  = None,   # "assigned" or "orphan"
+    slim:             bool = True,   # True = skip loading vulnerabilities (fast)
+                                     # False = include vulnerabilities (slow)
 ):
     query = db.query(Asset)
 
     if environment:
         query = query.filter(Asset.environment == environment)
- 
+
     if criticality:
         query = query.filter(Asset.criticality == criticality)
- 
+
     if internet_exposed is not None:
         query = query.filter(Asset.internet_exposed == internet_exposed)
- 
+
     if owner_status:
         query = query.join(Owner).filter(Owner.status == owner_status)
- 
+
     assets = query.all()
- 
+
+    if slim:
+        # Slim mode: return only table columns — no CVE list
+        # This is MUCH faster for the Asset Inventory table
+        # because it avoids loading hundreds of vulnerability rows
+        def slim_dict(a):
+            owner = a.owner
+            return {
+                "asset_id":        a.asset_id,
+                "asset_type":      a.asset_type,
+                "environment":     a.environment,
+                "criticality":     a.criticality,
+                "ip_address":      a.ip_address,
+                "domain":          a.domain,
+                "internet_exposed": a.internet_exposed,
+                "os": {
+                    "name":    a.os_name,
+                    "version": a.os_version,
+                },
+                "software": {
+                    "name":    a.software_name,
+                    "version": a.software_version,
+                },
+                "risk_score":  a.risk_score,
+                "risk_level":  a.risk_level,
+                "last_scan_date": str(a.last_scan_date) if a.last_scan_date else None,
+                "owner": {
+                    "team":   owner.team if owner else None,
+                    "email":  owner.email if owner else None,
+                    "status": owner.status if owner else "orphan",
+                } if owner else None,
+                "vulnerabilities": [],  # empty in slim mode
+            }
+        return {"assets": [slim_dict(a) for a in assets], "total": len(assets)}
+
+    # Full mode: include all vulnerabilities (used by /assets/{id})
     return {
         "assets": [a.to_dict() for a in assets],
         "total":  len(assets)
     }
 
- 
 @app.get("/assets/{asset_id}")
 def get_asset(
     asset_id: str,              # captured from the URL path
     db: Session = Depends(get_db),
 ):
-    
+
     asset = db.query(Asset).filter(Asset.asset_id == asset_id).first()
- 
     if not asset:
         raise HTTPException(
             status_code=404,
             detail=f"Asset '{asset_id}' not found"
         )
- 
+
     return asset.to_dict()
- 
- 
+
+
 @app.get("/risk-summary")
 def get_risk_summary(db: Session = Depends(get_db)):
+
+    
     top_assets = (
         db.query(Asset)
         .filter(Asset.risk_score != None)     # exclude assets not yet scored
@@ -76,12 +117,12 @@ def get_risk_summary(db: Session = Depends(get_db)):
         .limit(10)
         .all()
     )
- 
+
     return {
         "top_risk_assets": [a.to_dict() for a in top_assets],
         "total_returned":  len(top_assets)
     }
- 
+
 @app.get("/vulnerabilities")
 def get_vulnerabilities(
     db:               Session = Depends(get_db),
@@ -90,26 +131,26 @@ def get_vulnerabilities(
     patch_available:   bool = None,   # true or false
 ):
     query = db.query(Vulnerability)
- 
+
     if severity:
         query = query.filter(Vulnerability.severity == severity)
- 
+
     if exploit_available is not None:
         query = query.filter(Vulnerability.exploit_available == exploit_available)
- 
+
     if patch_available is not None:
         query = query.filter(Vulnerability.patch_available == patch_available)
- 
+
     vulns = query.all()
- 
+
     return {
         "vulnerabilities": [v.to_dict() for v in vulns],
         "total":           len(vulns)
     }
- 
+
 @app.get("/orphans")
 def get_orphans(db: Session = Depends(get_db)):
- 
+
     # JOIN assets with owners and filter where status is "orphan"
     orphan_assets = (
         db.query(Asset)
@@ -117,41 +158,41 @@ def get_orphans(db: Session = Depends(get_db)):
         .filter(Owner.status == "orphan")
         .all()
     )
- 
+
     return {
         "orphan_assets": [a.to_dict() for a in orphan_assets],
         "total":         len(orphan_assets)
     }
- 
+
 @app.get("/stats")
 def get_stats(db: Session = Depends(get_db)):
- 
+
     # .count() is more efficient than .all() when you only need the number
     # It generates: SELECT COUNT(*) FROM assets WHERE ...
     total_assets   = db.query(Asset).count()
- 
+
     critical_count = db.query(Asset).filter(
         Asset.risk_level == "Critical"
     ).count()
- 
+
     exposed_count  = db.query(Asset).filter(
         Asset.internet_exposed == True
     ).count()
- 
+
     orphan_count   = db.query(Owner).filter(
         Owner.status == "orphan"
     ).count()
- 
+
     high_risk_count = db.query(Asset).filter(
         Asset.risk_score >= 70
     ).count()
- 
+
     total_vulns    = db.query(Vulnerability).count()
- 
+
     exploit_count  = db.query(Vulnerability).filter(
         Vulnerability.exploit_available == True
     ).count()
- 
+
     return {
         "total_assets":    total_assets,
         "critical_count":  critical_count,
@@ -161,22 +202,22 @@ def get_stats(db: Session = Depends(get_db)):
         "total_vulns":     total_vulns,
         "exploit_count":   exploit_count,
     }
- 
+
 @app.get("/ask")
 def ask(question: str):
- 
+
     # Step 1: Embed the user's question into a vector
     query_embedding = embed_model.encode(question).tolist()
- 
+
     # Step 2: Search ChromaDB for the 5 most similar asset documents
     results = collection.query(
         query_embeddings=[query_embedding],
         n_results=5
     )
- 
+
     # Join the retrieved documents into one context string
     retrieved_docs = "\n".join(results["documents"][0])
- 
+
     # Step 3: Send context + question to Phi3 via Ollama
     response = ollama.chat(
         model="phi3",
@@ -195,12 +236,12 @@ def ask(question: str):
                 "content": f"""
                 Context:
                 {retrieved_docs}
- 
+
                 Question:
                 {question}
                 """
             }
         ]
     )
- 
+
     return {"response": response["message"]["content"]}
