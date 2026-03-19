@@ -1,22 +1,34 @@
+"""
+pages/4_Asset_Detail.py
+─────────────────────────────────────────────────────────────────────────────
+Asset Detail Page
+- Search for any asset by ID
+- Full asset info: IP, OS, software, ports, environment
+- Owner info with orphan badge
+- All linked CVEs with CVSS scores
+- Risk score with colour-coded badge
+─────────────────────────────────────────────────────────────────────────────
+"""
+
 import streamlit as st
 import requests
 import pandas as pd
- 
+
 # ─── CONFIG ──────────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Asset Detail — Sentinel",
     page_icon="🏠",
     layout="wide"
 )
- 
+
 API = "http://127.0.0.1:8000"
- 
+
 # ─── SIDEBAR ─────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("### 🛡️ Sentinel")
     st.page_link("streamlit_app.py", label="🏠 Home / Dashboard")
     st.divider()
- 
+
 # ─── CUSTOM CSS ───────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -25,7 +37,7 @@ st.markdown("""
     h1, h2, h3, h4 { color: #F8FAFC !important; }
     p, div { color: #CBD5E1; }
     hr { border-color: #334155; }
- 
+
     .info-card {
         background-color: #1E293B;
         border: 1px solid #334155;
@@ -51,15 +63,15 @@ st.markdown("""
     .badge-assigned { background:#052E16; color:#86EFAC; padding:3px 12px; border-radius:12px; font-weight:600; font-size:13px; }
 </style>
 """, unsafe_allow_html=True)
- 
- 
+
+
 # ─── HELPER FUNCTIONS ────────────────────────────────────────────────────────
- 
+
 def fetch_asset(asset_id):
     """Fetch full asset detail including CVEs from FastAPI."""
     try:
         response = requests.get(
-            f"{API}/assets/{asset_id.strip()}",
+            f"{API}/analyze/{asset_id.strip()}",
             timeout=15
         )
         if response.status_code == 200:
@@ -71,8 +83,8 @@ def fetch_asset(asset_id):
         return None, "Backend not running."
     except requests.exceptions.Timeout:
         return None, "Request timed out."
- 
- 
+
+
 @st.cache_data(ttl=120)
 def fetch_all_asset_ids():
     """Fetch just asset IDs for the dropdown selector."""
@@ -88,8 +100,8 @@ def fetch_all_asset_ids():
         return []
     except:
         return []
- 
- 
+
+
 def risk_badge_html(level):
     css = {
         "Critical": "badge-critical",
@@ -98,8 +110,8 @@ def risk_badge_html(level):
         "Low":      "badge-low",
     }.get(level or "Low", "badge-low")
     return f'<span class="{css}">{level or "Unknown"}</span>'
- 
- 
+
+
 def severity_color(val):
     colors = {
         "Critical": "background-color:#450A0A; color:#FCA5A5;",
@@ -108,8 +120,8 @@ def severity_color(val):
         "Low":      "background-color:#052E16; color:#86EFAC;",
     }
     return colors.get(val, "")
- 
- 
+
+
 def cvss_color(val):
     try:
         v = float(val)
@@ -119,14 +131,14 @@ def cvss_color(val):
         else:          return "background-color:#052E16; color:#86EFAC;"
     except:
         return ""
- 
- 
+
+
 def bool_color(val):
     if val == "✅ Yes": return "background-color:#052E16; color:#86EFAC;"
     elif val == "❌ No": return "background-color:#450A0A; color:#FCA5A5;"
     return ""
- 
- 
+
+
 # ─── PAGE HEADER ─────────────────────────────────────────────────────────────
 st.markdown("# 🏠 Asset Detail")
 st.markdown(
@@ -135,27 +147,27 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.divider()
- 
+
 # ─── ASSET SELECTOR ───────────────────────────────────────────────────────────
 # Two ways to find an asset:
 # 1. Type the ID directly
 # 2. Pick from the dropdown
- 
+
 col_input, col_or, col_select = st.columns([3, 1, 3])
- 
+
 with col_input:
     typed_id = st.text_input(
         "Type Asset ID",
         placeholder="e.g. ASSET-1042",
     )
- 
+
 with col_or:
     st.markdown(
         "<p style='text-align:center; padding-top:32px; "
         "color:#94A3B8;'>— or —</p>",
         unsafe_allow_html=True
     )
- 
+
 with col_select:
     all_ids = fetch_all_asset_ids()
     if all_ids:
@@ -166,30 +178,36 @@ with col_select:
     else:
         selected_id = ""
         st.warning("Could not load asset list.")
- 
+
 # Typed ID takes priority over dropdown
 asset_id = typed_id.strip().upper() if typed_id.strip() else selected_id
- 
+
 if not asset_id:
     st.info("👆 Type an Asset ID or pick one from the dropdown to view its details.")
     st.stop()
- 
+
 # ─── FETCH ASSET ─────────────────────────────────────────────────────────────
-asset, error = fetch_asset(asset_id)
- 
+# /analyze returns: {asset: {...}, ml_analysis: {...}, recommendations: [...]}
+response_data, error = fetch_asset(asset_id)
+
 if error:
     st.error(f"❌ {error}")
     st.stop()
- 
+
+# Split the response into its three parts
+asset           = response_data.get("asset", {})
+ml_analysis     = response_data.get("ml_analysis", {})
+recommendations = response_data.get("recommendations", [])
+
 # ─── ASSET HEADER ────────────────────────────────────────────────────────────
 owner      = asset.get("owner") or {}
-risk_level = asset.get("risk_level") or "Unknown"
-risk_score = asset.get("risk_score") or 0
- 
+risk_level = ml_analysis.get("risk_level") or asset.get("risk_level") or "Unknown"
+risk_score = ml_analysis.get("risk_score") or asset.get("risk_score") or 0
+
 st.markdown(f"## {asset['asset_id']} — {asset['asset_type']}")
- 
+
 header_col1, header_col2, header_col3, header_col4 = st.columns(4)
- 
+
 with header_col1:
     st.markdown(
         f"<div class='info-card'>"
@@ -198,7 +216,7 @@ with header_col1:
         f"</div>",
         unsafe_allow_html=True
     )
- 
+
 with header_col2:
     st.markdown(
         f"<div class='info-card'>"
@@ -207,7 +225,7 @@ with header_col2:
         f"</div>",
         unsafe_allow_html=True
     )
- 
+
 with header_col3:
     exposed     = asset.get("internet_exposed", False)
     exp_label   = "🌐 Internet Exposed" if exposed else "🔒 Internal Only"
@@ -219,7 +237,7 @@ with header_col3:
         f"</div>",
         unsafe_allow_html=True
     )
- 
+
 with header_col4:
     owner_status = owner.get("status", "orphan")
     badge_class  = "badge-assigned" if owner_status == "assigned" else "badge-orphan"
@@ -231,15 +249,15 @@ with header_col4:
         f"</div></div>",
         unsafe_allow_html=True
     )
- 
+
 st.divider()
- 
+
 # ─── DETAILS SECTION ─────────────────────────────────────────────────────────
 detail_col1, detail_col2 = st.columns(2)
- 
+
 with detail_col1:
     st.markdown("#### 🖥️ Asset Information")
- 
+
     fields = [
         ("Asset ID",      asset.get("asset_id", "—")),
         ("Asset Type",    asset.get("asset_type", "—")),
@@ -253,7 +271,7 @@ with detail_col1:
                           f"{asset.get('software', {}).get('version', '')}".strip() or "—"),
         ("Last Scanned",  asset.get("last_scan_date", "—") or "—"),
     ]
- 
+
     for label, value in fields:
         st.markdown(
             f"<div style='display:flex; justify-content:space-between; "
@@ -263,10 +281,10 @@ with detail_col1:
             f"</div>",
             unsafe_allow_html=True
         )
- 
+
 with detail_col2:
     st.markdown("#### 👤 Owner Information")
- 
+
     if owner and owner.get("status") == "assigned":
         owner_fields = [
             ("Team",   owner.get("team", "—") or "—"),
@@ -296,14 +314,14 @@ with detail_col2:
             </p>
         </div>
         """, unsafe_allow_html=True)
- 
+
 st.divider()
- 
+
 # ─── VULNERABILITIES SECTION ─────────────────────────────────────────────────
 vulns = asset.get("vulnerabilities", [])
- 
+
 st.markdown(f"#### 🐛 Vulnerabilities ({len(vulns)} CVEs detected)")
- 
+
 if not vulns:
     st.success("✅ No vulnerabilities detected for this asset.")
 else:
@@ -320,11 +338,11 @@ else:
                            if len(v.get("description", "")) > 100
                            else v.get("description", ""),
         })
- 
+
     vuln_df = pd.DataFrame(vuln_rows).sort_values(
         "CVSS", ascending=False
     )
- 
+
     styled_vulns = (
         vuln_df.style
         .map(severity_color, subset=["Severity"])
@@ -332,18 +350,18 @@ else:
         .map(bool_color,     subset=["Exploit", "Patch"])
         .format({"CVSS": "{:.1f}"})
     )
- 
+
     st.dataframe(
         styled_vulns,
         hide_index=True,
         use_container_width=False,
         height=min(80 + len(vuln_rows) * 38, 400),
     )
- 
+
     # Quick vuln summary below the table
     exploit_count   = sum(1 for v in vulns if v.get("exploit_available"))
     unpatched_count = sum(1 for v in vulns if not v.get("patch_available"))
- 
+
     vc1, vc2, vc3 = st.columns(3)
     with vc1:
         st.metric("Total CVEs",      len(vulns))
@@ -351,16 +369,16 @@ else:
         st.metric("Active Exploits", exploit_count)
     with vc3:
         st.metric("Unpatched",       unpatched_count)
- 
+
 st.divider()
- 
+
 # ─── RISK SCORE BREAKDOWN ────────────────────────────────────────────────────
 st.markdown("#### 📊 Risk Score Breakdown")
 st.markdown(
     "<p style='color:#94A3B8; font-size:13px;'>How the risk score is calculated:</p>",
     unsafe_allow_html=True
 )
- 
+
 # Show a visual progress bar for the overall risk score
 score_color = (
     "#EF4444" if risk_score >= 80 else
@@ -368,7 +386,7 @@ score_color = (
     "#F59E0B" if risk_score >= 40 else
     "#10B981"
 )
- 
+
 st.markdown(
     f"""
     <div style='background:#1E293B; border-radius:10px; padding:16px;'>
@@ -392,9 +410,9 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
- 
+
 st.markdown("")
- 
+
 # Show contributing factors
 factors = []
 if asset.get("internet_exposed"):
@@ -409,7 +427,7 @@ if unpatched_count > 0 if vulns else False:
                     f"{unpatched_count} CVE(s) with no patch available",                   "#F59E0B"))
 if owner.get("status") == "orphan":
     factors.append(("👻 No Owner",            "Unowned assets are rarely monitored",       "#F97316"))
- 
+
 if factors:
     st.markdown(
         "<p style='color:#94A3B8; font-size:13px; margin-top:12px;'>"
@@ -424,5 +442,91 @@ if factors:
             f"<span style='color:{color}; font-weight:600;'>{icon_label}</span>"
             f"<span style='color:#94A3B8; font-size:13px;'>{desc}</span>"
             f"</div>",
+            unsafe_allow_html=True
+        )
+
+# ─── ML ANALYSIS SECTION ─────────────────────────────────────────────────────
+if ml_analysis:
+    st.divider()
+    st.markdown("#### 🤖 ML Analysis — Feature Breakdown")
+    st.markdown(
+        f"<p style='color:#94A3B8; font-size:13px;'>"
+        f"Model confidence: <b style='color:#F8FAFC'>"
+        f"{ml_analysis.get('confidence', 0)*100:.1f}%</b> — "
+        f"top features that drove the risk score:</p>",
+        unsafe_allow_html=True
+    )
+
+    top_features = ml_analysis.get("top_features", [])
+    for feat in top_features:
+        importance = feat.get("importance", 0)
+        bar_width  = int(importance * 400)  # scale to pixels
+        feat_color = (
+            "#EF4444" if importance > 0.20 else
+            "#F97316" if importance > 0.12 else
+            "#F59E0B" if importance > 0.06 else
+            "#10B981"
+        )
+        st.markdown(
+            f"""
+            <div style='margin-bottom:8px;'>
+                <div style='display:flex; justify-content:space-between;
+                            margin-bottom:3px;'>
+                    <span style='color:#94A3B8; font-size:12px;
+                                 font-family:monospace;'>
+                        {feat['feature']}
+                    </span>
+                    <span style='color:#F8FAFC; font-size:12px;'>
+                        value: {feat['value']} &nbsp;|&nbsp;
+                        weight: {importance:.4f}
+                    </span>
+                </div>
+                <div style='background:#1E293B; border-radius:4px; height:8px;'>
+                    <div style='background:{feat_color};
+                                width:{min(bar_width, 400)}px;
+                                height:8px; border-radius:4px;'></div>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+# ─── RECOMMENDATIONS SECTION ──────────────────────────────────────────────────
+if recommendations:
+    st.divider()
+    st.markdown("#### 🛡️ Recommended Actions")
+    st.markdown(
+        "<p style='color:#94A3B8; font-size:13px;'>"
+        "Prioritised remediation steps based on ML risk analysis:</p>",
+        unsafe_allow_html=True
+    )
+
+    priority_colors = {
+        "CRITICAL": "#EF4444",
+        "HIGH":     "#F97316",
+        "MEDIUM":   "#F59E0B",
+        "LOW":      "#10B981",
+    }
+
+    for i, rec in enumerate(recommendations, 1):
+        priority = rec.get("priority", "LOW")
+        color    = priority_colors.get(priority, "#10B981")
+        st.markdown(
+            f"""
+            <div style='display:flex; align-items:flex-start; gap:12px;
+                        padding:12px; background:#1E293B;
+                        border-left:4px solid {color};
+                        border-radius:6px; margin-bottom:8px;'>
+                <span style='background:{color}22; color:{color};
+                             font-size:11px; font-weight:700;
+                             padding:2px 8px; border-radius:4px;
+                             white-space:nowrap;'>
+                    {priority}
+                </span>
+                <span style='color:#CBD5E1; font-size:13px;'>
+                    {rec.get("action", "")}
+                </span>
+            </div>
+            """,
             unsafe_allow_html=True
         )
