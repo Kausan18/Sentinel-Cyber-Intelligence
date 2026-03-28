@@ -1,27 +1,27 @@
 {
-  "trained_at": "2026-03-19T22:59:03.438306",
-  "n_assets": 100,
+  "trained_at": "2026-03-28T23:36:32.964537",
+  "n_assets": 300,
   "regression": {
-    "mae": 1.8232,
-    "rmse": 2.5672,
-    "r2": 0.9685
+    "mae": 3.0784,
+    "rmse": 5.5986,
+    "r2": 0.952
   },
   "classification": {
-    "accuracy": 0.95
+    "accuracy": 0.8167
   },
   "feature_importance": {
-    "internet_exposed": 0.2463,
-    "max_cvss": 0.1642,
-    "exploit_available": 0.1556,
-    "cvss_score": 0.1472,
-    "criticality_encoded": 0.083,
-    "avg_cvss": 0.0689,
-    "is_high_criticality": 0.0573,
-    "days_since_scan": 0.0414,
-    "environment_encoded": 0.0223,
+    "criticality_encoded": 0.2509,
+    "is_high_criticality": 0.244,
+    "max_cvss": 0.1133,
+    "cvss_score": 0.1094,
+    "exploit_available": 0.0912,
+    "days_since_scan": 0.0474,
+    "avg_cvss": 0.0395,
+    "environment_encoded": 0.0391,
+    "internet_exposed": 0.0252,
+    "patch_available": 0.0203,
     "vuln_count": 0.0116,
-    "patch_available": 0.0022,
-    "has_critical_unpatched": 0.0,
-    "exploit_unpatched_count": 0.0
+    "exploit_unpatched_count": 0.0076,
+    "has_critical_unpatched": 0.0006
   }
 }
