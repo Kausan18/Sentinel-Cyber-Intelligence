@@ -13,6 +13,8 @@ from sqlalchemy import (
     Date,                 # date only column type
     ForeignKey,           # links one table to another
 )
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
 from sqlalchemy.orm import (
     declarative_base,     # base class all models inherit from
     sessionmaker,         # creates database sessions
@@ -240,6 +242,45 @@ class Owner(Base):
             "email":  self.email,
             "status": self.status,
         }
+
+
+class UserRole(Base):
+    """
+    Maps Supabase authentication user_id to an application role.
+    Every authenticated user gets exactly one role: admin, analyst, or viewer.
+    This table is the source of truth for role-based access control (RBAC).
+    """
+    __tablename__ = "user_roles"
+
+    # UUID primary key — same UUID format as Supabase uses for user_id
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+
+    # Supabase user UUID — link to the authenticated user in Supabase Auth
+    # Must be unique because each user should have exactly one role
+    user_id = Column(UUID(as_uuid=True), nullable=False, unique=True, index=True)
+
+    # Role assignment: "admin", "analyst", or "viewer"
+    # This controls what endpoints and data the user can access
+    role = Column(String(20), nullable=False)  # admin / analyst / viewer
+
+    # Email associated with this user (stored for reference)
+    email = Column(String(255), nullable=True)
+
+    # When this role was assigned
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # When this role was last updated
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    def to_dict(self):
+        return {
+            "id":         str(self.id),
+            "user_id":    str(self.user_id),
+            "role":       self.role,
+            "email":      self.email,
+            "created_at": str(self.created_at) if self.created_at else None,
+            "updated_at": str(self.updated_at) if self.updated_at else None,
+        }
  
  
 # ─── Step 7: Dependency for FastAPI ──────────────────────────────────────────
@@ -273,7 +314,7 @@ def create_tables():
     """
     Base.metadata.create_all(bind=engine)
     print("✅ All tables created successfully in Supabase!")
-    print("   Tables: assets, vulnerabilities, owners")
+    print("   Tables: assets, vulnerabilities, owners, user_roles")
  
  
 # ─── Run directly to create tables ───────────────────────────────────────────
