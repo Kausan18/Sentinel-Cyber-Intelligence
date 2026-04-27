@@ -13,6 +13,7 @@ Asset Detail Page
 import streamlit as st
 import requests
 import pandas as pd
+import sys, os
 
 # ─── CONFIG ──────────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -21,7 +22,11 @@ st.set_page_config(
     layout="wide"
 )
 
-API = "http://127.0.0.1:8000"
+# ── shared auth ───────────────────────────────────────────────────────────────
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+from auth_utils import require_auth, get_auth_headers, API
+
+require_auth()
 
 # ─── SIDEBAR ─────────────────────────────────────────────────────────────────
 with st.sidebar:
@@ -67,15 +72,18 @@ st.markdown("""
 
 # ─── HELPER FUNCTIONS ────────────────────────────────────────────────────────
 
-def fetch_asset(asset_id):
-    """Fetch full asset detail including CVEs from FastAPI."""
+def fetch_asset(asset_id: str, token: str):
+    """Fetch full asset detail including ML analysis from FastAPI."""
     try:
         response = requests.get(
             f"{API}/analyze/{asset_id.strip()}",
+            headers={"Authorization": f"Bearer {token}"},
             timeout=15
         )
         if response.status_code == 200:
             return response.json(), None
+        elif response.status_code == 401:
+            return None, "Session expired — please log out and log back in."
         elif response.status_code == 404:
             return None, f"Asset '{asset_id}' not found."
         return None, f"API error {response.status_code}"
@@ -85,13 +93,13 @@ def fetch_asset(asset_id):
         return None, "Request timed out."
 
 
-@st.cache_data(ttl=120)
-def fetch_all_asset_ids():
+def fetch_all_asset_ids(token: str):
     """Fetch just asset IDs for the dropdown selector."""
     try:
         response = requests.get(
             f"{API}/assets",
             params={"slim": True},
+            headers={"Authorization": f"Bearer {token}"},
             timeout=30
         )
         if response.status_code == 200:
@@ -149,10 +157,6 @@ st.markdown(
 st.divider()
 
 # ─── ASSET SELECTOR ───────────────────────────────────────────────────────────
-# Two ways to find an asset:
-# 1. Type the ID directly
-# 2. Pick from the dropdown
-
 col_input, col_or, col_select = st.columns([3, 1, 3])
 
 with col_input:
@@ -169,7 +173,7 @@ with col_or:
     )
 
 with col_select:
-    all_ids = fetch_all_asset_ids()
+    all_ids = fetch_all_asset_ids(st.session_state["jwt"])
     if all_ids:
         selected_id = st.selectbox(
             "Pick from list",
@@ -187,14 +191,12 @@ if not asset_id:
     st.stop()
 
 # ─── FETCH ASSET ─────────────────────────────────────────────────────────────
-# /analyze returns: {asset: {...}, ml_analysis: {...}, recommendations: [...]}
-response_data, error = fetch_asset(asset_id)
+response_data, error = fetch_asset(asset_id, st.session_state["jwt"])
 
 if error:
     st.error(f"❌ {error}")
     st.stop()
 
-# Split the response into its three parts
 asset           = response_data.get("asset", {})
 ml_analysis     = response_data.get("ml_analysis", {})
 recommendations = response_data.get("recommendations", [])
@@ -227,88 +229,98 @@ with header_col2:
     )
 
 with header_col3:
-    exposed     = asset.get("internet_exposed", False)
-    exp_label   = "🌐 Internet Exposed" if exposed else "🔒 Internal Only"
-    exp_color   = "#EF4444" if exposed else "#10B981"
     st.markdown(
         f"<div class='info-card'>"
-        f"<div class='info-label'>Exposure</div>"
-        f"<div class='info-value' style='color:{exp_color}'>{exp_label}</div>"
+        f"<div class='info-label'>Environment</div>"
+        f"<div class='info-value'>{asset.get('environment', '—')}</div>"
         f"</div>",
         unsafe_allow_html=True
     )
 
 with header_col4:
-    owner_status = owner.get("status", "orphan")
-    badge_class  = "badge-assigned" if owner_status == "assigned" else "badge-orphan"
+    exposed = asset.get("internet_exposed", False)
     st.markdown(
         f"<div class='info-card'>"
-        f"<div class='info-label'>Owner Status</div>"
-        f"<div style='margin-top:6px'>"
-        f"<span class='{badge_class}'>{owner_status.upper()}</span>"
-        f"</div></div>",
+        f"<div class='info-label'>Internet Exposed</div>"
+        f"<div class='info-value'>{'🌐 Yes' if exposed else '🔒 No'}</div>"
+        f"</div>",
         unsafe_allow_html=True
     )
 
 st.divider()
 
-# ─── DETAILS SECTION ─────────────────────────────────────────────────────────
+# ─── ASSET DETAILS ────────────────────────────────────────────────────────────
+st.markdown("#### 🖥️ Asset Information")
+
 detail_col1, detail_col2 = st.columns(2)
 
 with detail_col1:
-    st.markdown("#### 🖥️ Asset Information")
+    os_info = asset.get("os") or {}
+    sw_info = asset.get("software") or {}
 
-    fields = [
-        ("Asset ID",      asset.get("asset_id", "—")),
-        ("Asset Type",    asset.get("asset_type", "—")),
-        ("Environment",   asset.get("environment", "—")),
-        ("Criticality",   asset.get("criticality", "—")),
-        ("IP Address",    asset.get("ip_address", "—")),
-        ("Domain",        asset.get("domain", "—")),
-        ("OS",            f"{asset.get('os', {}).get('name', '')} "
-                          f"{asset.get('os', {}).get('version', '')}".strip() or "—"),
-        ("Software",      f"{asset.get('software', {}).get('name', '')} "
-                          f"{asset.get('software', {}).get('version', '')}".strip() or "—"),
-        ("Last Scanned",  asset.get("last_scan_date", "—") or "—"),
-    ]
-
-    for label, value in fields:
-        st.markdown(
-            f"<div style='display:flex; justify-content:space-between; "
-            f"padding:8px 0; border-bottom:1px solid #1E293B;'>"
-            f"<span style='color:#94A3B8; font-size:13px;'>{label}</span>"
-            f"<span style='color:#F8FAFC; font-size:13px; font-weight:600;'>{value}</span>"
-            f"</div>",
-            unsafe_allow_html=True
-        )
+    st.markdown(
+        f"<div class='info-card'>"
+        f"<div class='info-label'>IP Address</div>"
+        f"<div class='info-value'>{asset.get('ip_address', '—')}</div>"
+        f"<div class='info-label' style='margin-top:10px;'>Domain</div>"
+        f"<div class='info-value'>{asset.get('domain', '—')}</div>"
+        f"<div class='info-label' style='margin-top:10px;'>Criticality</div>"
+        f"<div class='info-value'>{asset.get('criticality', '—')}</div>"
+        f"</div>",
+        unsafe_allow_html=True
+    )
 
 with detail_col2:
-    st.markdown("#### 👤 Owner Information")
+    st.markdown(
+        f"<div class='info-card'>"
+        f"<div class='info-label'>Operating System</div>"
+        f"<div class='info-value'>"
+        f"{os_info.get('name', '—')} {os_info.get('version', '')}</div>"
+        f"<div class='info-label' style='margin-top:10px;'>Software</div>"
+        f"<div class='info-value'>"
+        f"{sw_info.get('name', '—')} v{sw_info.get('version', '—')}</div>"
+        f"<div class='info-label' style='margin-top:10px;'>Last Scan</div>"
+        f"<div class='info-value'>{asset.get('last_scan_date', '—')}</div>"
+        f"</div>",
+        unsafe_allow_html=True
+    )
 
-    if owner and owner.get("status") == "assigned":
-        owner_fields = [
-            ("Team",   owner.get("team", "—") or "—"),
-            ("Email",  owner.get("email", "—") or "—"),
-            ("Status", "Assigned ✅"),
-        ]
-        for label, value in owner_fields:
-            st.markdown(
-                f"<div style='display:flex; justify-content:space-between; "
-                f"padding:8px 0; border-bottom:1px solid #1E293B;'>"
-                f"<span style='color:#94A3B8; font-size:13px;'>{label}</span>"
-                f"<span style='color:#F8FAFC; font-size:13px; font-weight:600;'>{value}</span>"
-                f"</div>",
-                unsafe_allow_html=True
-            )
-    else:
-        st.markdown("""
-        <div style='background:#450A0A; border:1px solid #7F1D1D;
-                    border-radius:10px; padding:16px; margin-top:8px;'>
-            <p style='color:#FCA5A5; font-weight:600; margin:0;'>
-                ⚠️ Orphan Asset
-            </p>
-            <p style='color:#FCA5A5; font-size:13px; margin-top:6px;'>
-                No team has been assigned ownership of this asset.
+# ─── OWNER SECTION ────────────────────────────────────────────────────────────
+st.markdown("#### 👤 Owner Information")
+
+owner_status = owner.get("status", "orphan")
+owner_badge  = (
+    f"<span class='badge-orphan'>👻 Orphan</span>"
+    if owner_status == "orphan"
+    else f"<span class='badge-assigned'>✅ Assigned</span>"
+)
+
+st.markdown(
+    f"<div class='info-card'>"
+    f"<div style='display:flex; align-items:center; gap:12px;'>"
+    f"<div>"
+    f"<div class='info-label'>Status</div>"
+    f"<div style='margin-top:4px'>{owner_badge}</div>"
+    f"</div>"
+    f"<div style='margin-left:24px;'>"
+    f"<div class='info-label'>Team</div>"
+    f"<div class='info-value'>{owner.get('team', '—') or '—'}</div>"
+    f"</div>"
+    f"<div style='margin-left:24px;'>"
+    f"<div class='info-label'>Email</div>"
+    f"<div class='info-value'>{owner.get('email', '—') or '—'}</div>"
+    f"</div>"
+    f"</div>"
+    f"</div>",
+    unsafe_allow_html=True
+)
+
+if owner_status == "orphan":
+    st.markdown("""
+        <div style='background:#1C0A0A; border:1px solid #7F1D1D;
+                    border-radius:8px; padding:12px; margin-top:8px;'>
+            <p style='color:#FCA5A5; margin:0; font-size:13px;'>
+                ⚠️ <b>No owner assigned.</b>
                 This is a security risk — unowned assets may not be
                 monitored or patched regularly.
             </p>
@@ -325,23 +337,20 @@ st.markdown(f"#### 🐛 Vulnerabilities ({len(vulns)} CVEs detected)")
 if not vulns:
     st.success("✅ No vulnerabilities detected for this asset.")
 else:
-    # Build CVE table
     vuln_rows = []
     for v in vulns:
         vuln_rows.append({
-            "CVE ID":     v.get("cve", ""),
-            "Severity":   v.get("severity", "Unknown"),
-            "CVSS":       v.get("cvss_score") or 0.0,
-            "Exploit":    "✅ Yes" if v.get("exploit_available") else "❌ No",
-            "Patch":      "✅ Yes" if v.get("patch_available") else "❌ No",
+            "CVE ID":      v.get("cve", ""),
+            "Severity":    v.get("severity", "Unknown"),
+            "CVSS":        v.get("cvss_score") or 0.0,
+            "Exploit":     "✅ Yes" if v.get("exploit_available") else "❌ No",
+            "Patch":       "✅ Yes" if v.get("patch_available") else "❌ No",
             "Description": v.get("description", "")[:100] + "..."
                            if len(v.get("description", "")) > 100
                            else v.get("description", ""),
         })
 
-    vuln_df = pd.DataFrame(vuln_rows).sort_values(
-        "CVSS", ascending=False
-    )
+    vuln_df = pd.DataFrame(vuln_rows).sort_values("CVSS", ascending=False)
 
     styled_vulns = (
         vuln_df.style
@@ -358,7 +367,6 @@ else:
         height=min(80 + len(vuln_rows) * 38, 400),
     )
 
-    # Quick vuln summary below the table
     exploit_count   = sum(1 for v in vulns if v.get("exploit_available"))
     unpatched_count = sum(1 for v in vulns if not v.get("patch_available"))
 
@@ -379,7 +387,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Show a visual progress bar for the overall risk score
 score_color = (
     "#EF4444" if risk_score >= 80 else
     "#F97316" if risk_score >= 60 else
@@ -413,16 +420,15 @@ st.markdown(
 
 st.markdown("")
 
-# Show contributing factors
 factors = []
 if asset.get("internet_exposed"):
     factors.append(("🌐 Internet Exposed",    "High impact — publicly reachable surface", "#EF4444"))
 if asset.get("criticality") == "High":
     factors.append(("🔑 High Criticality",    "Business-critical asset",                  "#F97316"))
-if exploit_count > 0 if vulns else False:
+if vulns and exploit_count > 0:
     factors.append(("💥 Active Exploits",
                     f"{exploit_count} CVE(s) with known exploits in the wild",             "#EF4444"))
-if unpatched_count > 0 if vulns else False:
+if vulns and unpatched_count > 0:
     factors.append(("🩹 Unpatched CVEs",
                     f"{unpatched_count} CVE(s) with no patch available",                   "#F59E0B"))
 if owner.get("status") == "orphan":
@@ -460,7 +466,7 @@ if ml_analysis:
     top_features = ml_analysis.get("top_features", [])
     for feat in top_features:
         importance = feat.get("importance", 0)
-        bar_width  = int(importance * 400)  # scale to pixels
+        bar_width  = int(importance * 400)
         feat_color = (
             "#EF4444" if importance > 0.20 else
             "#F97316" if importance > 0.12 else

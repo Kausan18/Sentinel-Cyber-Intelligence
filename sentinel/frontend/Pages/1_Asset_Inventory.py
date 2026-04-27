@@ -1,16 +1,19 @@
-
 import streamlit as st
 import requests
 import pandas as pd
+import sys, os
 
-# ─── CONFIG ──────────────────────────────────────────────────────────────────
+# ── shared auth ───────────────────────────────────────────────────────────────
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+from auth_utils import require_auth, get_auth_headers, API
+
 st.set_page_config(
     page_title="Asset Inventory — Sentinel",
     page_icon="📋",
     layout="wide"
 )
 
-API = "http://127.0.0.1:8000"
+require_auth()   # ← redirects to login if no JWT
 
 # ─── SIDEBAR ─────────────────────────────────────────────────────────────────
 with st.sidebar:
@@ -79,12 +82,10 @@ st.markdown("""
 
 # ─── HELPER FUNCTIONS ────────────────────────────────────────────────────────
 
-@st.cache_data(ttl=60)
-def fetch_assets(environment=None, criticality=None,
+def fetch_assets(token: str, environment=None, criticality=None,
                  internet_exposed=None, owner_status=None):
     """Fetch assets from FastAPI with optional filters."""
     try:
-        # Build params dict — only include filters that are set
         params = {}
         if environment and environment != "All":
             params["environment"] = environment
@@ -98,11 +99,19 @@ def fetch_assets(environment=None, criticality=None,
         if owner_status and owner_status != "All":
             params["owner_status"] = owner_status
 
-        params["slim"] = True   # skip loading CVEs for speed
-        response = requests.get(f"{API}/assets", params=params, timeout=30)
+        params["slim"] = True
+
+        response = requests.get(
+            f"{API}/assets",
+            params=params,
+            headers={"Authorization": f"Bearer {token}"},
+            timeout=30
+        )
 
         if response.status_code == 200:
             return response.json(), None
+        if response.status_code == 401:
+            return None, "Session expired — please log out and log back in."
         return None, f"API error {response.status_code}"
 
     except requests.exceptions.ConnectionError:
@@ -231,6 +240,7 @@ with st.expander("🔍 Filters", expanded=True):
 # When filters change, Streamlit reruns the page automatically
 # so this fetch always uses the latest filter values
 data, error = fetch_assets(
+    st.session_state["jwt"],
     environment=environment,
     criticality=criticality,
     internet_exposed=internet_exposed,
