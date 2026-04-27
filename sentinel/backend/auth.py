@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()  # MUST be before any os.environ.get() calls
+
 """
 auth.py — Standalone auth helpers (optional import).
 

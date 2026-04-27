@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()  # MUST be before any os.environ.get() calls
+
 # ─── PART 1: IMPORTS ─────────────────────────────────────────────────────────
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -30,7 +33,25 @@ collection = chroma_client.get_or_create_collection(name="cyber_assets")
 
 # ─── PART 2B: AUTH SETUP ─────────────────────────────────────────────────────
 
-SUPABASE_JWT_SECRET = os.environ.get("SUPABASE_JWT_SECRET", "")
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
+SUPABASE_JWT_SECRET = os.environ.get("SUPABASE_JWT_SECRET", "")  # kept for reference
+
+# Supabase now uses ES256 (asymmetric) — verify via JWKS public key endpoint
+import requests as _req
+import json as _json
+from jose import jwt as _jose_jwt
+from jose.exceptions import JWTError as _JWTError
+
+def _get_supabase_public_key(kid: str):
+    """Fetch the public key from Supabase JWKS endpoint matching the token kid."""
+    jwks_url = f"{SUPABASE_URL}/auth/v1/.well-known/jwks.json"
+    resp = _req.get(jwks_url, timeout=10)
+    resp.raise_for_status()
+    keys = resp.json().get("keys", [])
+    for key in keys:
+        if key.get("kid") == kid:
+            return key
+    raise HTTPException(status_code=401, detail="No matching public key found")
 
 bearer_scheme = HTTPBearer()
 
@@ -38,20 +59,31 @@ bearer_scheme = HTTPBearer()
 def decode_jwt(token: str) -> dict:
     """
     Validate and decode a Supabase-issued JWT.
-    verify_aud=False is REQUIRED — Supabase does not set the 'aud' claim.
+    Supabase uses ES256 (asymmetric) — we verify using the JWKS public key.
     """
     try:
-        payload = pyjwt.decode(
+        # Get the kid from the token header to find the right public key
+        import base64 as _b64, json as _json
+        header_part = token.split(".")[0]
+        header = _json.loads(_b64.b64decode(header_part + "=="))
+        kid = header.get("kid", "")
+        alg = header.get("alg", "ES256")
+
+        public_key = _get_supabase_public_key(kid)
+
+        payload = _jose_jwt.decode(
             token,
-            SUPABASE_JWT_SECRET,
-            algorithms=["HS256"],
+            public_key,
+            algorithms=[alg],
             options={"verify_aud": False},
         )
         return payload
-    except pyjwt.ExpiredSignatureError:
-        raise HTTPException(status_code=401, detail="Token expired — please log in again")
-    except pyjwt.InvalidTokenError:
-        raise HTTPException(status_code=401, detail="Invalid token")
+    except _JWTError as e:
+        raise HTTPException(status_code=401, detail=f"Token invalid: {str(e)}")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=f"Auth error: {str(e)}")
 
 
 def get_current_user(
