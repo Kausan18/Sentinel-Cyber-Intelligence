@@ -35,12 +35,26 @@ with st.sidebar:
         st.rerun()
 
     st.divider()
-    st.markdown(
-        "<p style='color:#94A3B8; font-size:12px;'>"
-        "Powered by Phi3 running locally via Ollama.<br>"
-        "Context retrieved from ChromaDB.</p>",
-        unsafe_allow_html=True
-    )
+    # Show which AI backend is currently active
+    if "last_llm_backend" in st.session_state and st.session_state["last_llm_backend"]:
+        b = st.session_state["last_llm_backend"]
+        if b.startswith("groq"):
+            badge = "🟢 Groq (cloud)"
+            color = "#10B981"
+        else:
+            badge = "🟡 Ollama (local fallback)"
+            color = "#F59E0B"
+        st.markdown(
+            f"<p style='color:{color}; font-size:12px;'>AI backend: <b>{badge}</b></p>",
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            "<p style='color:#94A3B8; font-size:12px;'>"
+            "AI: Groq (primary) → Ollama (fallback)<br>"
+            "Context retrieved from ChromaDB.</p>",
+            unsafe_allow_html=True,
+        )
 
 # ─── CUSTOM CSS ───────────────────────────────────────────────────────────────
 st.markdown("""
@@ -78,22 +92,31 @@ st.markdown("""
 # ─── HELPER FUNCTION ─────────────────────────────────────────────────────────
 
 def ask_ai(question: str, token: str):
+    # ─── FIX: Changed from GET to POST to match backend endpoint change.
+    # GET requests can be silently cached by browsers and proxies, causing
+    # the same question to return a stale response (or nothing at all).
+    # POST is never cached, so every question hits the backend fresh.
     try:
-        response = requests.get(
+        response = requests.post(
             f"{API}/ask",
-            params={"question": question},
+            json={"question": question},
             headers={"Authorization": f"Bearer {token}"},
-            timeout=60
+            timeout=90,   # Groq is fast but allow headroom for cold starts
         )
         if response.status_code == 200:
-            return response.json().get("response", "No response received."), None
+            data    = response.json()
+            backend = data.get("rag_debug", {}).get("llm_backend", "")
+            return data.get("response", "No response received."), None, backend
         if response.status_code == 401:
-            return None, "Session expired — please log out and log back in."
-        return None, f"API error {response.status_code}"
+            return None, "Session expired — please log out and log back in.", ""
+        if response.status_code == 502:
+            detail = response.json().get("detail", "AI service unavailable.")
+            return None, f"AI error: {detail}", ""
+        return None, f"API error {response.status_code}: {response.text[:200]}", ""
     except requests.exceptions.ConnectionError:
-        return None, "Backend not running."
+        return None, "Cannot reach backend. Make sure the server is running.", ""
     except requests.exceptions.Timeout:
-        return None, "AI took too long. Try a simpler question."
+        return None, "AI took too long to respond. Please try again.", ""
 
 
 # ─── PAGE HEADER ─────────────────────────────────────────────────────────────
@@ -120,12 +143,17 @@ suggestions = [
     "Which assets should I patch immediately?",
 ]
 
+# ─── FIX: Suggestion buttons now trigger st.rerun() immediately after
+# setting pending_question. This stops the page from continuing into the
+# chat processing block in the same render pass, which was causing
+# double-display of user messages and occasional blank AI responses.
 sug_col1, sug_col2 = st.columns(2)
 for i, suggestion in enumerate(suggestions):
     col = sug_col1 if i % 2 == 0 else sug_col2
     with col:
         if st.button(suggestion, key=f"sug_{i}"):
             st.session_state.pending_question = suggestion
+            st.rerun()   # ← stop here; process on next render pass
 
 st.divider()
 
@@ -174,12 +202,14 @@ if question_to_process:
     )
 
     with st.spinner("🤖 Sentinel AI is thinking..."):
-        answer, error = ask_ai(question_to_process, st.session_state["jwt"])
+        answer, error, backend = ask_ai(question_to_process, st.session_state["jwt"])
 
     if error:
         st.error(f"❌ {error}")
         st.session_state.chat_history.pop()
     else:
+        if backend:
+            st.session_state["last_llm_backend"] = backend
         st.session_state.chat_history.append({
             "role": "assistant", "content": answer
         })

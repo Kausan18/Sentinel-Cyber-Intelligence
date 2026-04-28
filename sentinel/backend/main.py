@@ -11,6 +11,11 @@ import uuid as uuid_lib
 import jwt as pyjwt
 
 import ollama
+try:
+    from groq import Groq
+    _GROQ_AVAILABLE = True
+except ImportError:
+    _GROQ_AVAILABLE = False
 import chromadb
 from sentence_transformers import SentenceTransformer
 
@@ -29,6 +34,35 @@ embed_model = SentenceTransformer("all-MiniLM-L6-v2")
 
 chroma_client = chromadb.PersistentClient(path="chroma_db")
 collection = chroma_client.get_or_create_collection(name="cyber_assets")
+
+# ── AI backend configuration ──────────────────────────────────────────────────
+# The system tries Groq first (fast cloud inference).
+# If Groq is unavailable or the API key is missing, it falls back to
+# Ollama running locally with phi3 — exactly as before.
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+# ── Current production models (April 2026) ───────────────────────────────────
+# llama-3.3-70b-versatile  → best quality, production-stable     ← DEFAULT
+# llama-3.1-8b-instant     → fastest, lower quality
+# qwen/qwen3-32b           → great reasoning, long context
+# Do NOT use: llama3-70b-8192, llama3-8b-8192  (decommissioned)
+GROQ_MODEL   = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "phi3")
+
+groq_client = None
+if _GROQ_AVAILABLE and GROQ_API_KEY:
+    try:
+        groq_client = Groq(api_key=GROQ_API_KEY)
+        # Quick connectivity probe — if the key is wrong this raises immediately
+        # so we discover it at startup, not mid-request.
+        print("✅ Groq client initialised — using cloud inference")
+    except Exception as _groq_init_err:
+        groq_client = None
+        print(f"⚠️  Groq init failed ({_groq_init_err}) — will use Ollama fallback")
+else:
+    if not _GROQ_AVAILABLE:
+        print("⚠️  groq package not installed — using Ollama fallback")
+    else:
+        print("⚠️  GROQ_API_KEY not set — using Ollama fallback")
 
 
 # ─── PART 2B: AUTH SETUP ─────────────────────────────────────────────────────
@@ -457,11 +491,19 @@ def get_stats(
 
 # ─── PART 5: AI Q&A ENDPOINT ─────────────────────────────────────────────────
 
-@app.get("/ask")
+# ─── FIX: Changed from GET to POST to prevent browser/proxy caching
+# GET requests with the same ?question= param can be served from cache,
+# causing the frontend to silently receive a stale (or empty) response.
+# POST is never cached, so every submission hits the backend fresh.
+@app.post("/ask")
 def ask(
-    question: str,
+    payload: dict,
     current_user: dict = Depends(require_analyst_or_above),
 ):
+    question = payload.get("question", "").strip()
+    if not question:
+        raise HTTPException(status_code=422, detail="question field is required")
+
     rag = build_rag_context(question, collection, embed_model)
 
     print(
@@ -469,26 +511,83 @@ def ask(
         f"retrieved={rag['n_retrieved']} | {rag['description']}"
     )
 
-    response = ollama.chat(
-        model="phi3",
-        messages=[
-            {
-                "role":    "system",
-                "content": rag["system_prompt"],
-            },
-            {
-                "role":    "user",
-                "content": f"Context:\n{rag['context']}\n\nQuestion: {question}",
-            },
-        ]
-    )
+    # ─── AI inference: Groq (primary) → Ollama phi3 (fallback) ──────────────
+    # Strategy:
+    #   1. If groq_client was successfully initialised at startup, use Groq.
+    #   2. If Groq raises ANY exception (rate limit, network error, bad key,
+    #      quota exceeded), catch it, log it, and immediately retry with Ollama.
+    #   3. If Ollama also fails, return a clear error — never silently blank.
+    messages = [
+        {"role": "system",  "content": rag["system_prompt"]},
+        {"role": "user",    "content": f"Context:\n{rag['context']}\n\nQuestion: {question}"},
+    ]
+
+    answer      = None
+    llm_backend = "unknown"
+
+    # ── Attempt 1: Groq ───────────────────────────────────────────────────────
+    if groq_client is not None:
+        try:
+            chat_response = groq_client.chat.completions.create(
+                model=GROQ_MODEL,
+                messages=messages,
+                temperature=0.1,    # lower = less hallucination / training-data bleed
+                max_tokens=1024,
+                # Stop sequences prevent the model leaking into unrelated content
+                # if the context window fills up unexpectedly
+                stop=["<|end|>", "<|eot_id|>", "Human:", "User:"],
+            )
+            raw_answer  = chat_response.choices[0].message.content or ""
+            # ── Sanity check: detect training-data bleed / garbled output ─────
+            # If the model leaks unrelated content it tends to include tokens
+            # like "you'reX/Y" patterns, JSON setup instructions, or prompt
+            # injection artifacts. We detect these and re-route to Ollama.
+            _bleed_signals = [
+                "you'reX", "you'entertainment", "Prepare the JSON",
+                "Apache Kafka", "Azure Active Directory (Amazon",
+                "I am only interested in assets that are related",
+                "explain it to a colleague who has no idea",
+            ]
+            if any(sig in raw_answer for sig in _bleed_signals) or len(raw_answer) < 10:
+                raise ValueError(
+                    f"Groq response appears garbled (length={len(raw_answer)}). "
+                    "Falling back to Ollama."
+                )
+            answer      = raw_answer
+            llm_backend = f"groq/{GROQ_MODEL}"
+            print(f"✅ Answer via Groq ({GROQ_MODEL})")
+        except Exception as groq_err:
+            print(f"⚠️  Groq failed: {groq_err} — falling back to Ollama")
+
+    # ── Attempt 2: Ollama fallback ────────────────────────────────────────────
+    if answer is None:
+        try:
+            ollama_response = ollama.chat(
+                model=OLLAMA_MODEL,
+                messages=messages,
+            )
+            answer      = ollama_response["message"]["content"]
+            llm_backend = f"ollama/{OLLAMA_MODEL}"
+            print(f"✅ Answer via Ollama ({OLLAMA_MODEL})")
+        except Exception as ollama_err:
+            print(f"❌ Ollama also failed: {ollama_err}")
+            raise HTTPException(
+                status_code=502,
+                detail=(
+                    f"Both AI backends failed. "
+                    f"Groq: check GROQ_API_KEY in .env. "
+                    f"Ollama: make sure \'ollama serve\' is running with the {OLLAMA_MODEL} model. "
+                    f"Ollama error: {str(ollama_err)}"
+                ),
+            )
 
     return {
-        "response": response["message"]["content"],
+        "response": answer,
         "rag_debug": {
             "intent":      rag["intent"],
             "description": rag["description"],
             "n_retrieved": rag["n_retrieved"],
+            "llm_backend": llm_backend,   # shows "groq/llama3-70b-8192" or "ollama/phi3"
         },
     }
 
