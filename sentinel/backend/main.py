@@ -5,7 +5,7 @@ load_dotenv()  # MUST be before any os.environ.get() calls
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload   # ← added joinedload
 import os
 import uuid as uuid_lib
 import jwt as pyjwt
@@ -290,7 +290,14 @@ def get_assets(
     slim:             bool = True,
     current_user: dict = Depends(require_analyst_or_above),
 ):
-    query = db.query(Asset)
+    # ── FIX: eager-load owner + vulnerabilities in ONE query ──────────────────
+    # Without joinedload, SQLAlchemy lazy-loads each relationship separately
+    # inside the loop below — that's 300 extra DB round-trips for 300 assets,
+    # which causes the 30-second timeout Streamlit was hitting.
+    query = db.query(Asset).options(
+        joinedload(Asset.owner),
+        joinedload(Asset.vulnerabilities),
+    )
 
     if environment:
         query = query.filter(Asset.environment == environment)
@@ -349,7 +356,12 @@ def get_asset(
     db: Session = Depends(get_db),
     current_user: dict = Depends(require_analyst_or_above),
 ):
-    asset = db.query(Asset).filter(Asset.asset_id == asset_id).first()
+    asset = (
+        db.query(Asset)
+        .options(joinedload(Asset.owner), joinedload(Asset.vulnerabilities))
+        .filter(Asset.asset_id == asset_id)
+        .first()
+    )
     if not asset:
         raise HTTPException(status_code=404, detail=f"Asset '{asset_id}' not found")
     return asset.to_dict()
@@ -360,8 +372,10 @@ def get_risk_summary(
     db: Session = Depends(get_db),
     current_user: dict = Depends(require_analyst_or_above),
 ):
+    # ── FIX: eager-load relationships so to_dict() doesn't trigger N+1 ────────
     top_assets = (
         db.query(Asset)
+        .options(joinedload(Asset.owner), joinedload(Asset.vulnerabilities))
         .filter(Asset.risk_score != None)
         .order_by(Asset.risk_score.desc())
         .limit(10)
@@ -406,6 +420,7 @@ def get_orphans(
 ):
     orphan_assets = (
         db.query(Asset)
+        .options(joinedload(Asset.owner), joinedload(Asset.vulnerabilities))
         .join(Owner)
         .filter(Owner.status == "orphan")
         .all()
@@ -657,7 +672,12 @@ def analyze_asset(
     db: Session = Depends(get_db),
     current_user: dict = Depends(require_analyst_or_above),
 ):
-    asset = db.query(Asset).filter(Asset.asset_id == asset_id).first()
+    asset = (
+        db.query(Asset)
+        .options(joinedload(Asset.owner), joinedload(Asset.vulnerabilities))
+        .filter(Asset.asset_id == asset_id)
+        .first()
+    )
     if not asset:
         raise HTTPException(status_code=404, detail=f"Asset '{asset_id}' not found")
 
