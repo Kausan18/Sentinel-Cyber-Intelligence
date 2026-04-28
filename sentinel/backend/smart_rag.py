@@ -30,35 +30,36 @@ EXPOSED_KEYWORDS = [
     "facing the internet",
 ]
 
-CVE_KEYWORDS = [
-    # original
-    "cve", "vulnerability", "vulnerabilities", "exploit",
-    "unpatched", "no patch", "missing patch", "cvss",
-    "security flaw", "security issue", "weakness",
-    # ── FIX: added missing terms that users naturally say ────────────────────
-    "dangerous cve", "dangerous vulnerability", "dangerous vuln",
-    "most dangerous", "worst cve", "critical cve", "known exploit",
-    "exploitable", "patch", "patching", "security hole",
-    "attack surface", "attack vector", "exposure",
-]
-
-NVD_KEYWORDS = [
-    "nvd", "real cve", "real vulnerability", "real data",
-    "national vulnerability", "nvd data", "live cve",
-]
-
+# ── FIX: HIGH_RISK_KEYWORDS must be checked BEFORE CVE_KEYWORDS in detect_intent
+# so that "most dangerous CVEs" routes to high-risk intent, not plain CVE search.
 HIGH_RISK_KEYWORDS = [
-    # original
     "patch immediately", "patch first", "fix immediately",
     "most dangerous", "most vulnerable", "top risk", "riskiest",
     "urgent", "should i patch", "what to fix", "priority",
-    # ── FIX: added common phrasing that was being missed ─────────────────────
     "highest risk", "highest score", "highest risk score",
     "most at risk", "biggest risk", "greatest risk",
     "which assets", "what assets", "top assets",
     "should i fix", "need to fix", "fix first",
     "remediate", "remediation", "immediately patch",
     "critical assets", "dangerous assets", "risky assets",
+    # ── FIX: added to catch "most dangerous CVEs / vulns" phrasing ────────────
+    "most dangerous cve", "most dangerous vuln", "worst vulnerability",
+    "worst cve", "critical vulnerability", "top vulnerability",
+    "what should i fix", "what do i fix", "fix urgently",
+]
+
+CVE_KEYWORDS = [
+    "cve", "vulnerability", "vulnerabilities", "exploit",
+    "unpatched", "no patch", "missing patch", "cvss",
+    "security flaw", "security issue", "weakness",
+    "dangerous cve", "dangerous vulnerability", "dangerous vuln",
+    "known exploit", "exploitable", "patch", "patching",
+    "security hole", "attack surface", "attack vector", "exposure",
+]
+
+NVD_KEYWORDS = [
+    "nvd", "real cve", "real vulnerability", "real data",
+    "national vulnerability", "nvd data", "live cve",
 ]
 
 # Maps user-facing words -> exact risk_level values stored in ChromaDB
@@ -99,13 +100,25 @@ def detect_intent(question: str) -> dict:
       String booleans:  {"internet_exposed": "True"}
         Note: ingest.py stores booleans as "True"/"False" strings
               because ChromaDB metadata only supports str/int/float.
+
+    ── FIX: Intent priority order (most specific → least specific) ──────────
+      1. Specific asset ID   — completely unambiguous
+      2. Environment only    — detected for use in compound filters below
+      3. Risk level by name  — "critical assets", "high risk assets"
+      4. Orphan assets       — "unowned", "no owner"
+      5. Internet-exposed    — "publicly accessible", "internet facing"
+      6. NVD data questions  — "real CVE data", "NVD"
+      7. HIGH RISK / patch priority  ← MOVED ABOVE CVE (was below before)
+         Catches "most dangerous", "patch first", "what should I fix"
+         BEFORE the general CVE bucket swallows them.
+      8. CVE / vulnerability — general vuln questions
+      9. Environment summary — just "in production / staging / dev"
+     10. General fallback    — semantic search
     """
 
     q = question.lower()
 
     # ── 1. Specific asset ID  ────────────────────────────────────────────────
-    # Highest priority — completely unambiguous.
-    # Pattern matches "ASSET-" followed by digits, e.g. ASSET-1042.
     asset_id_match = re.search(r"ASSET-\d+", question, re.IGNORECASE)
     if asset_id_match:
         asset_id = asset_id_match.group(0).upper()
@@ -124,8 +137,6 @@ def detect_intent(question: str) -> dict:
             break
 
     # ── 3. Risk level detection ──────────────────────────────────────────────
-    # Uses the risk_level string stored in metadata — more reliable than
-    # a numeric threshold because it matches exactly what the ML model stored.
     detected_risk_level = None
     for level, keywords in RISK_LEVEL_MAP.items():
         if any(kw in q for kw in keywords):
@@ -150,7 +161,7 @@ def detect_intent(question: str) -> dict:
         return {
             "intent":      INTENT_ORPHAN,
             "filters":     filters,
-            "n_results":   50,   # high enough to get all of them
+            "n_results":   50,
             "description": "Fetching orphan assets"
                            + (f" in {detected_env}" if detected_env else ""),
         }
@@ -168,8 +179,6 @@ def detect_intent(question: str) -> dict:
         }
 
     # ── 6. NVD data questions ─────────────────────────────────────────────────
-    # "Which assets have real CVE data from NVD?"
-    # Uses has_nvd_cves flag — added by Phase 5 ingest.py.
     if any(kw in q for kw in NVD_KEYWORDS):
         base    = {"has_nvd_cves": "True"}
         filters = _combine_env(base, detected_env)
@@ -180,7 +189,24 @@ def detect_intent(question: str) -> dict:
             "description": "Fetching assets with real NVD CVE data",
         }
 
-    # ── 7. CVE / vulnerability questions ─────────────────────────────────────
+    # ── 7. High-risk / patch priority ─────────────────────────────────────────
+    # ── FIX: This block is now ABOVE CVE intent (was below before).
+    # "Most dangerous CVEs", "what should I patch first" etc. were incorrectly
+    # falling into the generic CVE bucket with no risk filters applied, causing
+    # the LLM to receive unranked context and give vague answers.
+    # Now they correctly route here and fetch risk_score >= 60 assets.
+    if any(kw in q for kw in HIGH_RISK_KEYWORDS):
+        base    = {"risk_score": {"$gte": 60.0}}
+        filters = _combine_env(base, detected_env)
+        return {
+            "intent":      INTENT_RISK_LEVEL,
+            "filters":     filters,
+            "n_results":   30,
+            "description": "Fetching high+critical risk assets (score >= 60)"
+                           + (f" in {detected_env}" if detected_env else ""),
+        }
+
+    # ── 8. CVE / vulnerability questions ─────────────────────────────────────
     if any(kw in q for kw in CVE_KEYWORDS):
         if "exploit" in q:
             # Narrow to assets that actually have a known exploit
@@ -200,19 +226,6 @@ def detect_intent(question: str) -> dict:
                            + (f" in {detected_env}" if detected_env else ""),
         }
 
-    # ── 8. High-risk / patch priority (no specific level mentioned) ───────────
-    # e.g. "what should I patch first?" — we fetch High + Critical combined
-    if any(kw in q for kw in HIGH_RISK_KEYWORDS):
-        base    = {"risk_score": {"$gte": 60.0}}
-        filters = _combine_env(base, detected_env)
-        return {
-            "intent":      INTENT_RISK_LEVEL,
-            "filters":     filters,
-            "n_results":   30,
-            "description": "Fetching high+critical risk assets (score >= 60)"
-                           + (f" in {detected_env}" if detected_env else ""),
-        }
-
     # ── 9. Environment only ───────────────────────────────────────────────────
     if detected_env:
         return {
@@ -223,8 +236,6 @@ def detect_intent(question: str) -> dict:
         }
 
     # ── 10. General fallback — pure semantic search ───────────────────────────
-    # For broad questions like "summarise my security posture".
-    # 15 documents (vs original 5) gives the LLM much richer context.
     return {
         "intent":      INTENT_GENERAL,
         "filters":     {},
@@ -256,22 +267,17 @@ def _combine_env(base_filter: dict, env: str) -> dict:
 def build_system_prompt(intent: str) -> str:
     """
     Return a system prompt tuned for the detected intent.
-
-    This is what makes the LLM actually useful for structured queries.
-    A generic "answer using the context" prompt causes the LLM to:
-      - Miss items when asked to list all of something
-      - Give vague summaries when a precise count is needed
-      - Ignore NVD source flags that indicate data quality
-
-    By giving Phi3 an explicit task, it knows exactly what to output.
     """
 
     base = (
         "You are Sentinel, a cybersecurity asset intelligence assistant. "
-        "Answer ONLY using the information in the provided context. "
+        "Answer ONLY using the information in the provided context below. "
         "Do not invent asset IDs, CVE identifiers, risk scores, team names, "
         "or any data not present in the context. "
         "If specific information is missing from the context, say so explicitly. "
+        "When you have finished answering, STOP. "
+        "Do not continue with unrelated questions, JSON examples, "
+        "setup instructions, or any other content. "
     )
 
     hints = {
@@ -366,9 +372,19 @@ def build_rag_context(question: str, collection, embed_model) -> dict:
     # Embed the question for similarity ranking
     query_embedding = embed_model.encode(question).tolist()
 
-    # Cap n_results at the total collection size
+    # ── FIX: cap n_results at actual collection size to prevent ChromaDB errors
+    # ChromaDB raises if you request more results than documents exist.
     total_docs = collection.count()
-    n_results  = min(intent_info["n_results"], max(total_docs, 1))
+    if total_docs == 0:
+        return {
+            "context":       "[No assets found in the knowledge base. Run ingest.py first.]",
+            "system_prompt": build_system_prompt(intent),
+            "intent":        intent,
+            "description":   intent_info["description"],
+            "n_retrieved":   0,
+        }
+
+    n_results = min(intent_info["n_results"], total_docs)
 
     # Query ChromaDB
     # ChromaDB raises an exception when a `where` filter matches zero docs
@@ -384,27 +400,45 @@ def build_rag_context(question: str, collection, embed_model) -> dict:
         results   = collection.query(**query_kwargs)
         documents = results["documents"][0]
 
+        # ── FIX: if the filter matched docs but returned 0, still fall back
+        if not documents:
+            raise ValueError("Filter returned 0 documents")
+
     except Exception as e:
         # Filter matched zero documents — fall back to semantic search
         print(f"⚠️  ChromaDB filter failed: {e} — falling back to semantic search")
-        fallback  = collection.query(
+        fallback_n = min(15, total_docs)
+        fallback   = collection.query(
             query_embeddings=[query_embedding],
-            n_results=min(10, total_docs),
+            n_results=fallback_n,
         )
         documents = fallback["documents"][0]
         intent_info["description"] += " [no filter match — showing closest results]"
 
     # Build context string
-    # Numbered documents help the LLM reference specific assets clearly.
-    # The header tells the LLM exactly what data it received and why,
-    # which reduces hallucination on "how many X are there?" questions.
     header = (
         f"[Context: {len(documents)} asset(s) retrieved. "
         f"Query type: {intent_info['description']}]\n\n"
     )
+    # ── FIX: Truncate each document to 800 chars before passing to LLM ─────────
+    # ChromaDB stores full asset text which can be 1500+ chars per asset.
+    # When n_results=50, total context = 75,000+ chars — far beyond the model's
+    # effective instruction-following window, causing it to "escape" the prompt
+    # and bleed training-data content (the garbled response you saw in the UI).
+    # 800 chars per doc keeps the full context under ~12k tokens for 50 docs,
+    # well within the 8k–32k window depending on which Groq model is used.
+    MAX_DOC_CHARS = 800
+    sanitised = []
+    for doc in documents:
+        # Strip any null bytes or control chars that could confuse the tokeniser
+        clean = doc.replace("\x00", "").strip()
+        if len(clean) > MAX_DOC_CHARS:
+            clean = clean[:MAX_DOC_CHARS] + "\n  [... truncated for context window]"
+        sanitised.append(clean)
+
     numbered = "\n\n---\n\n".join(
         f"[Asset {i + 1}]\n{doc}"
-        for i, doc in enumerate(documents)
+        for i, doc in enumerate(sanitised)
     )
 
     return {
