@@ -34,56 +34,74 @@ collection = chroma_client.get_or_create_collection(name="cyber_assets")
 # ─── PART 2B: AUTH SETUP ─────────────────────────────────────────────────────
 
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
-SUPABASE_JWT_SECRET = os.environ.get("SUPABASE_JWT_SECRET", "")  # kept for reference
 
-# Supabase now uses ES256 (asymmetric) — verify via JWKS public key endpoint
 import requests as _req
 import json as _json
-from jose import jwt as _jose_jwt
-from jose.exceptions import JWTError as _JWTError
-
-def _get_supabase_public_key(kid: str):
-    """Fetch the public key from Supabase JWKS endpoint matching the token kid."""
-    jwks_url = f"{SUPABASE_URL}/auth/v1/.well-known/jwks.json"
-    resp = _req.get(jwks_url, timeout=10)
-    resp.raise_for_status()
-    keys = resp.json().get("keys", [])
-    for key in keys:
-        if key.get("kid") == kid:
-            return key
-    raise HTTPException(status_code=401, detail="No matching public key found")
+import base64 as _b64
 
 bearer_scheme = HTTPBearer()
+
+# Cache JWKS keys so we don't fetch on every single request
+_jwks_cache: dict = {}
+
+def _get_jwks_key(kid: str) -> dict:
+    """
+    Fetch Supabase's public JWKS keys and return the one matching kid.
+    Caches keys in memory for the lifetime of the server process.
+    """
+    global _jwks_cache
+    if kid in _jwks_cache:
+        return _jwks_cache[kid]
+
+    jwks_url = f"{SUPABASE_URL}/auth/v1/.well-known/jwks.json"
+    try:
+        resp = _req.get(jwks_url, timeout=10)
+        resp.raise_for_status()
+        keys = resp.json().get("keys", [])
+        for key in keys:
+            _jwks_cache[key["kid"]] = key
+        if kid in _jwks_cache:
+            return _jwks_cache[kid]
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=f"Could not fetch auth keys: {e}")
+
+    raise HTTPException(status_code=401, detail=f"No public key found for kid={kid}")
 
 
 def decode_jwt(token: str) -> dict:
     """
     Validate and decode a Supabase-issued JWT.
-    Supabase uses ES256 (asymmetric) — we verify using the JWKS public key.
+    Supabase uses ES256 (asymmetric keypair) — we fetch the public key
+    from their JWKS endpoint and verify with python-jose.
     """
+    # Step 1: read the header to get kid + alg without verifying yet
     try:
-        # Get the kid from the token header to find the right public key
-        import base64 as _b64, json as _json
-        header_part = token.split(".")[0]
-        header = _json.loads(_b64.b64decode(header_part + "=="))
-        kid = header.get("kid", "")
-        alg = header.get("alg", "ES256")
+        header_b64 = token.split(".")[0]
+        # Add padding so b64decode doesn't fail
+        padding = 4 - len(header_b64) % 4
+        header = _json.loads(_b64.urlsafe_b64decode(header_b64 + "=" * padding))
+    except Exception:
+        raise HTTPException(status_code=401, detail="Malformed token header")
 
-        public_key = _get_supabase_public_key(kid)
+    kid = header.get("kid", "")
+    alg = header.get("alg", "ES256")
 
-        payload = _jose_jwt.decode(
+    # Step 2: get the matching public key
+    public_key = _get_jwks_key(kid)
+
+    # Step 3: verify and decode using python-jose
+    try:
+        from jose import jwt as jose_jwt
+        from jose.exceptions import JWTError
+        payload = jose_jwt.decode(
             token,
             public_key,
             algorithms=[alg],
             options={"verify_aud": False},
         )
         return payload
-    except _JWTError as e:
-        raise HTTPException(status_code=401, detail=f"Token invalid: {str(e)}")
-    except HTTPException:
-        raise
     except Exception as e:
-        raise HTTPException(status_code=401, detail=f"Auth error: {str(e)}")
+        raise HTTPException(status_code=401, detail=f"Token invalid: {str(e)}")
 
 
 def get_current_user(
