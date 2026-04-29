@@ -21,6 +21,24 @@ from sentence_transformers import SentenceTransformer
 
 from smart_rag import build_rag_context
 from db import get_db, Asset, Vulnerability, Owner, UserRole
+from fastapi.responses import Response   # for returning PDF bytes
+
+
+# Lazy-import report + email so server still starts if reportlab is missing
+def _get_report_generator():
+    try:
+        from report_generator import generate_report
+        return generate_report
+    except ImportError:
+        return None
+
+
+def _get_email_alerts():
+    try:
+        import email_alerts
+        return email_alerts
+    except ImportError:
+        return None
 
 # ─── PART 2: APP + MODEL SETUP ───────────────────────────────────────────────
 
@@ -401,6 +419,41 @@ def get_asset(
     return asset.to_dict()
 
 
+@app.delete("/assets/{asset_id}")
+def delete_asset(
+    asset_id: str,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(require_admin),
+):
+    """
+    Permanently delete an asset and all related records (CVEs, owner).
+    Admin only.
+    Cascade delete works because the Owner and Vulnerability models have
+    foreign key back-references to Asset.
+    """
+    asset = db.query(Asset).filter(Asset.asset_id == asset_id).first()
+    if not asset:
+        raise HTTPException(status_code=404, detail=f"Asset '{asset_id}' not found")
+
+    # Delete related vulnerability records
+    db.query(Vulnerability).filter(Vulnerability.asset_id == asset_id).delete()
+
+    # Delete related owner record
+    db.query(Owner).filter(Owner.asset_id == asset_id).delete()
+
+    # Delete the asset itself
+    db.delete(asset)
+    db.commit()
+
+    # Remove from ChromaDB (best-effort — don't crash if it fails)
+    try:
+        collection.delete(where={"asset_id": asset_id})
+    except Exception as e:
+        print(f"⚠️  ChromaDB delete failed for {asset_id}: {e}")
+
+    return {"message": f"Asset '{asset_id}' deleted successfully", "asset_id": asset_id}
+
+
 @app.get("/risk-summary")
 def get_risk_summary(
     db: Session = Depends(get_db),
@@ -463,6 +516,201 @@ def get_orphans(
         "orphan_assets": [a.to_dict() for a in orphan_assets],
         "total":         len(orphan_assets)
     }
+
+
+@app.post("/report/generate")
+def generate_weekly_report(
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(require_admin),
+):
+    """
+    Generate a full weekly PDF security report.
+    Returns raw PDF bytes as application/pdf.
+    Admin only.
+
+    The report includes:
+      - Executive summary metrics
+      - Top 10 highest risk assets
+      - Dangerous CVEs (exploit + unpatched)
+      - Orphan asset list
+      - Prioritised recommendations
+    """
+    generate_report = _get_report_generator()
+    if generate_report is None:
+        raise HTTPException(
+            status_code=503,
+            detail="reportlab is not installed. Run: pip install reportlab"
+        )
+
+    # ── Gather all data ───────────────────────────────────────────────────────
+    from sqlalchemy.orm import joinedload as _jl
+
+    # Stats
+    total_assets    = db.query(Asset).count()
+    critical_count  = db.query(Asset).filter(Asset.risk_level == "Critical").count()
+    exposed_count   = db.query(Asset).filter(Asset.internet_exposed == True).count()
+    orphan_count    = db.query(Owner).filter(Owner.status == "orphan").count()
+    high_risk_count = db.query(Asset).filter(Asset.risk_score >= 70).count()
+    total_vulns     = db.query(Vulnerability).count()
+    exploit_count   = db.query(Vulnerability).filter(Vulnerability.exploit_available == True).count()
+
+    stats = {
+        "total_assets":    total_assets,
+        "critical_count":  critical_count,
+        "exposed_count":   exposed_count,
+        "orphan_count":    orphan_count,
+        "high_risk_count": high_risk_count,
+        "total_vulns":     total_vulns,
+        "exploit_count":   exploit_count,
+    }
+
+    # Top 10 assets by risk
+    top_assets_orm = (
+        db.query(Asset)
+        .options(_jl(Asset.owner), _jl(Asset.vulnerabilities))
+        .filter(Asset.risk_score != None)
+        .order_by(Asset.risk_score.desc())
+        .limit(10)
+        .all()
+    )
+    top_assets = [a.to_dict() for a in top_assets_orm]
+
+    # All vulnerabilities
+    all_vulns_orm = db.query(Vulnerability).all()
+    vulnerabilities = [v.to_dict() for v in all_vulns_orm]
+
+    # Orphan assets
+    orphan_orm = (
+        db.query(Asset)
+        .options(_jl(Asset.owner), _jl(Asset.vulnerabilities))
+        .join(Owner)
+        .filter(Owner.status == "orphan")
+        .all()
+    )
+    orphans = [a.to_dict() for a in orphan_orm]
+
+    # ── Generate PDF ──────────────────────────────────────────────────────────
+    from datetime import datetime
+    week_label = f"Week of {datetime.now().strftime('%Y-%m-%d')}"
+
+    try:
+        pdf_bytes = generate_report(
+            stats=stats,
+            top_assets=top_assets,
+            vulnerabilities=vulnerabilities,
+            orphans=orphans,
+            week_label=week_label,
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Report generation failed: {str(e)}")
+
+    # ── Optionally fire "report ready" email ─────────────────────────────────
+    email_alerts_mod = _get_email_alerts()
+    if email_alerts_mod:
+        try:
+            email_alerts_mod.send_report_ready_alert(stats)
+        except Exception as e:
+            print(f"⚠️  Report ready email failed: {e}")
+
+    filename = f"sentinel_report_{datetime.now().strftime('%Y-%m-%d')}.pdf"
+
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+@app.post("/alerts/send")
+def send_alert(
+    payload: dict,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(require_admin),
+):
+    """
+    Manually trigger an alert email. Admin only.
+
+    Request body:
+        {
+            "alert_type": "weekly_report" | "critical_summary" | "orphan_summary",
+            "recipient":  "override@email.com"  (optional)
+        }
+    """
+    email_alerts_mod = _get_email_alerts()
+    if email_alerts_mod is None:
+        raise HTTPException(
+            status_code=503,
+            detail="email_alerts module not found — check email_alerts.py exists"
+        )
+
+    alert_type = payload.get("alert_type", "weekly_report")
+    recipient  = payload.get("recipient", "").strip() or None
+
+    # ── Gather stats for email content ───────────────────────────────────────
+    stats = {
+        "total_assets":    db.query(Asset).count(),
+        "critical_count":  db.query(Asset).filter(Asset.risk_level == "Critical").count(),
+        "exposed_count":   db.query(Asset).filter(Asset.internet_exposed == True).count(),
+        "orphan_count":    db.query(Owner).filter(Owner.status == "orphan").count(),
+        "high_risk_count": db.query(Asset).filter(Asset.risk_score >= 70).count(),
+        "total_vulns":     db.query(Vulnerability).count(),
+        "exploit_count":   db.query(Vulnerability).filter(Vulnerability.exploit_available == True).count(),
+    }
+
+    if alert_type == "weekly_report":
+        result = email_alerts_mod.send_report_ready_alert(stats, recipient=recipient)
+
+    elif alert_type == "critical_summary":
+        # Find highest-risk asset and use it for the email
+        from sqlalchemy.orm import joinedload as _jl
+        top_asset_orm = (
+            db.query(Asset)
+            .filter(Asset.risk_level == "Critical")
+            .options(_jl(Asset.owner), _jl(Asset.vulnerabilities))
+            .order_by(Asset.risk_score.desc())
+            .first()
+        )
+        if not top_asset_orm:
+            raise HTTPException(
+                status_code=404,
+                detail="No Critical risk assets found to alert on"
+            )
+        result = email_alerts_mod.send_critical_asset_alert(
+            top_asset_orm.to_dict(), recipient=recipient
+        )
+
+    elif alert_type == "orphan_summary":
+        orphan_orm = (
+            db.query(Asset)
+            .join(Owner)
+            .filter(Owner.status == "orphan")
+            .order_by(Asset.risk_score.desc())
+            .first()
+        )
+        if not orphan_orm:
+            raise HTTPException(
+                status_code=404,
+                detail="No orphan assets found"
+            )
+        result = email_alerts_mod.send_orphan_alert(
+            orphan_orm.asset_id,
+            orphan_orm.risk_score or 0,
+            orphan_orm.risk_level or "Unknown",
+            recipient=recipient,
+        )
+    else:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unknown alert_type '{alert_type}'. Use: weekly_report, critical_summary, orphan_summary"
+        )
+
+    if not result.get("success"):
+        raise HTTPException(
+            status_code=500,
+            detail=f"Email failed: {result.get('error', 'unknown error')}"
+        )
+
+    return {"message": "Alert email sent", "recipient": result.get("recipient"), "alert_type": alert_type}
 
 
 @app.get("/stats")
@@ -744,6 +992,38 @@ def create_asset(
     except Exception as e:
         print(f"⚠️  ML scoring failed for {asset_input.asset_id}: {e}")
         ml_result = None
+
+    # ── AUTO EMAIL ALERT ──────────────────────────────────────────────────────
+    # Fire alert emails automatically for high-risk new assets
+    if ml_result and ml_result["risk_level"] in ("Critical", "High"):
+        email_alerts_mod = _get_email_alerts()
+        if email_alerts_mod:
+            try:
+                asset_alert_dict = {
+                    "asset_id":         asset_input.asset_id,
+                    "risk_level":       ml_result["risk_level"],
+                    "risk_score":       ml_result["risk_score"],
+                    "environment":      asset_input.environment,
+                    "ip_address":       asset_input.ip_address,
+                    "internet_exposed": asset_input.internet_exposed,
+                    "vulnerabilities":  final_cves,
+                }
+                email_alerts_mod.send_critical_asset_alert(asset_alert_dict)
+
+                # Also alert if there are dangerous unpatched exploits
+                email_alerts_mod.send_exploit_cve_alert(
+                    asset_input.asset_id, final_cves
+                )
+
+                # Orphan alert
+                if not asset_input.owner or (asset_input.owner and not asset_input.owner.team):
+                    email_alerts_mod.send_orphan_alert(
+                        asset_input.asset_id,
+                        ml_result["risk_score"],
+                        ml_result["risk_level"],
+                    )
+            except Exception as alert_err:
+                print(f"⚠️  Alert email failed (non-blocking): {alert_err}")
 
     db.refresh(new_asset)
     try:
