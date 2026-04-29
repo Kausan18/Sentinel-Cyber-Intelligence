@@ -25,19 +25,37 @@ Setup:
 
 import os
 import smtplib
+import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 from typing import Optional
 
-# ── SMTP CONFIG ───────────────────────────────────────────────────────────────
-# These are read from .env at runtime by FastAPI (dotenv already loaded in main.py)
+# ── ENV LOADER ─────────────────────────────────────────────────────────────────
+# Load .env immediately so environment variables are available whether this
+# module is imported by FastAPI or run directly as a script.
+# python-dotenv is idempotent: calling it multiple times is safe.
+try:
+    from dotenv import load_dotenv as _load_dotenv
+    # override=False so that real env vars (set by the OS/CI) take precedence
+    _load_dotenv(override=False)
+except ImportError:
+    pass  # dotenv not installed — rely on system env vars
 
-SMTP_HOST     = os.environ.get("SMTP_HOST",     "smtp.gmail.com")
-SMTP_PORT     = int(os.environ.get("SMTP_PORT", "587"))
-SENDER_EMAIL  = os.environ.get("ALERT_EMAIL_SENDER",    "")
-SENDER_PASS   = os.environ.get("ALERT_EMAIL_PASSWORD",  "")
-RECIPIENT     = os.environ.get("ALERT_EMAIL_RECIPIENT", "")
+
+# ── SMTP CONFIG ────────────────────────────────────────────────────────────────
+# Resolved lazily through a function so that values are always fresh
+# (important when running tests or when .env is loaded after import).
+
+def _cfg():
+    """Return current SMTP config from environment."""
+    return {
+        "host":      os.environ.get("SMTP_HOST",             "smtp.gmail.com"),
+        "port":      int(os.environ.get("SMTP_PORT",         "587")),
+        "sender":    os.environ.get("ALERT_EMAIL_SENDER",    "").strip(),
+        "password":  os.environ.get("ALERT_EMAIL_PASSWORD",  "").strip(),
+        "recipient": os.environ.get("ALERT_EMAIL_RECIPIENT", "").strip(),
+    }
 
 
 # ── HELPER: send one email ─────────────────────────────────────────────────────
@@ -47,42 +65,81 @@ def _send_email(subject: str, html_body: str, recipient: Optional[str] = None) -
     Low-level SMTP sender.
     Returns {"success": True} or {"success": False, "error": "..."}
     """
-    to_addr = recipient or RECIPIENT
+    cfg = _cfg()
+    to_addr = (recipient or cfg["recipient"]).strip()
 
-    if not SENDER_EMAIL or not SENDER_PASS:
-        return {
-            "success": False,
-            "error":   "ALERT_EMAIL_SENDER or ALERT_EMAIL_PASSWORD not set in .env"
-        }
+    # ── Validate config before touching the network ──────────────────────────
+    missing = []
+    if not cfg["sender"]:
+        missing.append("ALERT_EMAIL_SENDER")
+    if not cfg["password"]:
+        missing.append("ALERT_EMAIL_PASSWORD")
     if not to_addr:
+        missing.append("ALERT_EMAIL_RECIPIENT")
+
+    if missing:
         return {
             "success": False,
-            "error":   "ALERT_EMAIL_RECIPIENT not set in .env"
+            "error": f"Missing .env variable(s): {', '.join(missing)}. "
+                     f"Make sure your .env file is in the backend directory and "
+                     f"contains all three required keys."
         }
 
+    # ── Build the MIME message ───────────────────────────────────────────────
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
-    msg["From"]    = f"Sentinel Security <{SENDER_EMAIL}>"
+    msg["From"]    = f"Sentinel Security <{cfg['sender']}>"
     msg["To"]      = to_addr
 
     msg.attach(MIMEText(html_body, "html"))
 
+    # ── SMTP with STARTTLS (Gmail / most providers) ──────────────────────────
     try:
-        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10) as server:
+        context = ssl.create_default_context()
+        with smtplib.SMTP(cfg["host"], cfg["port"], timeout=15) as server:
             server.ehlo()
-            server.starttls()
-            server.login(SENDER_EMAIL, SENDER_PASS)
-            server.sendmail(SENDER_EMAIL, to_addr, msg.as_string())
+            server.starttls(context=context)
+            server.ehlo()  # re-identify after STARTTLS
+            server.login(cfg["sender"], cfg["password"])
+            server.sendmail(cfg["sender"], to_addr, msg.as_string())
         return {"success": True, "recipient": to_addr}
-    except smtplib.SMTPAuthenticationError:
+
+    except smtplib.SMTPAuthenticationError as e:
+        hint = ""
+        if "535" in str(e) or "Username and Password not accepted" in str(e):
+            hint = (
+                " — Gmail rejected the credentials. "
+                "Make sure you are using an App Password (not your Gmail login password). "
+                "Generate one at: myaccount.google.com → Security → App Passwords. "
+                "Also confirm that 2-Step Verification is enabled on the sender account."
+            )
+        return {"success": False, "error": f"SMTP authentication failed{hint}"}
+
+    except smtplib.SMTPConnectError as e:
         return {
             "success": False,
-            "error":   "SMTP authentication failed — check your App Password in .env"
+            "error": f"Could not connect to {cfg['host']}:{cfg['port']} — "
+                     f"check your internet connection or firewall. Detail: {e}"
         }
+
+    except smtplib.SMTPRecipientsRefused as e:
+        return {
+            "success": False,
+            "error": f"Recipient address was refused by the server: {to_addr}. Detail: {e}"
+        }
+
     except smtplib.SMTPException as e:
-        return {"success": False, "error": f"SMTP error: {str(e)}"}
+        return {"success": False, "error": f"SMTP error: {e}"}
+
+    except TimeoutError:
+        return {
+            "success": False,
+            "error": f"Connection to {cfg['host']}:{cfg['port']} timed out. "
+                     "Check your firewall — port 587 must be open."
+        }
+
     except Exception as e:
-        return {"success": False, "error": f"Unexpected error: {str(e)}"}
+        return {"success": False, "error": f"Unexpected error: {type(e).__name__}: {e}"}
 
 
 # ── EMAIL TEMPLATE BASE ───────────────────────────────────────────────────────
@@ -152,10 +209,6 @@ def _wrap_html(title: str, badge_color: str, badge_label: str, body_html: str) -
 # ── ALERT TYPE 1: Critical / High Risk Asset ──────────────────────────────────
 
 def send_critical_asset_alert(asset: dict, recipient: Optional[str] = None) -> dict:
-    """
-    Fires when an asset is scored Critical or High by the ML model.
-    Call this right after ML scoring in the /assets POST endpoint.
-    """
     asset_id   = asset.get("asset_id", "Unknown")
     risk_level = asset.get("risk_level", "Unknown")
     risk_score = asset.get("risk_score", 0)
@@ -169,7 +222,7 @@ def send_critical_asset_alert(asset: dict, recipient: Optional[str] = None) -> d
     badge_label = f"⚠️ {risk_level.upper()} RISK"
 
     cve_rows = ""
-    for v in crit_vulns[:5]:   # show top 5 worst CVEs
+    for v in crit_vulns[:5]:
         exploit_tag = "🔴 EXPLOIT" if v.get("exploit_available") else ""
         patch_tag   = "🩹 PATCH AVAILABLE" if v.get("patch_available") else "❌ NO PATCH"
         cve_rows += f"""
@@ -187,24 +240,17 @@ def send_critical_asset_alert(asset: dict, recipient: Optional[str] = None) -> d
     body_html = f"""
     <div class="field"><div class="label">Asset ID</div>
       <div class="value">{asset_id}</div></div>
-
     <div class="field"><div class="label">Risk Score</div>
       <div class="value" style="color:{badge_color};">{risk_score:.1f} / 100</div></div>
-
     <div class="field"><div class="label">Environment</div>
       <div class="value">{env}</div></div>
-
     <div class="field"><div class="label">IP Address</div>
       <div class="value">{ip}</div></div>
-
     <div class="field"><div class="label">Internet Exposed</div>
       <div class="value">{exposed}</div></div>
-
     <div class="field"><div class="label">CVE Count</div>
       <div class="value">{len(vulns)} total · {len(crit_vulns)} critical/high</div></div>
-
     {"<hr class='divider'><p style='color:#94A3B8;font-size:13px;margin-bottom:10px;'>Top CVEs on this asset:</p>" + cve_rows if cve_rows else ""}
-
     <p style="color:#94A3B8; font-size:13px; margin-top:16px;">
       This asset requires <strong style="color:{badge_color};">immediate attention</strong>.
       Log into Sentinel to review full details and remediation recommendations.
@@ -217,7 +263,6 @@ def send_critical_asset_alert(asset: dict, recipient: Optional[str] = None) -> d
         badge_label=badge_label,
         body_html=body_html,
     )
-
     return _send_email(
         subject=f"[Sentinel Alert] {risk_level} Risk Asset: {asset_id} (Score: {risk_score:.0f}/100)",
         html_body=html,
@@ -228,16 +273,11 @@ def send_critical_asset_alert(asset: dict, recipient: Optional[str] = None) -> d
 # ── ALERT TYPE 2: Critical CVE with Active Exploit ────────────────────────────
 
 def send_exploit_cve_alert(asset_id: str, cve_list: list, recipient: Optional[str] = None) -> dict:
-    """
-    Fires when an asset has one or more Critical CVEs with active exploits AND no patch.
-    These are the most dangerous situations — zero-day / unpatched exploits.
-    """
     dangerous = [
         v for v in cve_list
         if v.get("exploit_available") and not v.get("patch_available")
         and v.get("severity") in ("Critical", "High")
     ]
-
     if not dangerous:
         return {"success": False, "error": "No dangerous CVEs to alert on"}
 
@@ -265,7 +305,6 @@ def send_exploit_cve_alert(asset_id: str, cve_list: list, recipient: Optional[st
         This asset should be <strong>isolated or taken offline</strong> immediately.
       </p>
     </div>
-
     <p style="color:#94A3B8; font-size:13px;">Dangerous CVEs detected:</p>
     {cve_rows}
     """
@@ -276,7 +315,6 @@ def send_exploit_cve_alert(asset_id: str, cve_list: list, recipient: Optional[st
         badge_label="CRITICAL — ACTIVE EXPLOIT",
         body_html=body_html,
     )
-
     return _send_email(
         subject=f"[Sentinel CRITICAL] Unpatched exploit CVEs on {asset_id} — Immediate Action Required",
         html_body=html,
@@ -288,23 +326,16 @@ def send_exploit_cve_alert(asset_id: str, cve_list: list, recipient: Optional[st
 
 def send_orphan_alert(asset_id: str, risk_score: float, risk_level: str,
                       recipient: Optional[str] = None) -> dict:
-    """
-    Fires when a new asset is added without an owner (orphan).
-    """
     badge_color = "#F97316"
-
     body_html = f"""
     <p style="color:#CBD5E1;">
       A new asset has been added to the inventory with <strong>no owner assigned</strong>.
       Orphan assets are not monitored and rarely get patched — a significant security gap.
     </p>
-
     <div class="field"><div class="label">Asset ID</div>
       <div class="value">{asset_id}</div></div>
-
     <div class="field"><div class="label">Risk Score</div>
       <div class="value" style="color:{badge_color};">{risk_score:.1f} / 100  ({risk_level})</div></div>
-
     <div style="background:#1C1000; border:1px solid #7C4700; border-radius:8px;
                 padding:14px; margin-top:16px;">
       <p style="color:#FED7AA; margin:0; font-size:13px;">
@@ -312,14 +343,12 @@ def send_orphan_alert(asset_id: str, risk_score: float, risk_level: str,
       </p>
     </div>
     """
-
     html = _wrap_html(
         title=f"Orphan Asset Added: {asset_id}",
         badge_color=badge_color,
         badge_label="⚠️ ORPHAN ASSET",
         body_html=body_html,
     )
-
     return _send_email(
         subject=f"[Sentinel Alert] Orphan Asset Added: {asset_id} — No Owner Assigned",
         html_body=html,
@@ -330,42 +359,30 @@ def send_orphan_alert(asset_id: str, risk_score: float, risk_level: str,
 # ── ALERT TYPE 4: Weekly Report Ready ─────────────────────────────────────────
 
 def send_report_ready_alert(stats: dict, recipient: Optional[str] = None) -> dict:
-    """
-    Fires when a weekly PDF report is generated.
-    Includes a high-level summary so the email itself is useful even without opening the PDF.
-    """
     body_html = f"""
     <p style="color:#CBD5E1;">
       Your weekly Sentinel security report has been generated.
       Download it from the Admin Panel.
     </p>
-
     <div class="field"><div class="label">Total Assets</div>
       <div class="value">{stats.get('total_assets', 0)}</div></div>
-
     <div class="field"><div class="label">Critical Risk Assets</div>
       <div class="value" style="color:#EF4444;">{stats.get('critical_count', 0)}</div></div>
-
     <div class="field"><div class="label">Internet Exposed</div>
       <div class="value" style="color:#F97316;">{stats.get('exposed_count', 0)}</div></div>
-
     <div class="field"><div class="label">Orphan Assets</div>
       <div class="value" style="color:#F59E0B;">{stats.get('orphan_count', 0)}</div></div>
-
     <div class="field"><div class="label">Total CVEs Tracked</div>
       <div class="value">{stats.get('total_vulns', 0)}</div></div>
-
     <div class="field"><div class="label">Active Exploits</div>
       <div class="value" style="color:#EF4444;">{stats.get('exploit_count', 0)}</div></div>
     """
-
     html = _wrap_html(
         title="Weekly Security Report Ready",
         badge_color="#1A56DB",
         badge_label="📄 WEEKLY REPORT",
         body_html=body_html,
     )
-
     ts = datetime.now().strftime("%Y-%m-%d")
     return _send_email(
         subject=f"[Sentinel] Weekly Security Report — {ts}",
@@ -374,28 +391,53 @@ def send_report_ready_alert(stats: dict, recipient: Optional[str] = None) -> dic
     )
 
 
-# ── TEST HELPER (run directly) ────────────────────────────────────────────────
-# python email_alerts.py  → sends a test email to verify your SMTP config
+# ── TEST HELPER ────────────────────────────────────────────────────────────────
+# Run from the backend directory:
+#   cd sentinel/backend && python email_alerts.py
 
 if __name__ == "__main__":
-    from dotenv import load_dotenv
-    load_dotenv()
+    # Re-load with override=True so the script always picks up the local .env
+    # even if stale values were cached in the environment.
+    try:
+        from dotenv import load_dotenv
+        loaded = load_dotenv(override=True)
+        if not loaded:
+            print("⚠️  No .env file found in the current directory.")
+            print("   Run from the backend folder:  cd sentinel/backend && python email_alerts.py\n")
+    except ImportError:
+        print("⚠️  python-dotenv not installed.  pip install python-dotenv\n")
 
-    print("🔧 Testing Sentinel email alerts...")
-    print(f"   Sender:    {SENDER_EMAIL or '❌ NOT SET'}")
-    print(f"   Recipient: {RECIPIENT or '❌ NOT SET'}")
-    print(f"   SMTP:      {SMTP_HOST}:{SMTP_PORT}")
+    cfg = _cfg()
+    print("🔧 Sentinel Email Alert — Config Check")
+    print("─" * 50)
+    print(f"   Sender    : {cfg['sender']    or '❌ NOT SET  ← ALERT_EMAIL_SENDER missing'}")
+    print(f"   Recipient : {cfg['recipient'] or '❌ NOT SET  ← ALERT_EMAIL_RECIPIENT missing'}")
+    print(f"   Password  : {'✅ SET' if cfg['password'] else '❌ NOT SET  ← ALERT_EMAIL_PASSWORD missing'}")
+    print(f"   SMTP      : {cfg['host']}:{cfg['port']}")
+    print("─" * 50)
 
-    result = send_report_ready_alert({
-        "total_assets":   300,
-        "critical_count": 12,
-        "exposed_count":  45,
-        "orphan_count":   8,
-        "total_vulns":    892,
-        "exploit_count":  34,
-    })
-
-    if result["success"]:
-        print(f"✅ Test email sent to {result['recipient']}")
+    if not cfg['sender'] or not cfg['password'] or not cfg['recipient']:
+        print("\n❌ Fix the missing values above, then re-run.")
+        print("\n   Your .env should contain:")
+        print("     ALERT_EMAIL_SENDER=you@gmail.com")
+        print("     ALERT_EMAIL_PASSWORD=abcd efgh ijkl mnop   # 16-char Gmail App Password")
+        print("     ALERT_EMAIL_RECIPIENT=receiver@example.com")
+        print("\n   Gmail App Password steps:")
+        print("     1. myaccount.google.com → Security")
+        print("     2. Enable 2-Step Verification")
+        print("     3. Search 'App Passwords' → Generate for 'Mail'")
+        print("     4. Paste the 16-char code (spaces are fine) into .env")
     else:
-        print(f"❌ Failed: {result['error']}")
+        print("\n📤 Sending test email …")
+        result = send_report_ready_alert({
+            "total_assets":   300,
+            "critical_count": 12,
+            "exposed_count":  45,
+            "orphan_count":   8,
+            "total_vulns":    892,
+            "exploit_count":  34,
+        })
+        if result["success"]:
+            print(f"✅ Test email sent successfully → {result['recipient']}")
+        else:
+            print(f"❌ Failed: {result['error']}")
