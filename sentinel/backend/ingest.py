@@ -40,7 +40,16 @@ BATCH_SIZE  = 50
 
 print("Loading embedding model...")
 model  = SentenceTransformer(EMBED_MODEL)
-client = chromadb.PersistentClient(path=CHROMA_PATH)
+
+# ── ChromaDB client: use HttpClient in Docker, PersistentClient locally ──────
+import os as _os
+_chroma_host = _os.environ.get("CHROMA_HOST", "localhost")
+_chroma_port = int(_os.environ.get("CHROMA_PORT", 8001))
+
+if _chroma_host == "localhost":
+    client = chromadb.PersistentClient(path=CHROMA_PATH)
+else:
+    client = chromadb.HttpClient(host=_chroma_host, port=_chroma_port)
 
 
 def build_asset_text(asset_dict: dict) -> str:

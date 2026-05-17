@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import os
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -9,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-API = "http://127.0.0.1:8000"
+API = os.getenv("API_URL", "http://localhost:8000")
 
 # ─── AUTH GATE ────────────────────────────────────────────────────────────────
 _token = st.session_state.get("jwt", "")

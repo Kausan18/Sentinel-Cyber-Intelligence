@@ -5,10 +5,16 @@ load_dotenv()  # MUST be before any os.environ.get() calls
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
+from pydantic import BaseModel
+from typing import List
 from sqlalchemy.orm import Session, joinedload   # ← added joinedload
 import os
 import uuid as uuid_lib
 import jwt as pyjwt
+
+OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "localhost")
+OLLAMA_PORT = int(os.environ.get("OLLAMA_PORT", 11434))
+os.environ.setdefault("OLLAMA_API_URL", f"http://{OLLAMA_HOST}:{OLLAMA_PORT}")
 
 import ollama
 try:
@@ -50,7 +56,15 @@ app = FastAPI(
 
 embed_model = SentenceTransformer("all-MiniLM-L6-v2")
 
-chroma_client = chromadb.PersistentClient(path="chroma_db")
+# ── ChromaDB client: use HttpClient in Docker, PersistentClient locally ──────
+CHROMA_HOST = os.environ.get("CHROMA_HOST", "localhost")
+CHROMA_PORT = int(os.environ.get("CHROMA_PORT", 8001))
+
+if CHROMA_HOST == "localhost":
+    chroma_client = chromadb.PersistentClient(path="chroma_db")
+else:
+    chroma_client = chromadb.HttpClient(host=CHROMA_HOST, port=CHROMA_PORT)
+
 collection = chroma_client.get_or_create_collection(name="cyber_assets")
 
 # ── AI backend configuration ──────────────────────────────────────────────────
@@ -1122,3 +1136,46 @@ def analyze_asset(
         },
         "recommendations": recommendations,
     }
+
+
+# ─── PART 7: NETWORK SCANNER ENDPOINT ────────────────────────────────────────
+
+class ScanRequest(BaseModel):
+    targets: List[str]
+    depth: str = "full"
+
+
+@app.post("/scan")
+def trigger_scan(
+    request: ScanRequest,
+    current_user: dict = Depends(get_current_user),
+):
+    """
+    Trigger an Nmap scan against specified targets.
+    Returns discovered asset payloads without importing them.
+    Caller decides which to import via POST /assets.
+    AUTH REQUIRED — this endpoint must be protected.
+    """
+    import sys
+    
+    # Path to scanner module (host path when running locally)
+    scanner_path = os.path.join(os.path.dirname(__file__), "..", "scanner")
+    if scanner_path not in sys.path:
+        sys.path.insert(0, scanner_path)
+    
+    try:
+        from nmap_scanner import scan_targets
+        from asset_builder import build_all_payloads
+        
+        scan_results = scan_targets(request.targets, depth=request.depth)
+        payloads = build_all_payloads(scan_results)
+        
+        return {"discovered": payloads, "count": len(payloads), "status": "complete"}
+    
+    except ImportError as e:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Scanner module not available: {str(e)}. Nmap scanner runs on host only, not inside Docker."
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Scan failed: {str(e)}")

@@ -1,10 +1,11 @@
 # frontend/auth_utils.py
 # ─── Shared auth utilities for all Sentinel page files ───────────────────────
 
+import os
 import streamlit as st
 import requests
 
-API = "http://127.0.0.1:8000"
+API = os.getenv("API_URL", "http://localhost:8000")
 
 
 def require_auth():
