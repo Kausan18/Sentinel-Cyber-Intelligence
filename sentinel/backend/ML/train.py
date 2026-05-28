@@ -23,7 +23,7 @@ from sklearn.metrics import (
 from sklearn.preprocessing import LabelEncoder
  
 from db import SessionLocal, Asset, Vulnerability, Owner
-from ML.features import extract_features, FEATURE_NAMES
+from features import extract_features, FEATURE_NAMES
  
 # ─── PATHS ────────────────────────────────────────────────────────────────────
 # Where to save trained models

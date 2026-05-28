@@ -10,7 +10,6 @@ from typing import List
 from sqlalchemy.orm import Session, joinedload   # ← added joinedload
 import os
 import uuid as uuid_lib
-import jwt as pyjwt
 
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "localhost")
 OLLAMA_PORT = int(os.environ.get("OLLAMA_PORT", 11434))
@@ -857,9 +856,12 @@ def ask(
 # ─── PART 6: ML ENDPOINTS ────────────────────────────────────────────────────
 
 import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "ml"))
+# Add backend/ itself to sys.path so ML.predict, nvd_connector, ingest resolve correctly
+_BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
+if _BACKEND_DIR not in sys.path:
+    sys.path.insert(0, _BACKEND_DIR)
 
-from predict import score_asset
+from ML.predict import score_asset
 from nvd_connector import get_cves_with_fallback
 from ingest import ingest_single_asset
 from pydantic import BaseModel
